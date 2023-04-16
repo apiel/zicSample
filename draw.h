@@ -4,7 +4,7 @@
 #include "def.h"
 #include "state.h"
 
-void drawText(Point position, const char *text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, char *fontPath = APP_FONT)
+void drawText(Point position, const char *text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, const char *fontPath = APP_FONT)
 {
     TTF_Font* font = TTF_OpenFont(fontPath, size);
     if (font == NULL) {

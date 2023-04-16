@@ -66,13 +66,6 @@ struct Size {
     uint32_t h;
 };
 
-struct Color {
-    uint32_t r;
-    uint32_t g;
-    uint32_t b;
-    uint32_t a;
-};
-
 struct Point {
     uint32_t x;
     uint32_t y;

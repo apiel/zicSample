@@ -7,7 +7,7 @@
 
 void audioCallBack(void* userdata, Uint8* stream, int len)
 {
-    float* buf = (float*)stream;
+    // float* buf = (float*)stream;
     // app->sample(buf, len);
 }
 
