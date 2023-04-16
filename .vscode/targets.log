@@ -1,0 +1,505 @@
+make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-builtin-variables --no-builtin-rules --question
+# make: Entering directory '/home/alex/Music/zic/zicTracker/linuxSDL'
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Sun Apr 16 19:25:53 2023
+
+# Variables
+
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+SSH_AGENT_LAUNCHER = gnome-keyring
+# environment
+TERMINATOR_DBUS_NAME = net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3
+# makefile (from 'makefile', line 42)
+RG351_IP = 192.168.1.109
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# environment
+SNAP_LAUNCHER_ARCH_TRIPLET = x86_64-linux-gnu
+# environment
+LC_NAME = de_AT.UTF-8
+# environment
+LC_NUMERIC = de_AT.UTF-8
+# environment
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
+# environment
+VSCODE_CWD = /home/alex/Music/zicSample
+# environment
+TERMINATOR_UUID = urn:uuid:6db5c7d1-8f88-4e43-be90-740ad491e64d
+# environment
+LC_ADDRESS = de_AT.UTF-8
+# default
+MAKE_COMMAND := make
+# environment
+QT_ACCESSIBILITY = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+SNAP_INSTANCE_NAME = code
+# environment
+GDK_PIXBUF_MODULEDIR = /snap/code/126/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/alex/Music/zicSample
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+XDG_DATA_DIRS = /home/alex/snap/code/126/.local/share:/home/alex/snap/code/126:/snap/code/126/usr/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# makefile (from 'makefile', line 19)
+PUREDATA = -I$(LIBPD_DIR)/libpd_wrapper -I$(LIBPD_DIR)/libpd_wrapper/util -I$(LIBPD_DIR)/pure-data/src -I$(LIBPD_DIR)/cpp ./libpd.so -DPDINSTANCE
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_CODE_CACHE_PATH = /home/alex/.config/Code/CachedData/704ed70d4fd1c6bd6342c436f1ede30d1cff4710
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.SQPK31
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# makefile
+MAKEFLAGS = pqrRw
+# makefile (from 'makefile', line 10)
+ZIC_TARGET = 0
+# environment
+TERMINATOR_DBUS_PATH = /net/tenshu/Terminator2
+# environment
+GTK_USE_PORTAL = 1
+# makefile
+CURDIR := /home/alex/Music/zic/zicTracker/linuxSDL
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# makefile (from 'makefile', line 31)
+DUKTAPE = `pkg-config --cflags --libs duktape`
+# environment
+MFLAGS = -pqrRw
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# default
+.SHELLFLAGS := -c
+# environment
+WAYLAND_DISPLAY = wayland-0
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# makefile (from 'makefile', line 1)
+MAKEFILE_LIST := makefile
+# automatic
+@F = $(notdir $@)
+# environment
+VSCODE_PID = 2072161
+# environment
+XDG_SESSION_TYPE = wayland
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from 'makefile', line 39)
+LIBRTMIDI = `pkg-config --cflags --libs rtmidi`
+# environment
+SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/9440,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/9440
+# automatic
+*F = $(notdir $*)
+# environment
+IBUS_DISABLE_SNOOPER = 1
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","osLocale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+GTK_PATH = /snap/code/126/usr/lib/x86_64-linux-gnu/gtk-3.0
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# makefile
+SHELL = /bin/sh
+# makefile (from 'makefile', line 37)
+LIDSND = `pkg-config --cflags --libs sndfile` -DZIC_USE_LIBSNDFILE=1
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=ibus
+# environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# environment
+SHLVL = 1
+# makefile (from 'makefile', line 11)
+ZIC_TRACK_LAYOUT = 0
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+SNAP_COOKIE = SwaaAWCM8SvWrzRKuVkqR9SQxBzJM4aTNENG2SlRyWkNO9mupTTK
+# environment
+PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/alex/.krew/bin:/home/alex/.krew/bin
+# makefile (from 'makefile', line 32)
+JS_ENGINE = $(DUKTAPE)
+# default
+MAKEFILES := 
+# environment
+LC_MONETARY = de_AT.UTF-8
+# automatic
+^F = $(notdir $^)
+# environment
+SNAP_USER_COMMON = /home/alex/snap/code/common
+# environment
+LC_TIME = de_AT.UTF-8
+# environment
+SNAP = /snap/code/126
+# environment
+INVOCATION_ID = 4b545db4dd4c4eb59d9d7612fcdcfb9b
+# environment
+SNAP_REVISION = 126
+# environment
+SNAP_REAL_HOME = /home/alex
+# makefile (from 'makefile', line 6)
+ZIC_APP_CORE_LIB = ../../zicAppCore
+# environment
+USERNAME = alex
+# environment
+GNOME_SETUP_DISPLAY = :1
+# environment
+LC_TELEPHONE = de_AT.UTF-8
+# automatic
+?F = $(notdir $?)
+# environment
+GTK_IM_MODULE_FILE = /home/alex/snap/code/common/.cache/immodules/immodules.cache
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# environment
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+# automatic
++F = $(notdir $+)
+# environment
+DESKTOP_SESSION = ubuntu
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# environment
+LOCPATH = /snap/code/126/usr/lib/locale
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = alex
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/terminator.desktop
+# environment
+SNAP_ARCH = amd64
+# makefile
+.DEFAULT_GOAL := linux
+# environment
+SYSTEMD_EXEC_PID = 9467
+# environment
+DISPLAY = :0
+# environment
+USER = alex
+# environment
+GTK_MODULES = gail:atk-bridge
+# makefile (from 'makefile', line 5)
+ZIC_LIB = ../../zic
+# default
+MAKE_VERSION := 4.3
+# environment
+SNAP_DATA = /var/snap/code/126
+# environment
+SNAP_CONTEXT = SwaaAWCM8SvWrzRKuVkqR9SQxBzJM4aTNENG2SlRyWkNO9mupTTK
+# environment
+MANAGERPID = 9272
+# environment
+LC_MEASUREMENT = de_AT.UTF-8
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 428513
+# environment
+LC_PAPER = de_AT.UTF-8
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+COLORTERM = truecolor
+# environment
+GDK_PIXBUF_MODULE_FILE = /home/alex/snap/code/common/.cache/gdk-pixbuf-loaders.cache
+# environment
+GIO_MODULE_DIR = /home/alex/snap/code/common/.cache/gio-modules
+# environment
+JOURNAL_STREAM = 8:113065
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/alex
+# environment
+QT_IM_MODULE = ibus
+# makefile (from 'makefile', line 18)
+LIBPD_DIR = ../../libpd
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d32d3ff9-1.77-main.sock
+# environment
+TERM = xterm-256color
+# environment
+GTK_EXE_PREFIX = /snap/code/126/usr
+# environment
+SNAP_NAME = code
+# environment
+GSETTINGS_SCHEMA_DIR = /home/alex/snap/code/126/.local/share/glib-2.0/schemas
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# environment
+SNAP_VERSION = 704ed70d
+# default
+ 
+make: *** No rule to make target 'all'.  Stop.
+
+SUFFIXES := 
+# environment
+VSCODE_CLI = 1
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+VTE_VERSION = 6800
+# environment
+SNAP_COMMON = /var/snap/code/common
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# makefile (from 'makefile', line 9)
+CC = g++ -o zicTracker
+# environment
+SNAP_USER_DATA = /home/alex/snap/code/126
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+GDMSESSION = ubuntu
+# environment
+LC_IDENTIFICATION = de_AT.UTF-8
+# environment
+SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
+# variable set hash-table stats:
+# Load=144/1024=14%, Rehash=0, Collisions=5/174=3%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 66306, inode 9457709): 17 files, no impossibilities.
+
+# 17 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+rg351MountChroot:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  recipe to execute (from 'makefile', line 70):
+	sudo mount --bind /home/alex/Music/zic /mnt/data/arm64/home/alex/zic
+
+.ONESHELL:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+rg351Puredata:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 61):
+	cp ../../libpd/libs/libpd_arm.so libpd.so
+
+rg351Libpd:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 103):
+	sshpass -p "ark" ssh ark@$(RG351_IP) rm -rf /roms/ports/zic/libpd.so
+	sshpass -p "ark" scp -r libpd.so ark@$(RG351_IP):/roms/ports/zic/libpd.so
+
+rg351SCP:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 83):
+	sshpass -p "ark" scp zicTrackerRG351 ark@$(RG351_IP):/roms/ports/zic/zicTracker
+
+rg351Duk:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 55):
+	cp ../../duktape-2.7.0/libduktaped.so.207.20700.arm ./libduktaped.so.207
+
+rg351Chrooted:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 80):
+	make CC="g++ -o zicTrackerRG351" build
+
+rg351Chroot:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 73):
+	sudo chroot /mnt/data/arm64/ /bin/bash -c "cd /home/alex/zic/zicTracker/linuxSDL && make rg351Chrooted"
+
+puredata:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 58):
+	cp ../../libpd/libs/libpd.so .
+
+rg351Instr:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 99):
+	sshpass -p "ark" ssh ark@$(RG351_IP) rm -rf /roms/ports/zic/instruments
+	sshpass -p "ark" scp -r instruments/ ark@$(RG351_IP):/roms/ports/zic/instruments
+
+rg351Kill:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 86):
+	sshpass -p "ark" ssh ark@$(RG351_IP) /roms/ports/zic/kill.sh
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+run:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 115):
+	echo start zicTracker
+	LD_LIBRARY_PATH=. ./zicTracker
+
+build:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 107):
+	$(CC) -Wall zicTracker.cpp -fopenmp -Wno-narrowing -I$(ZIC_LIB) -I$(ZIC_APP_CORE_LIB) \
+	`sdl2-config --cflags --libs` $(LV2)  -DZIC_TARGET=$(ZIC_TARGET) -DZIC_TRACK_LAYOUT=$(ZIC_TRACK_LAYOUT) \
+	 $(PUREDATA) $(JS_ENGINE) $(LIDSND) $(LIBRTMIDI)
+
+rg351Project:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 95):
+	sshpass -p "ark" ssh ark@$(RG351_IP) rm -rf /roms/ports/zic/projects
+	sshpass -p "ark" scp -r projects/ ark@$(RG351_IP):/roms/ports/zic/projects
+
+# Not a target:
+makefile:
+#  Implicit rule search has been done.
+#  Last modified 2023-01-03 10:19:30.779073015
+#  File has been updated.
+#  Successfully updated.
+
+rg351:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 64):
+	make rg351MountChroot rg351Next
+
+rg351Log:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 89):
+	sshpass -p "ark" ssh ark@$(RG351_IP) tail -f /roms/ports/zic/zic.log
+
+rg351CatLog:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 92):
+	sshpass -p "ark" ssh ark@$(RG351_IP) cat /roms/ports/zic/zic.log
+
+duk:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 52):
+	cp ../../duktape-2.7.0/libduktaped.so.207.20700 ./libduktaped.so.207
+
+linux: puredata duk build run
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+rg351Next:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 67):
+	make ZIC_TRACK_LAYOUT=1 rg351Puredata rg351Duk rg351Chroot rg351SCP
+	
+
+# files hash-table stats:
+# Load=24/1024=2%, Rehash=0, Collisions=0/42=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 43 / storage = 481 B / avg = 11 B
+# current buf: size = 8162 B / used = 481 B / count = 43 / avg = 11 B
+
+# strcache performance: lookups = 71 / hit rate = 39%
+# hash-table stats:
+# Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
+# Finished Make data base on Sun Apr 16 19:25:53 2023
+
+# make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
+ 
