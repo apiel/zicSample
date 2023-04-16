@@ -8,6 +8,21 @@ class ViewMain : public View {
 protected:
     ViewMain() { }
 
+    void renderRow(unsigned int row)
+    {
+        unsigned int y = 70 + 15 * row;
+        drawFilledRect({ 5, y }, { 84, 12 });
+
+        for (unsigned int step = 0; step < 32; step++) {
+            unsigned int x = 92 + 12 * step;
+            SDL_Color color = COLOR_FOREGROUND;
+            if (step % 4 == 0) {
+                color = COLOR_FOREGROUND2;
+            }
+            drawFilledRect({ x, y }, { 10, 12 }, color);
+        }
+    }
+
 public:
     static ViewMain* instance;
 
@@ -26,6 +41,10 @@ public:
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
 
         drawText({ 10, 10 }, "Hello World", COLOR_INFO);
+
+        for (unsigned int row = 0; row < 10; row++) {
+            renderRow(row);
+        }
     }
 
     uint8_t update(UiKeys* keys)
