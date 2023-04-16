@@ -1,6 +1,6 @@
 #include "def.h"
-#include "draw.h"
 #include "sdl2.h"
+#include "view_main.h"
 
 // UI_Display uiDisplay;
 // App *app = App::getInstance(&uiDisplay);
@@ -40,8 +40,7 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    drawText({ 0, 0 }, "Hello World");
-
+    ViewMain::getInstance()->render();
     SDL_RenderPresent(renderer);
 
     while (handleEvent()) {
