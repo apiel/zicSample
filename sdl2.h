@@ -1,9 +1,8 @@
 #ifndef _APP_SDL2_H_
 #define _APP_SDL2_H_
 
-#include <SDL2/SDL.h>
-
-#include <stdio.h>
+#include "def.h"
+#include "state.h"
 
 #ifndef SAMPLE_RATE
 #define SAMPLE_RATE 44100
@@ -23,15 +22,14 @@
 #define APP_AUDIO_CHUNK 128
 #endif
 
-#include "app_def.h"
-#include "zicKeyMap.h"
-
-typedef struct {
-    bool keysChanged = false;
-    uint16_t keys = 0;
-} Ui;
-
-Ui ui;
+#define KEY_UP SDL_SCANCODE_UP
+#define KEY_DOWN SDL_SCANCODE_DOWN
+#define KEY_LEFT SDL_SCANCODE_LEFT
+#define KEY_RIGHT SDL_SCANCODE_RIGHT
+#define KEY_A SDL_SCANCODE_S
+#define KEY_B SDL_SCANCODE_A
+#define KEY_Y SDL_SCANCODE_Q
+#define KEY_MENU SDL_SCANCODE_ESCAPE
 
 bool handleKeyboard(SDL_KeyboardEvent* event)
 {

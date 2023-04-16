@@ -1,14 +1,48 @@
-#ifndef APP_DEF_H_
-#define APP_DEF_H_
+#ifndef _DEF_H_
+#define _DEF_H_
 
 #include <stdint.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #ifndef APP_LOG
 #define APP_LOG printf
 #endif
 
+#ifndef APP_DEFAULT_FONT
+#define APP_DEFAULT_FONT "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+#endif
+
+#ifndef APP_DEFAULT_FONT_COLOR
+#define APP_DEFAULT_FONT_COLOR \
+    {                          \
+        255, 255, 255, 255     \
+    }
+#endif
+
+#ifndef APP_DEFAULT_FONT_SIZE
+#define APP_DEFAULT_FONT_SIZE 16
+#endif
+
 #define SCREEN_W 480
 #define SCREEN_H 320
+
+struct Size {
+    uint32_t w;
+    uint32_t h;
+};
+
+struct Color {
+    uint32_t r;
+    uint32_t g;
+    uint32_t b;
+    uint32_t a;
+};
+
+struct Point {
+    uint32_t x;
+    uint32_t y;
+};
 
 enum {
     VIEW_NONE,

@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Apr 16 19:25:53 2023
+# Make data base, printed on Sun Apr 16 20:01:52 2023
 
 # Variables
 
@@ -276,9 +276,6 @@ GSETTINGS_SCHEMA_DIR = /home/alex/snap/code/126/.local/share/glib-2.0/schemas
 # environment
 SNAP_VERSION = 704ed70d
 # default
- 
-make: *** No rule to make target 'all'.  Stop.
-
 SUFFIXES := 
 # environment
 VSCODE_CLI = 1
@@ -307,6 +304,9 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Pattern-specific Variable Values
 
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 # No pattern-specific variable values.
 
 # Directories
@@ -325,7 +325,6 @@ rg351MountChroot:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  recipe to execute (from 'makefile', line 70):
 	sudo mount --bind /home/alex/Music/zic /mnt/data/arm64/home/alex/zic
 
@@ -499,7 +498,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Sun Apr 16 19:25:53 2023
+# Finished Make data base on Sun Apr 16 20:01:52 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  
