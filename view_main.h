@@ -21,7 +21,11 @@ public:
 
     void render()
     {
-        drawText({ 0, 0 }, "Hello World");
+        drawClear();
+
+        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+
+        drawText({ 10, 10 }, "Hello World", COLOR_INFO);
     }
 
     uint8_t update(UiKeys* keys)

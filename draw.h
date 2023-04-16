@@ -4,7 +4,7 @@
 #include "def.h"
 #include "state.h"
 
-void drawText(Point position, const char *text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, const char *fontPath = APP_FONT)
+void drawText(Point position, const char* text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, const char* fontPath = APP_FONT)
 {
     TTF_Font* font = TTF_OpenFont(fontPath, size);
     if (font == NULL) {
@@ -32,6 +32,19 @@ void drawText(Point position, const char *text, SDL_Color color = APP_DEFAULT_FO
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
     TTF_CloseFont(font);
+}
+
+void drawClear(SDL_Color color = COLOR_BACKGROUND)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderClear(renderer);
+}
+
+void drawFilledRect(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_Rect rect = { (int)position.x, (int)position.y, (int)size.w, (int)size.h };
+    SDL_RenderFillRect(renderer, &rect);
 }
 
 #endif
