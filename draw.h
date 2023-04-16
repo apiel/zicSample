@@ -4,15 +4,14 @@
 #include "def.h"
 #include "state.h"
 
-void drawText(Point position, const char *text, Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE)
+void drawText(Point position, const char *text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, char *fontPath = APP_FONT)
 {
-    TTF_Font* font = TTF_OpenFont(APP_DEFAULT_FONT, size);
+    TTF_Font* font = TTF_OpenFont(fontPath, size);
     if (font == NULL) {
         APP_LOG("Failed to open font\n");
         return;
     }
-    SDL_Color sdlColor = { (uint8_t)color.r, (uint8_t)color.g, (uint8_t)color.b, (uint8_t)color.a };
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text, sdlColor);
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
     if (surface == NULL) {
         APP_LOG("Failed to render text\n");
         return;

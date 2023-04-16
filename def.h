@@ -1,24 +1,58 @@
 #ifndef _DEF_H_
 #define _DEF_H_
 
-#include <stdint.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <stdint.h>
 
 #ifndef APP_LOG
 #define APP_LOG printf
 #endif
 
-#ifndef APP_DEFAULT_FONT
-#define APP_DEFAULT_FONT "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+#ifndef APP_FONT
+#define APP_FONT "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf"
+#endif
+
+#ifndef APP_FONT_BOLD
+#define APP_FONT_BOLD "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf"
+#endif
+
+#ifndef APP_FONT_ITALIC
+#define APP_FONT_ITALIC "/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf"
+#endif
+
+// clang-format off
+
+#ifndef COLOR_WHITE
+#define COLOR_WHITE { 255, 255, 255, 255 }
+#endif
+
+#ifndef COLOR_BACKGROUND // #21252b
+#define COLOR_BACKGROUND { 0x21, 0x25, 0x2b, 255 }
+#endif
+
+#ifndef COLOR_FOREGROUND // #2b2c2e
+#define COLOR_FOREGROUND { 0x2b, 0x2c, 0x2e, 255 }
+#endif
+
+#ifndef COLOR_FOREGROUND2 // #383a3d
+#define COLOR_FOREGROUND2 { 0x38, 0x3a, 0x3d, 255 }
+#endif
+
+#ifndef COLOR_PRIMARY // #0d6efd
+#define COLOR_PRIMARY { 0x0d, 0x6e, 0xfd, 255 }
+#endif
+
+#ifndef COLOR_INFO // #888888
+#define COLOR_INFO { 0x88, 0x88, 0x88, 255 }
 #endif
 
 #ifndef APP_DEFAULT_FONT_COLOR
-#define APP_DEFAULT_FONT_COLOR \
-    {                          \
-        255, 255, 255, 255     \
-    }
+#define APP_DEFAULT_FONT_COLOR COLOR_WHITE
 #endif
+
+// clang-format on
+
 
 #ifndef APP_DEFAULT_FONT_SIZE
 #define APP_DEFAULT_FONT_SIZE 16
