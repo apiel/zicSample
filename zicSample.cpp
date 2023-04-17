@@ -52,6 +52,7 @@ int main(int argc, char* args[])
             // SDL_UpdateWindowSurface(window);
         }
         SDL_Delay(10);
+        // ensure rendering on RG351P
         if (renderCount < 200) {
             renderCount++;
             SDL_RenderPresent(renderer);
@@ -60,10 +61,6 @@ int main(int argc, char* args[])
         //     app->rendered = false;
         //     SDL_UpdateWindowSurface(window);
         // }
-
-        // SDL_Delay(10);
-        // ViewMain::getInstance()->render();
-        // SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
