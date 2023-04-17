@@ -9,6 +9,10 @@
 #define APP_LOG printf
 #endif
 
+#ifndef APP_DATA_MAIN
+#define APP_DATA_MAIN "./data/__main__"
+#endif
+
 #ifndef APP_FONT
 #define APP_FONT "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf"
 #endif
