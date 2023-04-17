@@ -20,6 +20,9 @@ int main(int argc, char* args[])
         return 1;
     }
 
+    SDL_Log("SDL video driver: %s\n", SDL_GetCurrentVideoDriver());
+    SDL_Log("SDL audio driver: %s\n", SDL_GetCurrentAudioDriver());
+
     SDL_Window* window = SDL_CreateWindow(
         "Zic",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
