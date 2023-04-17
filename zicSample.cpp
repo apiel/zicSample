@@ -31,22 +31,22 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    // TTF_Init();
+    TTF_Init();
 
-    // renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_AudioDeviceID audioDevice = initAudio(audioCallBack);
     if (SDL_getenv("ZIC_SKIP_AUDIO") == NULL && !audioDevice) {
         return 1;
     }
 
-    // ViewMain::getInstance()->render();
-    // SDL_RenderPresent(renderer);
+    ViewMain::getInstance()->render();
+    SDL_RenderPresent(renderer);
 
     SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
-    SDL_Rect r = { 5, 5, 100, 100 };
-    SDL_FillRect(screenSurface, &r, SDL_MapRGB(screenSurface->format, 70, 70, 70));
-    SDL_UpdateWindowSurface(window);
+    // SDL_Rect r = { 5, 5, 100, 100 };
+    // SDL_FillRect(screenSurface, &r, SDL_MapRGB(screenSurface->format, 70, 70, 70));
+    // SDL_UpdateWindowSurface(window);
 
     while (handleEvent()) {
         if (ui.keysChanged) {
