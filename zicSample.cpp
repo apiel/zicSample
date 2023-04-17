@@ -42,6 +42,10 @@ int main(int argc, char* args[])
 
     ViewMain::getInstance()->render();
     SDL_RenderPresent(renderer);
+
+    SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
+    SDL_Rect r = { 5, 5, 100, 100 };
+    SDL_FillRect(screenSurface, &r, SDL_MapRGB(screenSurface->format, 70, 70, 70));
     SDL_UpdateWindowSurface(window);
 
     while (handleEvent()) {
@@ -56,10 +60,6 @@ int main(int argc, char* args[])
         //     app->rendered = false;
         //     SDL_UpdateWindowSurface(window);
         // }
-
-        SDL_Delay(10);
-        SDL_RenderPresent(renderer);
-        SDL_UpdateWindowSurface(window);
     }
 
     SDL_DestroyRenderer(renderer);
