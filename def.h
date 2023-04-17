@@ -9,6 +9,10 @@
 #define APP_LOG printf
 #endif
 
+#ifndef APP_SAMPLES_FOLDER
+#define APP_SAMPLES_FOLDER "./samples"
+#endif
+
 #ifndef APP_DATA_FOLDER
 #define APP_DATA_FOLDER "./data"
 #endif
@@ -71,6 +75,10 @@
 
 #ifndef APP_TRACK_NAME
 #define APP_TRACK_NAME 12
+#endif
+
+#ifndef APP_SAMPLE_NAME
+#define APP_SAMPLE_NAME 50
 #endif
 
 #ifndef APP_DEFAULT_FONT_SIZE

@@ -31,10 +31,10 @@ public:
         }
         // APP_LOG("DATASIZE: %lu\n\n%s\n\n", sz, (char*)loaded);
 
-        char* line = strtok((char*)loaded, "\n");
-        for (uint8_t i = 0; line && i < APP_TRACKS; i++) {
-            tracks[i].load(line);
-            line = strtok(NULL, "\n");
+        char* rest = (char*)loaded;
+        char* line;
+        for (uint8_t i = 0; (line = strtok_r(rest, "\n", &rest)) && i < APP_TRACKS; i++) {
+            tracks[i].setName(line).load();
         }
 
         SDL_free(loaded);
