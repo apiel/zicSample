@@ -42,7 +42,7 @@ public:
 
         drawText({ 10, 10 }, "Hello World", COLOR_INFO);
 
-        for (unsigned int row = 0; row < 10; row++) {
+        for (unsigned int row = 0; row < 16; row++) {
             renderRow(row);
         }
     }
