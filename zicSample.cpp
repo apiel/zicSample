@@ -40,8 +40,8 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    ViewMain::getInstance()->render();
-    SDL_RenderPresent(renderer);
+    // ViewMain::getInstance()->render();
+    // SDL_RenderPresent(renderer);
 
     SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
     // SDL_Rect r = { 5, 5, 100, 100 };
