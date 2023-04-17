@@ -2,6 +2,7 @@
 #include "sdl2.h"
 #include "view_main.h"
 #include "data.h"
+#include "audioFile.h"
 
 // UI_Display uiDisplay;
 // App *app = App::getInstance(&uiDisplay);
@@ -18,8 +19,8 @@ int main(int argc, char* args[])
 
     Data::getInstance()->load();
 
-    // AudioFile audioFile;
-    // audioFile.open("samples/psykick9.wav");
+    AudioFile audioFile;
+    audioFile.open("samples/psykick9.wav");
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         fprintf(stderr, "Could not initialize SDL: %s\n", SDL_GetError());

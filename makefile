@@ -4,14 +4,7 @@
 # default
 CC=g++ -o zicSample
 
-# Chroot into to build environment, then build libsndfile following the instructions here
-# https://github.com/libsndfile/libsndfile#building-from-command-line
-# or try to link lib like:
-# LIDSND=-L . -I ./libsndfile/include -lsndfile
-# LIDSND=`pkg-config --cflags --libs sndfile`
-# or could use libaudiofile https://github.com/mpruett/audiofile
-# seem to be easier to install in chroot
-
+LIDSND=`pkg-config --cflags --libs sndfile` -DUSE_SNDFILE=1
 
 SDL2=`sdl2-config --cflags --libs`
 SDL2_TTF=`pkg-config --cflags --libs SDL2_ttf`
