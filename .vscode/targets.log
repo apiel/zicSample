@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 17 07:27:36 2023
+# Make data base, printed on Mon Apr 17 14:45:07 2023
 
 # Variables
 
@@ -34,7 +34,7 @@ LC_NUMERIC = de_AT.UTF-8
 # environment
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
-VSCODE_CWD = /home/alex
+VSCODE_CWD = /home/alex/Music
 # environment
 TERMINATOR_UUID = urn:uuid:82a4b9b2-f791-42d9-8822-5b385d4fead2
 # environment
@@ -108,7 +108,7 @@ MAKEFILE_LIST := makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 68215
+VSCODE_PID = 1508615
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -278,6 +278,9 @@ VSCODE_CLI = 1
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 VTE_VERSION = 6800
 # environment
 SNAP_COMMON = /var/snap/code/common
@@ -288,9 +291,6 @@ CC = g++ -o zicTracker
 # environment
 SNAP_USER_DATA = /home/alex/snap/code/126
 # environment
- 
-make: *** No rule to make target 'all'.  Stop.
-
 XDG_MENU_PREFIX = gnome-
 # environment
 GDMSESSION = ubuntu
@@ -494,7 +494,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Mon Apr 17 07:27:36 2023
+# Finished Make data base on Mon Apr 17 14:45:07 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  
