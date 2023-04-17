@@ -4,10 +4,13 @@
 # default
 CC=g++ -o zicSample
 
-# https://git-scm.com/book/en/v2/Git-Tools-Submodules
-# TODO for RG351P, either the following line, or install libsndfile-dev in chroot, or build directly on device
-#LIDSND=-L . -I ./libsndfile/include -lsndfile
-#LIDSND=`pkg-config --cflags --libs sndfile`
+# Chroot into to build environment, then build libsndfile following the instructions here
+# https://github.com/libsndfile/libsndfile#building-from-command-line
+# or try to link lib like:
+# LIDSND=-L . -I ./libsndfile/include -lsndfile
+# LIDSND=`pkg-config --cflags --libs sndfile`
+# or could use libaudiofile https://github.com/mpruett/audiofile
+# seem to be easier to install in chroot
 
 
 SDL2=`sdl2-config --cflags --libs`

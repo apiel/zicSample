@@ -1,6 +1,7 @@
 #include "def.h"
 #include "sdl2.h"
 #include "view_main.h"
+#include "audioFile.h"
 
 // UI_Display uiDisplay;
 // App *app = App::getInstance(&uiDisplay);
@@ -14,6 +15,9 @@ void audioCallBack(void* userdata, Uint8* stream, int len)
 int main(int argc, char* args[])
 {
     SDL_Log(">>>>>>> Start Zic Tracker\n");
+
+    // AudioFile audioFile;
+    // audioFile.open("samples/psykick9.wav");
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         fprintf(stderr, "Could not initialize SDL: %s\n", SDL_GetError());

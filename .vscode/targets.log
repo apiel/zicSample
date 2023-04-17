@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 17 15:37:09 2023
+# Make data base, printed on Mon Apr 17 18:27:20 2023
 
 # Variables
 
@@ -87,11 +87,10 @@ GTK_USE_PORTAL = 1
 CURDIR := /home/alex/Music/zic/zicTracker/linuxSDL
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # makefile (from 'makefile', line 31)
 DUKTAPE = `pkg-config --cflags --libs duktape`
 # environment
@@ -287,6 +286,9 @@ SNAP_COMMON = /var/snap/code/common
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
 # makefile (from 'makefile', line 9)
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 CC = g++ -o zicTracker
 # environment
 SNAP_USER_DATA = /home/alex/snap/code/126
@@ -299,7 +301,7 @@ LC_IDENTIFICATION = de_AT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=142/1024=14%, Rehash=0, Collisions=5/172=3%
+# Load=143/1024=14%, Rehash=0, Collisions=6/173=3%
 
 # Pattern-specific Variable Values
 
@@ -394,7 +396,6 @@ rg351Kill:
 #  recipe to execute (from 'makefile', line 86):
 	sshpass -p "ark" ssh ark@$(RG351_IP) /roms/ports/zic/kill.sh
 
- 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
@@ -495,7 +496,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Mon Apr 17 15:37:09 2023
+# Finished Make data base on Mon Apr 17 18:27:20 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  
