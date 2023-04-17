@@ -1,13 +1,10 @@
 #ifndef _AUDIO_FILE_H_
 #define _AUDIO_FILE_H_
 
-#ifdef USE_SNDFILE
 #include <sndfile.h>
-#endif
 
 #include "def.h"
 
-#ifdef USE_SNDFILE
 class AudioFile {
 public:
     SF_INFO sfinfo;
@@ -43,18 +40,5 @@ public:
         return file;
     }
 };
-#else
-class AudioFile {
-public:
-    void close()
-    {
-    }
-
-    void* open(const char* filename)
-    {
-        return NULL;
-    }
-};
-#endif
 
 #endif

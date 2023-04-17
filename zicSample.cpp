@@ -1,8 +1,8 @@
+#include "audioFile.h"
+#include "data.h"
 #include "def.h"
 #include "sdl2.h"
 #include "view_main.h"
-#include "data.h"
-#include "audioFile.h"
 
 // UI_Display uiDisplay;
 // App *app = App::getInstance(&uiDisplay);
@@ -56,11 +56,11 @@ int main(int argc, char* args[])
 
     uint8_t renderCount = 0;
     while (handleEvent()) {
+        bool rendered = false;
         if (ui.keysChanged) {
             ui.keysChanged = false;
-            // app->handleUi(ui.keys);
-            // SDL_Log("\n%s\n", uiDisplay.text);
-            // SDL_UpdateWindowSurface(window);
+            UiKeys keys(ui.keys);
+            rendered = ViewMain::getInstance()->update(keys);
         }
         SDL_Delay(10);
         // ensure rendering on RG351P
@@ -68,10 +68,10 @@ int main(int argc, char* args[])
             renderCount++;
             SDL_RenderPresent(renderer);
         }
-        // if (app->rendered) {
-        //     app->rendered = false;
-        //     SDL_UpdateWindowSurface(window);
-        // }
+        if (rendered) {
+            ViewMain::getInstance()->render();
+            SDL_RenderPresent(renderer);
+        }
     }
 
     SDL_DestroyRenderer(renderer);

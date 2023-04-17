@@ -7,6 +7,8 @@
 
 class ViewMain : public View {
 protected:
+    Grid grid = Grid(APP_TRACKS, APP_TRACK_STEPS);
+
     ViewMain() { }
 
     void renderRow(unsigned int row)
@@ -54,17 +56,22 @@ public:
         }
     }
 
-    uint8_t update(UiKeys* keys)
+    uint8_t update(UiKeys& keys)
     {
-            //         if (keys->Up) {
-            //     selectNextRow(-1);
-            // } else if (keys->Down) {
-            //     selectNextRow(+1);
-            // } else if (keys->Left) {
-            //     selectNextCol(-1);
-            // } else if (keys->Right) {
-            //     selectNextCol(+1);
-            // }
+        if (keys.Up) {
+            grid.selectNextRow(-1);
+            return VIEW_CHANGED;
+        } else if (keys.Down) {
+            grid.selectNextRow(+1);
+            return VIEW_CHANGED;
+        } else if (keys.Left) {
+            grid.selectNextCol(-1);
+            return VIEW_CHANGED;
+        } else if (keys.Right) {
+            grid.selectNextCol(+1);
+            return VIEW_CHANGED;
+        }
+
         return VIEW_NONE;
     }
 };

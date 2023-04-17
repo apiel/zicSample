@@ -4,7 +4,7 @@
 # default
 CC=g++ -o zicSample
 
-LIDSND=`pkg-config --cflags --libs sndfile` -DUSE_SNDFILE=1
+LIDSND=`pkg-config --cflags --libs sndfile`
 
 SDL2=`sdl2-config --cflags --libs`
 SDL2_TTF=`pkg-config --cflags --libs SDL2_ttf`

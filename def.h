@@ -125,6 +125,17 @@ public:
     bool Menu = false;
     bool Action = false;
 
+    UiKeys(uint8_t keysBin)
+    {
+        Up = (keysBin >> UI_KEY_UP) & 1;
+        Down = (keysBin >> UI_KEY_DOWN) & 1;
+        Left = (keysBin >> UI_KEY_LEFT) & 1;
+        Right = (keysBin >> UI_KEY_RIGHT) & 1;
+        Edit = (keysBin >> UI_KEY_EDIT) & 1;
+        Menu = (keysBin >> UI_KEY_MENU) & 1;
+        Action = (keysBin >> UI_KEY_ACTION) & 1;
+    }
+
     int8_t getDirection()
     {
         if (Right) {
