@@ -39,6 +39,11 @@ public:
 
         SDL_free(loaded);
     }
+
+    // Track& getTrack(uint8_t index)
+    // {
+    //     return tracks[index % APP_TRACKS];
+    // }
 };
 
 Data* Data::instance = NULL;

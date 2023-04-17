@@ -5,7 +5,7 @@
 
 class Track {
 public:
-    char name[APP_TRACK_NAME];
+    char name[APP_TRACK_NAME - 1];
 
     void load(char* _name)
     {

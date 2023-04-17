@@ -70,7 +70,7 @@
 #endif
 
 #ifndef APP_TRACK_NAME
-#define APP_TRACK_NAME 7
+#define APP_TRACK_NAME 12
 #endif
 
 #ifndef APP_DEFAULT_FONT_SIZE

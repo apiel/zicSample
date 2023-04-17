@@ -3,6 +3,7 @@
 
 #include "draw.h"
 #include "view.h"
+#include "data.h"
 
 class ViewMain : public View {
 protected:
@@ -12,6 +13,9 @@ protected:
     {
         unsigned int y = 70 + 15 * row;
         drawFilledRect({ 5, y }, { 84, 12 });
+
+        Track& track = Data::getInstance()->tracks[row];
+        drawText({ 8, y }, track.name, COLOR_INFO, 10);
 
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
             unsigned int x = 92 + 12 * step;
