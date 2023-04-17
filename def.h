@@ -9,8 +9,12 @@
 #define APP_LOG printf
 #endif
 
+#ifndef APP_DATA_FOLDER
+#define APP_DATA_FOLDER "./data"
+#endif
+
 #ifndef APP_DATA_MAIN
-#define APP_DATA_MAIN "./data/__main__"
+#define APP_DATA_MAIN APP_DATA_FOLDER "/__main__"
 #endif
 
 #ifndef APP_FONT
