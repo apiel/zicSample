@@ -57,6 +57,17 @@
 
 // clang-format on
 
+#ifndef APP_TRACKS
+#define APP_TRACKS 16
+#endif
+
+#ifndef APP_TRACK_STEPS
+#define APP_TRACK_STEPS 32
+#endif
+
+#ifndef APP_TRACK_NAME
+#define APP_TRACK_NAME 7
+#endif
 
 #ifndef APP_DEFAULT_FONT_SIZE
 #define APP_DEFAULT_FONT_SIZE 16

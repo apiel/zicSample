@@ -13,7 +13,7 @@ protected:
         unsigned int y = 70 + 15 * row;
         drawFilledRect({ 5, y }, { 84, 12 });
 
-        for (unsigned int step = 0; step < 32; step++) {
+        for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
             unsigned int x = 92 + 12 * step;
             SDL_Color color = COLOR_FOREGROUND;
             if (step % 4 == 0) {
@@ -42,7 +42,7 @@ public:
 
         drawText({ 10, 10 }, "Hello World", COLOR_INFO);
 
-        for (unsigned int row = 0; row < 16; row++) {
+        for (unsigned int row = 0; row < APP_TRACKS; row++) {
             renderRow(row);
         }
     }
