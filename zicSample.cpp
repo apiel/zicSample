@@ -33,7 +33,7 @@ int main(int argc, char* args[])
 
     TTF_Init();
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    // renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_AudioDeviceID audioDevice = initAudio(audioCallBack);
     if (SDL_getenv("ZIC_SKIP_AUDIO") == NULL && !audioDevice) {
