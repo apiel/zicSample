@@ -26,10 +26,10 @@ rg351:
 	make rg351MountChroot rg351Next
 
 rg351Next:
-	sudo chroot /mnt/data/arm64/ /bin/bash -c "cd /home/alex/zicSample && make rg351Chrooted"
+	sudo chroot /mnt/data/arm64_2/ /bin/bash -c "cd /home/alex/zicSample && make rg351Chrooted"
 
 rg351MountChroot:
-	sudo mount --bind /home/alex/Music/zicSample /mnt/data/arm64/home/alex/zicSample
+	sudo mount --bind /home/alex/Music/zicSample /mnt/data/arm64_2/home/alex/zicSample
 
 rg351Chrooted:
 	make CC="g++ -o zicSampleRG351" build

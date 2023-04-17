@@ -56,6 +56,15 @@ public:
 
     uint8_t update(UiKeys* keys)
     {
+            //         if (keys->Up) {
+            //     selectNextRow(-1);
+            // } else if (keys->Down) {
+            //     selectNextRow(+1);
+            // } else if (keys->Left) {
+            //     selectNextCol(-1);
+            // } else if (keys->Right) {
+            //     selectNextCol(+1);
+            // }
         return VIEW_NONE;
     }
 };
