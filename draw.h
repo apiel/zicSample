@@ -47,4 +47,11 @@ void drawFilledRect(Point position, Size size, SDL_Color color = COLOR_FOREGROUN
     SDL_RenderFillRect(renderer, &rect);
 }
 
+void drawRect(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_Rect rect = { (int)position.x, (int)position.y, (int)size.w, (int)size.h };
+    SDL_RenderDrawRect(renderer, &rect);
+}
+
 #endif

@@ -19,16 +19,24 @@ protected:
         Track& track = Data::getInstance()->tracks[row];
         drawText({ 8, y }, track.name, COLOR_INFO, 10);
 
+        if (grid.is(row, 0)) {
+            drawRect({ 4, y -1 }, { 86, 14 }, COLOR_SELECTOR);
+        }
+
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
             unsigned int x = 92 + 12 * step;
             SDL_Color color = COLOR_FOREGROUND;
             if (track.steps[step].enabled) {
-                color = COLOR_PRIMARY;
+                color = COLOR_STEP;
                 color.a = 255 * track.steps[step].velocity;
             } else if (step % 4 == 0) {
                 color = COLOR_FOREGROUND2;
             }
             drawFilledRect({ x, y }, { 10, 12 }, color);
+
+            if (grid.is(row, step + 1)) {
+                drawRect({ x - 1, y - 1 }, { 12, 14 }, COLOR_SELECTOR);
+            }
         }
     }
 

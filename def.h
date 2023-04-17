@@ -59,6 +59,22 @@
 #define COLOR_INFO { 0x88, 0x88, 0x88, 255 }
 #endif
 
+// #ifndef COLOR_SELECTOR // #ffb6b6
+// #define COLOR_SELECTOR { 0xff, 0xb6, 0xb6, 255 }
+// #endif
+
+#ifndef COLOR_SELECTOR // #BBBBBB
+#define COLOR_SELECTOR { 0xBB, 0xBB, 0xBB, 255 }
+#endif
+
+// #ifndef COLOR_SELECTOR // #0d6efd
+// #define COLOR_SELECTOR { 0x0d, 0x6e, 0xfd, 255 }
+// #endif
+
+#ifndef COLOR_STEP // #3761a1
+#define COLOR_STEP { 0x37, 0x61, 0xa1, 255 }
+#endif
+
 #ifndef APP_DEFAULT_FONT_COLOR
 #define APP_DEFAULT_FONT_COLOR COLOR_WHITE
 #endif

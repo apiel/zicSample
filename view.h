@@ -40,6 +40,11 @@ public:
 
         printf("col %d\n", col);
     }
+
+    bool is(int8_t row, int8_t col)
+    {
+        return this->row == row && this->col == col;
+    }
 };
 
 class View {
