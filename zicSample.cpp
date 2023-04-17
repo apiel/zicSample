@@ -60,6 +60,11 @@ int main(int argc, char* args[])
         //     app->rendered = false;
         //     SDL_UpdateWindowSurface(window);
         // }
+
+        SDL_Delay(10);
+        SDL_Rect r2 = { 150, 5, 100, 100 };
+        SDL_FillRect(screenSurface, &r2, SDL_MapRGB(screenSurface->format, 70, 70, 70));
+        SDL_UpdateWindowSurface(window);
     }
 
     SDL_DestroyRenderer(renderer);
