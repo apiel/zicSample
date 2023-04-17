@@ -43,6 +43,7 @@ int main(int argc, char* args[])
     TTF_Init();
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     SDL_AudioDeviceID audioDevice = initAudio(audioCallBack);
     if (SDL_getenv("ZIC_SKIP_AUDIO") == NULL && !audioDevice) {

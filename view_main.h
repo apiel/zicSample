@@ -1,9 +1,9 @@
 #ifndef _VIEW_MAIN_H
 #define _VIEW_MAIN_H
 
+#include "data.h"
 #include "draw.h"
 #include "view.h"
-#include "data.h"
 
 class ViewMain : public View {
 protected:
@@ -20,7 +20,10 @@ protected:
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
             unsigned int x = 92 + 12 * step;
             SDL_Color color = COLOR_FOREGROUND;
-            if (step % 4 == 0) {
+            if (track.steps[step].enabled) {
+                color = COLOR_PRIMARY;
+                color.a = 255 * track.steps[step].velocity;
+            } else if (step % 4 == 0) {
                 color = COLOR_FOREGROUND2;
             }
             drawFilledRect({ x, y }, { 10, 12 }, color);

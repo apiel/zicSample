@@ -5,6 +5,7 @@
 
 class Step {
 public:
+    bool enabled = false;
     float velocity = 0;
     uint8_t condition = 0;
 };
@@ -43,9 +44,11 @@ public:
             // TODO parse track params
             for (uint8_t i = 0; (line = strtok_r(rest, "\n", &rest)) && i < APP_TRACK_STEPS; i++) {
                 Step& step = steps[i];
-                step.velocity = atof(strtok(line, " "));
+                // step.enabled = atoi(strtok(line, " "));
+                step.enabled = strtok(line, " ")[0] == '1';
+                step.velocity = atof(strtok(NULL, " "));
                 step.condition = atoi(strtok(NULL, " "));
-                // SDL_Log("- velocity: %f, condition %i\n", step.velocity, step.condition);
+                // SDL_Log("- enable: %s velocity: %f, condition %i\n", step.enabled ? "on" : "off", step.velocity, step.condition);
             }
             SDL_free(loaded);
         }
