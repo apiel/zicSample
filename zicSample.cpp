@@ -43,6 +43,7 @@ int main(int argc, char* args[])
     ViewMain::getInstance()->render();
     SDL_RenderPresent(renderer);
 
+    uint8_t renderCount = 0;
     while (handleEvent()) {
         if (ui.keysChanged) {
             ui.keysChanged = false;
@@ -50,15 +51,19 @@ int main(int argc, char* args[])
             // SDL_Log("\n%s\n", uiDisplay.text);
             // SDL_UpdateWindowSurface(window);
         }
-        // SDL_Delay(10);
+        SDL_Delay(10);
+        if (renderCount < 200) {
+            renderCount++;
+            SDL_RenderPresent(renderer);
+        }
         // if (app->rendered) {
         //     app->rendered = false;
         //     SDL_UpdateWindowSurface(window);
         // }
 
-        SDL_Delay(10);
+        // SDL_Delay(10);
         // ViewMain::getInstance()->render();
-        SDL_RenderPresent(renderer);
+        // SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
