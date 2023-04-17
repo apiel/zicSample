@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 17 14:45:07 2023
+# Make data base, printed on Mon Apr 17 15:37:09 2023
 
 # Variables
 
@@ -89,6 +89,9 @@ CURDIR := /home/alex/Music/zic/zicTracker/linuxSDL
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 # makefile (from 'makefile', line 31)
 DUKTAPE = `pkg-config --cflags --libs duktape`
 # environment
@@ -278,9 +281,6 @@ VSCODE_CLI = 1
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
- 
-make: *** No rule to make target 'all'.  Stop.
-
 VTE_VERSION = 6800
 # environment
 SNAP_COMMON = /var/snap/code/common
@@ -394,6 +394,7 @@ rg351Kill:
 #  recipe to execute (from 'makefile', line 86):
 	sshpass -p "ark" ssh ark@$(RG351_IP) /roms/ports/zic/kill.sh
 
+ 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
@@ -494,7 +495,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Mon Apr 17 14:45:07 2023
+# Finished Make data base on Mon Apr 17 15:37:09 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  

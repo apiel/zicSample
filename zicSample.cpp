@@ -42,6 +42,7 @@ int main(int argc, char* args[])
 
     ViewMain::getInstance()->render();
     SDL_RenderPresent(renderer);
+    SDL_UpdateWindowSurface(window);
 
     while (handleEvent()) {
         if (ui.keysChanged) {
@@ -55,6 +56,10 @@ int main(int argc, char* args[])
         //     app->rendered = false;
         //     SDL_UpdateWindowSurface(window);
         // }
+
+        SDL_Delay(10);
+        SDL_RenderPresent(renderer);
+        SDL_UpdateWindowSurface(window);
     }
 
     SDL_DestroyRenderer(renderer);
