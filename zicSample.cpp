@@ -48,8 +48,16 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    SDL_Delay(100);
-
+    int counter = 0;
+    while (handleEvent()) {
+        drawFilledRect({ 0, 0 }, { 200, 200 });
+        char buf[100];
+        sprintf(buf, "Hello World %d", counter++);
+        drawText({ 0, 0 }, buf);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(10);
+    }
+    
     ViewMain& viewMain = ViewMain::get();
     viewMain.render();
     SDL_RenderPresent(renderer);
