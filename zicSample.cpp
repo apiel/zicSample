@@ -52,7 +52,7 @@ int main(int argc, char* args[])
     viewMain.render();
     SDL_RenderPresent(renderer);
 
-    uint8_t renderCount = 0;
+    // uint8_t renderCount = 0;
     while (handleEvent()) {
         bool rendered = false;
         if (ui.keysChanged) {
@@ -62,10 +62,10 @@ int main(int argc, char* args[])
         }
         SDL_Delay(10);
         // ensure rendering on RG351P
-        if (renderCount < 200) {
-            renderCount++;
-            SDL_RenderPresent(renderer);
-        }
+        // if (renderCount < 20) {
+        //     renderCount++;
+        //     SDL_RenderPresent(renderer);
+        // }
         if (rendered) {
             viewMain.render();
             SDL_RenderPresent(renderer);
