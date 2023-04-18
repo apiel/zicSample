@@ -14,13 +14,21 @@ protected:
     void renderRow(unsigned int row)
     {
         unsigned int y = 70 + 15 * row;
-        drawFilledRect({ 5, y }, { 84, 12 });
 
         Track& track = Data::get().tracks[row];
-        drawText({ 8, y }, track.name, COLOR_INFO, 10);
+
+        SDL_Color trackColor = COLOR_FOREGROUND;
+        SDL_Color trackText = COLOR_INFO;
+        if (track.active) {
+            trackColor = COLOR_TRACK_ON;
+            trackText = COLOR_WHITE;
+        }
+        drawFilledRect({ 5, y }, { 84, 12 }, trackColor);
+
+        drawText({ 8, y }, track.name, trackText, 10);
 
         if (grid.is(row, 0)) {
-            drawRect({ 4, y -1 }, { 86, 14 }, COLOR_SELECTOR);
+            drawRect({ 4, y - 1 }, { 86, 14 }, COLOR_SELECTOR);
         }
 
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
@@ -68,6 +76,16 @@ public:
     uint8_t update(UiKeys& keys)
     {
         if (grid.update(keys) == VIEW_CHANGED) {
+            return VIEW_CHANGED;
+        }
+
+        if (keys.Edit) {
+            if (grid.col == 0) {
+                Data::get().tracks[grid.row].toggleNextState();
+                // printf("Track %d active: %d nextState: %d\n", grid.row, Data::get().tracks[grid.row].active, Data::get().tracks[grid.row].nextState);
+            } else {
+                Data::get().tracks[grid.row].steps[grid.col - 1].toggle();
+            }
             return VIEW_CHANGED;
         }
 

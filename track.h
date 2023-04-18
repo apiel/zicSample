@@ -9,6 +9,12 @@ public:
     bool enabled = false;
     float velocity = 0;
     uint8_t condition = 0;
+
+    Step& toggle()
+    {
+        enabled = !enabled;
+        return *this;
+    }
 };
 
 class Track {
@@ -34,6 +40,12 @@ public:
     Track& setNextState(bool _nextState)
     {
         nextState = _nextState;
+        return *this;
+    }
+
+    Track& toggleNextState()
+    {
+        nextState = !nextState;
         return *this;
     }
 
