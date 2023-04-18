@@ -1,23 +1,23 @@
 #include "audioFile.h"
+#include "audioHandler.h"
 #include "data.h"
 #include "def.h"
 #include "sdl2.h"
-#include "view_main.h"
+#include "viewMain.h"
 
-// UI_Display uiDisplay;
-// App *app = App::getInstance(&uiDisplay);
+AudioHandler& audio = AudioHandler::get();
 
 void audioCallBack(void* userdata, Uint8* stream, int len)
 {
-    // float* buf = (float*)stream;
-    // app->sample(buf, len);
+    float* buf = (float*)stream;
+    audio.sample(buf, len);
 }
 
 int main(int argc, char* args[])
 {
     SDL_Log(">>>>>>> Start Zic Tracker\n");
 
-    Data::getInstance()->load();
+    Data::get().load();
 
     AudioFile audioFile;
     audioFile.open("samples/psykick9.wav");
@@ -51,7 +51,8 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    ViewMain::getInstance()->render();
+    ViewMain& viewMain = ViewMain::get();
+    viewMain.render();
     SDL_RenderPresent(renderer);
 
     uint8_t renderCount = 0;
@@ -60,7 +61,7 @@ int main(int argc, char* args[])
         if (ui.keysChanged) {
             ui.keysChanged = false;
             UiKeys keys(ui.keys);
-            rendered = ViewMain::getInstance()->update(keys);
+            rendered = viewMain.update(keys);
         }
         SDL_Delay(10);
         // ensure rendering on RG351P
@@ -69,7 +70,7 @@ int main(int argc, char* args[])
             SDL_RenderPresent(renderer);
         }
         if (rendered) {
-            ViewMain::getInstance()->render();
+            viewMain.render();
             SDL_RenderPresent(renderer);
         }
     }

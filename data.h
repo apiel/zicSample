@@ -13,12 +13,12 @@ public:
 
     static Data* instance;
 
-    static Data* getInstance()
+    static Data& get()
     {
         if (!instance) {
             instance = new Data();
         }
-        return instance;
+        return *instance;
     }
 
     void load()

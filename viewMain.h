@@ -16,7 +16,7 @@ protected:
         unsigned int y = 70 + 15 * row;
         drawFilledRect({ 5, y }, { 84, 12 });
 
-        Track& track = Data::getInstance()->tracks[row];
+        Track& track = Data::get().tracks[row];
         drawText({ 8, y }, track.name, COLOR_INFO, 10);
 
         if (grid.is(row, 0)) {
@@ -43,12 +43,12 @@ protected:
 public:
     static ViewMain* instance;
 
-    static ViewMain* getInstance()
+    static ViewMain& get()
     {
         if (!instance) {
             instance = new ViewMain();
         }
-        return instance;
+        return *instance;
     }
 
     void render()
@@ -57,7 +57,7 @@ public:
 
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
 
-        Track& track = Data::getInstance()->tracks[grid.row];
+        Track& track = Data::get().tracks[grid.row];
         drawText({ 10, 10 }, track.name, COLOR_INFO);
 
         for (unsigned int row = 0; row < APP_TRACKS; row++) {
