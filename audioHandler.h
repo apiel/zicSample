@@ -10,7 +10,7 @@ protected:
     Data& data = Data::get();
     Tempo& tempo = Tempo::get();
     uint8_t stepCounter = 0;
-    const float MIX_DIVIDER = 1 / APP_TRACKS;
+    const float MIX_DIVIDER = 1.0f / APP_TRACKS;
 
     AudioHandler() { }
 
@@ -37,8 +37,10 @@ public:
         // if (tempo.next())
         {
             stepCounter = (stepCounter + 1) % APP_TRACK_STEPS;
+            for (uint8_t i = 0; i < APP_TRACKS; i++) {
+                data.tracks[i].next(stepCounter);
+            }
 
-            // tracks->next();
             // if (menuView.getView()->renderOn(EVENT_VIEW_ON_TEMPO)) {
             //     render();
             // }
@@ -50,9 +52,10 @@ public:
 
         float* buffer = new float[len];
         for (uint8_t i = 0; i < APP_TRACKS; i++) {
-            sample(data.tracks[i], buffer, len);
+            Track& track = data.tracks[i];
+            sample(track, buffer, len);
             for (int j = 0; j < len; j++) {
-                buf[j] += buffer[j] * MIX_DIVIDER;
+                buf[j] += buffer[j] * MIX_DIVIDER; // step.velocity
             }
         }
         delete[] buffer;

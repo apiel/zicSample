@@ -43,6 +43,7 @@ public:
     void sample(float* buf, int len)
     {
         sf_read_float(file, buf, len);
+        // SDL_Log("AudioHandler::sample %f (%i)\n", buf[100], len);
     }
 
     void restart()

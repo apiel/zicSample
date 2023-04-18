@@ -14,15 +14,28 @@ public:
 class Track {
 public:
     AudioFile audioFile;
+    uint8_t stepCounter = 0;
 
     char name[APP_TRACK_NAME];
     char sample[APP_SAMPLE_NAME];
 
     Step steps[APP_TRACK_STEPS];
+    Step* activeStep;
 
     Track& setName(char* _name)
     {
         strncpy(name, _name, APP_TRACK_NAME);
+        return *this;
+    }
+
+    Track& next(uint8_t _stepCounter)
+    {
+        stepCounter = _stepCounter;
+        Step* step = &steps[stepCounter];
+        if (step->enabled) {
+            audioFile.restart();
+            activeStep = step;
+        }
         return *this;
     }
 
