@@ -1,4 +1,3 @@
-#include "audioFile.h"
 #include "audioHandler.h"
 #include "data.h"
 #include "def.h"
@@ -18,9 +17,6 @@ int main(int argc, char* args[])
     SDL_Log(">>>>>>> Start Zic Tracker\n");
 
     Data::get().load();
-
-    AudioFile audioFile;
-    audioFile.open("samples/psykick9.wav");
 
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         fprintf(stderr, "Could not initialize SDL: %s\n", SDL_GetError());

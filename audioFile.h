@@ -35,9 +35,19 @@ public:
             printf("Error: could not open file %s\n", filename);
             return NULL;
         }
-        printf("Audio file %s sampleCount %ld\n", filename, (long)sfinfo.frames);
+        // printf("Audio file %s sampleCount %ld\n", filename, (long)sfinfo.frames);
 
         return file;
+    }
+
+    void sample(float* buf, int len)
+    {
+        sf_read_float(file, buf, len);
+    }
+
+    void restart()
+    {
+        sf_seek(file, 0, SEEK_SET);
     }
 };
 

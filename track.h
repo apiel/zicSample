@@ -1,6 +1,7 @@
 #ifndef _TRACK_H_
 #define _TRACK_H_
 
+#include "audioFile.h"
 #include "def.h"
 
 class Step {
@@ -12,6 +13,8 @@ public:
 
 class Track {
 public:
+    AudioFile audioFile;
+
     char name[APP_TRACK_NAME];
     char sample[APP_SAMPLE_NAME];
 
@@ -20,6 +23,16 @@ public:
     Track& setName(char* _name)
     {
         strncpy(name, _name, APP_TRACK_NAME);
+        return *this;
+    }
+
+    Track& setSample(char* _sample)
+    {
+        strncpy(sample, _sample, APP_SAMPLE_NAME);
+        char filepath[strlen(APP_SAMPLES_FOLDER) + 1 + strlen(sample)];
+        sprintf(filepath, "%s/%s", APP_SAMPLES_FOLDER, sample);
+        audioFile.open(filepath);
+        // SDL_Log("Audio file %s sampleCount %ld\n", filepath, (long)audioFile.sfinfo.frames);
         return *this;
     }
 
@@ -38,9 +51,8 @@ public:
             // APP_LOG("Track data (%lu):\n%s\n\n", sz, (char*)loaded);
 
             char* rest = (char*)loaded;
+            setSample(strtok_r(rest, "\n", &rest));
             char* line = strtok_r(rest, "\n", &rest);
-            strncpy(sample, line, APP_SAMPLE_NAME);
-            line = strtok_r(rest, "\n", &rest);
             // TODO parse track params
             for (uint8_t i = 0; (line = strtok_r(rest, "\n", &rest)) && i < APP_TRACK_STEPS; i++) {
                 Step& step = steps[i];
