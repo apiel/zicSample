@@ -4,6 +4,7 @@
 #include "data.h"
 #include "def.h"
 #include "tempo.h"
+#include "viewMain.h"
 
 class AudioHandler {
 protected:
@@ -36,14 +37,20 @@ public:
         // if (tempo.next(SDL_GetTicks64()))
         // if (tempo.next())
         {
+            bool needRender = false;
             stepCounter = (stepCounter + 1) % APP_TRACK_STEPS;
             for (uint8_t i = 0; i < APP_TRACKS; i++) {
-                data.tracks[i].next(stepCounter);
+                if (data.tracks[i].next(stepCounter)) {
+                    needRender = true;
+                }
             }
 
-            // if (menuView.getView()->renderOn(EVENT_VIEW_ON_TEMPO)) {
-            //     render();
-            // }
+            // TODO make this better
+            if (needRender) {
+                ViewMain::get().render();
+            }
+            ProgressBar::get().render(stepCounter);
+            SDL_RenderPresent(renderer);
         }
 
         for (int j = 0; j < len; j++) {

@@ -4,16 +4,18 @@
 #include "data.h"
 #include "draw.h"
 #include "view.h"
+#include "progressBar.h"
 
 class ViewMain : public View {
 protected:
     Grid grid = Grid(APP_TRACKS, APP_TRACK_STEPS);
+    ProgressBar& progressBar = ProgressBar::get();
 
     ViewMain() { }
 
     void renderRow(unsigned int row)
     {
-        unsigned int y = 70 + 15 * row;
+        unsigned int y = 75 + 15 * row;
 
         Track& track = Data::get().tracks[row];
 
@@ -62,6 +64,8 @@ public:
     void render()
     {
         drawClear();
+
+        progressBar.init();
 
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
 

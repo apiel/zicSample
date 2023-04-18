@@ -49,11 +49,13 @@ public:
         return *this;
     }
 
-    Track& next(uint8_t _stepCounter)
+    bool next(uint8_t _stepCounter)
     {
+        bool ret = false;
         stepCounter = _stepCounter;
         if (stepCounter == 0) {
             active = nextState;
+            ret = true;
         }
         if (active) {
             Step* step = &steps[stepCounter];
@@ -62,7 +64,7 @@ public:
                 activeStep = step;
             }
         }
-        return *this;
+        return ret;
     }
 
     Track& setSample(char* _sample)
