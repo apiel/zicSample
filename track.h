@@ -20,7 +20,7 @@ public:
     char sample[APP_SAMPLE_NAME];
 
     Step steps[APP_TRACK_STEPS];
-    Step* activeStep;
+    Step* activeStep = &steps[0];
 
     Track& setName(char* _name)
     {

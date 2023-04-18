@@ -46,21 +46,19 @@ public:
             // }
         }
 
-sample(data.tracks[0], buf, len);
+        for (int j = 0; j < len; j++) {
+            buf[j] = 0.0f;
+        }
 
-        // for (int j = 0; j < len; j++) {
-        //     buf[j] = 0.0f;
-        // }
-
-        // float* buffer = new float[len];
-        // for (uint8_t i = 0; i < APP_TRACKS; i++) {
-        //     Track& track = data.tracks[i];
-        //     sample(track, buffer, len);
-        //     for (int j = 0; j < len; j++) {
-        //         buf[j] += buffer[j] * MIX_DIVIDER; // step.velocity
-        //     }
-        // }
-        // delete[] buffer;
+        float* buffer = new float[len];
+        for (uint8_t i = 0; i < APP_TRACKS; i++) {
+            Track& track = data.tracks[i];
+            sample(track, buffer, len);
+            for (int j = 0; j < len; j++) {
+                buf[j] += buffer[j] * MIX_DIVIDER * track.activeStep->velocity;
+            }
+        }
+        delete[] buffer;
     }
 };
 

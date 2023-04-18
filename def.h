@@ -100,8 +100,8 @@
 // clang-format on
 
 #ifndef APP_TRACKS
-// #define APP_TRACKS 16
-#define APP_TRACKS 1
+#define APP_TRACKS 16
+// #define APP_TRACKS 1
 #endif
 
 #ifndef APP_TRACK_STEPS
