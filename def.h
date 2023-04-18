@@ -48,7 +48,8 @@
 #endif
 
 #ifndef APP_AUDIO_CHUNK
-#define APP_AUDIO_CHUNK 512
+// Seem like what rg350 expects
+#define APP_AUDIO_CHUNK 128
 #endif
 
 // clang-format off
