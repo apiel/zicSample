@@ -74,6 +74,20 @@ protected:
         renderSlection();
     }
 
+    void renderHeader(Track& track)
+    {
+        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        drawText({ 10, 10 }, track.name, COLOR_INFO);
+
+        unsigned int x = drawLabelValue({ 100, 10 }, "Volume:", 100, "%");
+        x = drawLabelValue({ x + 5, 10 }, "Filter:", "LPF", NULL);
+        x = drawLabelValue({ x + 5, 10 }, NULL, 4000.0f, "Hz");
+        x = drawLabelValue({ x + 5, 10 }, "Res:", 0, "%");
+
+        x = drawLabelValue({ 100, 30 }, "Velocity:", 100, "%");
+        x = drawLabelValue({ x + 5, 30 }, "Condition:", 80, "%");
+    }
+
 public:
     static ViewMain* instance;
 
@@ -91,10 +105,8 @@ public:
 
         progressBar.init();
 
-        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
-
         Track& track = Data::get().tracks[grid.row];
-        drawText({ 10, 10 }, track.name, COLOR_INFO);
+        renderHeader(track);
 
         for (unsigned int row = 0; row < APP_TRACKS; row++) {
             renderRow(row);

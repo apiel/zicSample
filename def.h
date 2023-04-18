@@ -78,6 +78,10 @@
 #define COLOR_INFO { 0x88, 0x88, 0x88, 255 }
 #endif
 
+#ifndef COLOR_LABEL // #555555
+#define COLOR_LABEL { 0x55, 0x55, 0x55, 255 }
+#endif
+
 #ifndef COLOR_TRACK_ON // #00b300
 #define COLOR_TRACK_ON { 0x00, 0xb3, 0x00, 255 }
 #endif
