@@ -84,8 +84,11 @@ protected:
         x = drawLabelValue({ x + 5, 10 }, NULL, 4000.0f, "Hz");
         x = drawLabelValue({ x + 5, 10 }, "Res:", 0, "%");
 
-        x = drawLabelValue({ 100, 30 }, "Velocity:", 100, "%");
-        x = drawLabelValue({ x + 5, 30 }, "Condition:", 80, "%");
+        SDL_Color color = COLOR_STEP;
+        color.a = 40;
+        drawFilledRect({ 92, 45 }, { SCREEN_W - 97, 20 }, color);
+        x = drawLabelValue({ 100, 47 }, "Velocity:", 100, "%");
+        x = drawLabelValue({ x + 5, 47 }, "Condition:", 80, "%");
     }
 
 public:
