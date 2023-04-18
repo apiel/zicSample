@@ -33,6 +33,24 @@
 #define APP_FONT_ITALIC "/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf"
 #endif
 
+#ifndef SAMPLE_RATE
+#define SAMPLE_RATE 44100
+#endif
+
+#ifndef APP_CHANNELS
+#define APP_CHANNELS 2
+#endif
+
+#ifndef APP_AUDIO_FORMAT
+// #define APP_AUDIO_FORMAT AUDIO_S16LSB
+#define APP_AUDIO_FORMAT AUDIO_F32LSB
+#endif
+
+#ifndef APP_AUDIO_CHUNK
+// #define APP_AUDIO_CHUNK 1024
+#define APP_AUDIO_CHUNK 128
+#endif
+
 // clang-format off
 
 #ifndef COLOR_WHITE
@@ -103,6 +121,14 @@
 
 #define SCREEN_W 480
 #define SCREEN_H 320
+
+#ifndef isBetween
+#define isBetween(x, a, b) (((a) <= (x)) && ((x) <= (b)))
+#endif
+
+#ifndef range
+#define range(x, _min, _max) ((x) < (_max) ? ((x) > (_min) ? (x) : (_min)) : (_max))
+#endif
 
 struct Size {
     uint32_t w;

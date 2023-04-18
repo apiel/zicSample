@@ -4,24 +4,6 @@
 #include "def.h"
 #include "state.h"
 
-#ifndef SAMPLE_RATE
-#define SAMPLE_RATE 44100
-#endif
-
-#ifndef APP_CHANNELS
-#define APP_CHANNELS 2
-#endif
-
-#ifndef APP_AUDIO_FORMAT
-// #define APP_AUDIO_FORMAT AUDIO_S16LSB
-#define APP_AUDIO_FORMAT AUDIO_F32LSB
-#endif
-
-#ifndef APP_AUDIO_CHUNK
-// #define APP_AUDIO_CHUNK 1024
-#define APP_AUDIO_CHUNK 128
-#endif
-
 #define KEY_UP SDL_SCANCODE_UP
 #define KEY_DOWN SDL_SCANCODE_DOWN
 #define KEY_LEFT SDL_SCANCODE_LEFT
