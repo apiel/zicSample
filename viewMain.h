@@ -84,6 +84,8 @@ protected:
         x = drawLabelValue({ x + 5, 10 }, NULL, 4000.0f, "Hz");
         x = drawLabelValue({ x + 5, 10 }, "Res:", 0, "%");
 
+        drawText({ x + 5, 10 }, "psykick9.wav", COLOR_INFO, 14);
+
         SDL_Color color = COLOR_STEP;
         color.a = 40;
         drawFilledRect({ 92, 45 }, { SCREEN_W - 97, 20 }, color);
