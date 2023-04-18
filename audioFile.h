@@ -51,21 +51,36 @@ public:
 
     void sample(float* buf, int len)
     {
-        // sf_read_float(file, buf, len);
+        sf_read_float(file, buf, len);
 
-        for (int i = 0; i < len; i++) {
-            if (samplePos < sfinfo.frames) {
-                buf[i] = buffer[samplePos];
-                samplePos++;
-            } else {
-                buf[i] = 0;
-            }
-        }
+        // for (int i = 0; i < len; i++) {
+        //     if (samplePos < sfinfo.frames) {
+        //         buf[i] = buffer[samplePos];
+        //         samplePos++;
+        //     } else {
+        //         buf[i] = 0;
+        //     }
+        // }
+    }
+
+    void sample(int16_t* stream, int len)
+    {
+        sf_read_short(file, stream, len);
+        // SDL_Log("-> %d\n", stream[0]);
+
+        // for (int i = 0; i < len; i++) {
+        //     if (samplePos < sfinfo.frames) {
+        //         buf[i] = buffer[samplePos];
+        //         samplePos++;
+        //     } else {
+        //         buf[i] = 0;
+        //     }
+        // }
     }
 
     void restart()
     {
-        // sf_seek(file, 0, SEEK_SET);
+        sf_seek(file, 0, SEEK_SET);
 
         samplePos = 0;
     }

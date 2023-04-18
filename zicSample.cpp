@@ -6,10 +6,13 @@
 
 AudioHandler& audio = AudioHandler::get();
 
+float lenDivider = 1.0f / sizeof(float);
 void audioCallBack(void* userdata, Uint8* stream, int len)
 {
     float* buf = (float*)stream;
-    audio.sample(buf, len);
+    audio.sample(buf, len * lenDivider);
+
+    // Data::get().tracks[0].audioFile.sample((int16_t *)stream, len * 0.5);
 }
 
 int main(int argc, char* args[])

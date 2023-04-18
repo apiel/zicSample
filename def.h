@@ -38,8 +38,8 @@
 #endif
 
 #ifndef APP_CHANNELS
-// #define APP_CHANNELS 2
-#define APP_CHANNELS 1
+#define APP_CHANNELS 2
+// #define APP_CHANNELS 1
 #endif
 
 #ifndef APP_AUDIO_FORMAT
@@ -48,9 +48,7 @@
 #endif
 
 #ifndef APP_AUDIO_CHUNK
-#define APP_AUDIO_CHUNK 4
-// #define APP_AUDIO_CHUNK 8
-// #define APP_AUDIO_CHUNK 128
+#define APP_AUDIO_CHUNK 512
 #endif
 
 // clang-format off
