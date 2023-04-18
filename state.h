@@ -11,5 +11,6 @@ typedef struct {
 Ui ui;
 
 SDL_Renderer* renderer = NULL;
+bool needToRenderProgressBar = false;
 
 #endif

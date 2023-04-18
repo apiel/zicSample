@@ -10,7 +10,6 @@ class AudioHandler {
 protected:
     Data& data = Data::get();
     Tempo& tempo = Tempo::get();
-    uint8_t stepCounter = 0;
     const float MIX_DIVIDER = 1.0f / APP_TRACKS;
 
     AudioHandler() { }
@@ -21,6 +20,8 @@ protected:
     }
 
 public:
+    uint8_t stepCounter = 0;
+
     static AudioHandler* instance;
 
     static AudioHandler& get()
@@ -37,20 +38,19 @@ public:
         // if (tempo.next(SDL_GetTicks64()))
         // if (tempo.next())
         {
-            bool needRender = false;
+            // bool needRender = false;
             stepCounter = (stepCounter + 1) % APP_TRACK_STEPS;
             for (uint8_t i = 0; i < APP_TRACKS; i++) {
                 if (data.tracks[i].next(stepCounter)) {
-                    needRender = true;
+                    // needRender = true;
                 }
             }
 
-            // TODO make this better
-            if (needRender) {
-                ViewMain::get().render();
-            }
-            ProgressBar::get().render(stepCounter);
-            SDL_RenderPresent(renderer);
+            // // TODO make this better
+            // if (needRender) {
+            //     ViewMain::get().render();
+            // }
+            needToRenderProgressBar = true;
         }
 
         for (int j = 0; j < len; j++) {

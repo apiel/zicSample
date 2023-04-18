@@ -61,6 +61,11 @@ int main(int argc, char* args[])
             UiKeys keys(ui.keys);
             viewMain.update(keys);
         }
+        if (needToRenderProgressBar) {
+            needToRenderProgressBar = false;
+            ProgressBar::get().render(audio.stepCounter);
+            draw();
+        }
         SDL_Delay(10);
     }
 
