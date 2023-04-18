@@ -48,6 +48,8 @@ int main(int argc, char* args[])
         return 1;
     }
 
+    SDL_Delay(100);
+
     ViewMain& viewMain = ViewMain::get();
     viewMain.render();
     SDL_RenderPresent(renderer);
