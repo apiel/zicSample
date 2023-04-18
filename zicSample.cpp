@@ -50,29 +50,18 @@ int main(int argc, char* args[])
 
     ViewMain& viewMain = ViewMain::get();
     viewMain.render();
-    SDL_RenderPresent(renderer);
 
+    // ensure rendering on RG351P
     SDL_Delay(100);
-    SDL_RenderPresent(renderer);
+    draw();
 
-    // uint8_t renderCount = 0;
     while (handleEvent()) {
-        bool rendered = false;
         if (ui.keysChanged) {
             ui.keysChanged = false;
             UiKeys keys(ui.keys);
-            rendered = viewMain.update(keys);
+            viewMain.update(keys);
         }
         SDL_Delay(10);
-        // ensure rendering on RG351P
-        // if (renderCount < 20) {
-        //     renderCount++;
-        //     SDL_RenderPresent(renderer);
-        // }
-        if (rendered) {
-            viewMain.render();
-            SDL_RenderPresent(renderer);
-        }
     }
 
     SDL_DestroyRenderer(renderer);

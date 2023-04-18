@@ -8,6 +8,9 @@ public:
     int8_t row = 0;
     int8_t col = 0;
 
+    int8_t lastRow = 0;
+    int8_t lastCol = 0;
+
     uint8_t rows = 0;
     uint8_t cols = 0;
 
@@ -19,6 +22,8 @@ public:
 
     void selectNextRow(int8_t dir)
     {
+        lastRow = row;
+        lastCol = col;
         row += dir;
         if (row >= rows) {
             row = rows - 1;
@@ -29,6 +34,8 @@ public:
 
     void selectNextCol(int8_t dir)
     {
+        lastRow = row;
+        lastCol = col;
         col += dir;
         if (col >= cols) {
             col = cols - 1;
@@ -62,7 +69,7 @@ public:
 class View {
 public:
     virtual void render() = 0;
-    virtual uint8_t update(UiKeys& keys) = 0;
+    virtual void update(UiKeys& keys) = 0;
 };
 
 #endif

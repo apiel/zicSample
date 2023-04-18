@@ -49,13 +49,20 @@ public:
         return *this;
     }
 
+    Track& toggle()
+    {
+        active = !active;
+        nextState = active;
+        return *this;
+    }
+
     bool next(uint8_t _stepCounter)
     {
         bool ret = false;
         stepCounter = _stepCounter;
-        if (stepCounter == 0) {
-            active = nextState;
+        if (stepCounter == 0 && active != nextState) {
             ret = true;
+            active = nextState;
         }
         if (active) {
             Step* step = &steps[stepCounter];
