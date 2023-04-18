@@ -53,9 +53,11 @@ public:
         float* buffer = new float[len];
         for (uint8_t i = 0; i < APP_TRACKS; i++) {
             Track& track = data.tracks[i];
-            sample(track, buffer, len);
-            for (int j = 0; j < len; j++) {
-                buf[j] += buffer[j] * MIX_DIVIDER * track.activeStep->velocity;
+            if (track.active) {
+                sample(track, buffer, len);
+                for (int j = 0; j < len; j++) {
+                    buf[j] += buffer[j] * MIX_DIVIDER * track.activeStep->velocity;
+                }
             }
         }
         delete[] buffer;

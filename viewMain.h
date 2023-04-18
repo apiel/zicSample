@@ -67,17 +67,7 @@ public:
 
     uint8_t update(UiKeys& keys)
     {
-        if (keys.Up) {
-            grid.selectNextRow(-1);
-            return VIEW_CHANGED;
-        } else if (keys.Down) {
-            grid.selectNextRow(+1);
-            return VIEW_CHANGED;
-        } else if (keys.Left) {
-            grid.selectNextCol(-1);
-            return VIEW_CHANGED;
-        } else if (keys.Right) {
-            grid.selectNextCol(+1);
+        if (grid.update(keys) == VIEW_CHANGED) {
             return VIEW_CHANGED;
         }
 

@@ -22,19 +22,33 @@ public:
     Step steps[APP_TRACK_STEPS];
     Step* activeStep = &steps[0];
 
+    bool active = false;
+    bool nextState = false;
+
     Track& setName(char* _name)
     {
         strncpy(name, _name, APP_TRACK_NAME);
         return *this;
     }
 
+    Track& setNextState(bool _nextState)
+    {
+        nextState = _nextState;
+        return *this;
+    }
+
     Track& next(uint8_t _stepCounter)
     {
         stepCounter = _stepCounter;
-        Step* step = &steps[stepCounter];
-        if (step->enabled) {
-            audioFile.restart();
-            activeStep = step;
+        if (stepCounter == 0) {
+            active = nextState;
+        }
+        if (active) {
+            Step* step = &steps[stepCounter];
+            if (step->enabled) {
+                audioFile.restart();
+                activeStep = step;
+            }
         }
         return *this;
     }

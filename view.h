@@ -41,6 +41,22 @@ public:
     {
         return this->row == row && this->col == col;
     }
+
+    uint8_t update(UiKeys& keys)
+    {
+        if (keys.Up) {
+            selectNextRow(-1);
+        } else if (keys.Down) {
+            selectNextRow(+1);
+        } else if (keys.Left) {
+            selectNextCol(-1);
+        } else if (keys.Right) {
+            selectNextCol(+1);
+        } else {
+            return VIEW_NONE;
+        }
+        return VIEW_CHANGED;
+    }
 };
 
 class View {
