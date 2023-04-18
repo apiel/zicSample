@@ -25,8 +25,6 @@ public:
         } else if (row < 0) {
             row = 0;
         }
-
-        printf("row %d\n", row);
     }
 
     void selectNextCol(int8_t dir)
@@ -37,8 +35,6 @@ public:
         } else if (col < 0) {
             col = 0;
         }
-
-        printf("col %d\n", col);
     }
 
     bool is(int8_t row, int8_t col)

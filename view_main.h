@@ -57,7 +57,8 @@ public:
 
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
 
-        drawText({ 10, 10 }, "Hello World", COLOR_INFO);
+        Track& track = Data::getInstance()->tracks[grid.row];
+        drawText({ 10, 10 }, track.name, COLOR_INFO);
 
         for (unsigned int row = 0; row < APP_TRACKS; row++) {
             renderRow(row);

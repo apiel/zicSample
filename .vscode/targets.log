@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 17 22:19:13 2023
+# Make data base, printed on Tue Apr 18 13:15:46 2023
 
 # Variables
 
@@ -36,7 +36,7 @@ VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
 VSCODE_CWD = /home/alex/Music
 # environment
-TERMINATOR_UUID = urn:uuid:82a4b9b2-f791-42d9-8822-5b385d4fead2
+TERMINATOR_UUID = urn:uuid:35d54ae2-6eed-4e61-8bbd-d2aaabc03071
 # environment
 LC_ADDRESS = de_AT.UTF-8
 # default
@@ -70,7 +70,7 @@ VSCODE_CODE_CACHE_PATH = /home/alex/.config/Code/CachedData/704ed70d4fd1c6bd6342
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.RH2421
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.XY9M31
 # default
 .LOADED := 
 # default
@@ -87,8 +87,6 @@ GTK_USE_PORTAL = 1
 CURDIR := /home/alex/Music/zic/zicTracker/linuxSDL
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
-# environment
-VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # makefile (from 'makefile', line 31)
@@ -110,7 +108,7 @@ MAKEFILE_LIST := makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 1508615
+VSCODE_PID = 13049
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -118,7 +116,7 @@ XDG_SESSION_TYPE = wayland
 # makefile (from 'makefile', line 39)
 LIBRTMIDI = `pkg-config --cflags --libs rtmidi`
 # environment
-SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/4403,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/4403
+SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/3511,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/3511
 # automatic
 *F = $(notdir $*)
 # environment
@@ -174,7 +172,7 @@ LC_TIME = de_AT.UTF-8
 # environment
 SNAP = /snap/code/126
 # environment
-INVOCATION_ID = af2e924bd634496d922d43b141f5b58e
+INVOCATION_ID = f0fb3fecf3604a2a8a0030518af487f0
 # environment
 SNAP_REVISION = 126
 # environment
@@ -212,7 +210,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := linux
 # environment
-SYSTEMD_EXEC_PID = 4429
+SYSTEMD_EXEC_PID = 3541
 # environment
 DISPLAY = :0
 # environment
@@ -228,11 +226,11 @@ SNAP_DATA = /var/snap/code/126
 # environment
 SNAP_CONTEXT = SwaaAWCM8SvWrzRKuVkqR9SQxBzJM4aTNENG2SlRyWkNO9mupTTK
 # environment
-MANAGERPID = 4244
+MANAGERPID = 3350
 # environment
 LC_MEASUREMENT = de_AT.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 67191
+GIO_LAUNCHED_DESKTOP_FILE_PID = 9363
 # environment
 LC_PAPER = de_AT.UTF-8
 # environment
@@ -244,7 +242,7 @@ GDK_PIXBUF_MODULE_FILE = /home/alex/snap/code/common/.cache/gdk-pixbuf-loaders.c
 # environment
 GIO_MODULE_DIR = /home/alex/snap/code/common/.cache/gio-modules
 # environment
-JOURNAL_STREAM = 8:59708
+JOURNAL_STREAM = 8:46890
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -280,14 +278,14 @@ VSCODE_CLI = 1
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 VTE_VERSION = 6800
 # environment
 SNAP_COMMON = /var/snap/code/common
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # makefile (from 'makefile', line 9)
 CC = g++ -o zicTracker
 # environment
@@ -301,7 +299,7 @@ LC_IDENTIFICATION = de_AT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=143/1024=14%, Rehash=0, Collisions=6/173=3%
+# Load=142/1024=14%, Rehash=0, Collisions=5/172=3%
 
 # Pattern-specific Variable Values
 
@@ -496,7 +494,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Mon Apr 17 22:19:13 2023
+# Finished Make data base on Tue Apr 18 13:15:46 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  
