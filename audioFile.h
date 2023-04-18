@@ -5,15 +5,27 @@
 
 #include "def.h"
 
+// Should we load sample in memory?
+// How long can we buffer? 10sec?
+// If not, we will read it from disk every time we need it.
+#define AUDIO_BUFFER_SECONDS 0 // 10
+
+#if AUDIO_BUFFER_SECONDS > 0
 // 10 seconds
-#define AUDIO_BUFFER_SIZE SAMPLE_RATE * 10
+#define LOAD_SAMPLE_IN_MEMORY 1
+#define AUDIO_BUFFER_SIZE SAMPLE_RATE * AUDIO_BUFFER_SECONDS
+#endif
 
 class AudioFile {
+protected:
+#if LOAD_SAMPLE_IN_MEMORY
+    int samplePos = 0;
+    float buffer[AUDIO_BUFFER_SIZE];
+#endif
+
 public:
     SF_INFO sfinfo;
     SNDFILE* file = NULL;
-
-    float buffer[AUDIO_BUFFER_SIZE];
 
     AudioFile()
     {
@@ -42,47 +54,36 @@ public:
         }
         printf("Audio file %s sampleCount %ld sampleRate %d\n", filename, (long)sfinfo.frames, sfinfo.samplerate);
 
+#if LOAD_SAMPLE_IN_MEMORY
         sf_read_float(file, buffer, AUDIO_BUFFER_SIZE);
+#endif
 
         return file;
     }
 
-    int samplePos = 0;
-
     void sample(float* buf, int len)
     {
+#if LOAD_SAMPLE_IN_MEMORY
+        for (int i = 0; i < len; i++) {
+            if (samplePos < sfinfo.frames) {
+                buf[i] = buffer[samplePos];
+                samplePos++;
+            } else {
+                buf[i] = 0;
+            }
+        }
+#else
         sf_read_float(file, buf, len);
-
-        // for (int i = 0; i < len; i++) {
-        //     if (samplePos < sfinfo.frames) {
-        //         buf[i] = buffer[samplePos];
-        //         samplePos++;
-        //     } else {
-        //         buf[i] = 0;
-        //     }
-        // }
-    }
-
-    void sample(int16_t* stream, int len)
-    {
-        sf_read_short(file, stream, len);
-        // SDL_Log("-> %d\n", stream[0]);
-
-        // for (int i = 0; i < len; i++) {
-        //     if (samplePos < sfinfo.frames) {
-        //         buf[i] = buffer[samplePos];
-        //         samplePos++;
-        //     } else {
-        //         buf[i] = 0;
-        //     }
-        // }
+#endif
     }
 
     void restart()
     {
-        sf_seek(file, 0, SEEK_SET);
-
+#if LOAD_SAMPLE_IN_MEMORY
         samplePos = 0;
+#else
+        sf_seek(file, 0, SEEK_SET);
+#endif
     }
 };
 
