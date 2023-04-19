@@ -28,6 +28,31 @@ const char* STEP_CONDITIONS[] = {
     "99%",
 };
 
+enum {
+    STEP_PLAYING,
+    STEP_EVERY_PAIR,
+    STEP_EVERY_FOURTH,
+    STEP_EVERY_SIXTH,
+    STEP_EVERY_EIGHTH,
+    STEP_EVERY_IMPAIR,
+    STEP_1_PERCENT,
+    STEP_2_PERCENT,
+    STEP_5_PERCENT,
+    STEP_10_PERCENT,
+    STEP_20_PERCENT,
+    STEP_30_PERCENT,
+    STEP_40_PERCENT,
+    STEP_50_PERCENT,
+    STEP_60_PERCENT,
+    STEP_70_PERCENT,
+    STEP_80_PERCENT,
+    STEP_90_PERCENT,
+    STEP_95_PERCENT,
+    STEP_98_PERCENT,
+    STEP_99_PERCENT,
+    STEP_COUNT,
+};
+
 uint8_t STEP_CONDITIONS_COUNT = sizeof(STEP_CONDITIONS) / sizeof(STEP_CONDITIONS[0]);
 
 class Step {
@@ -53,12 +78,79 @@ public:
         condition = range(_condition, 0, STEP_CONDITIONS_COUNT - 1);
         return *this;
     }
+
+    bool conditionMet(uint8_t loopCounter)
+    {
+        switch (condition) {
+        case STEP_EVERY_PAIR:
+            return loopCounter % 2 == 0;
+
+        case STEP_EVERY_FOURTH:
+            return loopCounter % 4 == 0;
+
+        case STEP_EVERY_SIXTH:
+            return loopCounter % 6 == 0;
+
+        case STEP_EVERY_EIGHTH:
+            return loopCounter % 8 == 0;
+
+        case STEP_EVERY_IMPAIR:
+            return loopCounter % 2 == 1;
+
+        case STEP_1_PERCENT:
+            return (rand() % 100) == 0;
+
+        case STEP_2_PERCENT:
+            return (rand() % 100) < 2;
+
+        case STEP_5_PERCENT:
+            return (rand() % 100) < 5;
+
+        case STEP_10_PERCENT:
+            return (rand() % 100) < 10;
+
+        case STEP_20_PERCENT:
+            return (rand() % 100) < 20;
+
+        case STEP_30_PERCENT:
+            return (rand() % 100) < 30;
+
+        case STEP_40_PERCENT:
+            return (rand() % 100) < 40;
+
+        case STEP_50_PERCENT:
+            return (rand() % 100) < 50;
+
+        case STEP_60_PERCENT:
+            return (rand() % 100) < 60;
+
+        case STEP_70_PERCENT:
+            return (rand() % 100) < 70;
+
+        case STEP_80_PERCENT:
+            return (rand() % 100) < 80;
+
+        case STEP_90_PERCENT:
+            return (rand() % 100) < 90;
+
+        case STEP_95_PERCENT:
+            return (rand() % 100) < 95;
+
+        case STEP_98_PERCENT:
+            return (rand() % 100) < 98;
+
+        case STEP_99_PERCENT:
+            return (rand() % 100) < 99;
+        }
+        return true;
+    }
 };
 
 class Track {
 public:
     AudioFile audioFile;
     uint8_t stepCounter = 0;
+    uint8_t loopCounter = 0;
 
     char name[APP_TRACK_NAME];
     char sample[APP_SAMPLE_NAME];
@@ -106,13 +198,16 @@ public:
     {
         bool ret = false;
         stepCounter = _stepCounter;
-        if (stepCounter == 0 && active != nextState) {
-            ret = true;
-            active = nextState;
+        if (stepCounter == 0) {
+            if (active != nextState) {
+                ret = true;
+                active = nextState;
+            }
+            loopCounter++;
         }
         if (active) {
             Step* step = &steps[stepCounter];
-            if (step->enabled) {
+            if (step->enabled && step->conditionMet(loopCounter)) {
                 audioFile.restart();
                 activeStep = step;
             }

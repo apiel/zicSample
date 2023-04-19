@@ -79,6 +79,9 @@ protected:
         SDL_Color color = COLOR_FOREGROUND;
         if (track.steps[step].enabled) {
             color = COLOR_STEP;
+            if (track.steps[step].condition) {
+                color = COLOR_STEP_WITH_CONDITION;
+            }
             color.a = 255 * track.steps[step].velocity;
         } else if (step % 4 == 0) {
             color = COLOR_FOREGROUND2;
@@ -205,7 +208,7 @@ protected:
         } else if (isVolume()) {
             Track& track = data.tracks[grid.row];
             track.setVolume(track.volume + keys.getDirection() * 0.01);
-            renderMasterVolume();
+            renderHeaderPattern(CLEAR);
         } else if (isStepStatus()) {
             Step& step = data.tracks[grid.row].steps[grid.col - 1];
             step.enabled = !step.enabled;

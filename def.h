@@ -94,6 +94,10 @@
 #define COLOR_STEP { 0x37, 0x61, 0xa1, 255 }
 #endif
 
+#ifndef COLOR_STEP_WITH_CONDITION // #3791a1
+#define COLOR_STEP_WITH_CONDITION { 0x37, 0x91, 0xa1, 255 }
+#endif
+
 #ifndef COLOR_STEP_HEADER // #2c343f
 #define COLOR_STEP_HEADER { 0x2c, 0x34, 0x3f, 255 }
 #endif
