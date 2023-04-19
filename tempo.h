@@ -45,7 +45,7 @@ public:
     {
         bpm = range(_bpm, 10, 250);
         tempo = 60000.0f / (float)(bpm * STEP_PER_BEAT);
-        printf("Tempo (%d -> %d): %d\n", _bpm, bpm, tempo);
+        // printf("Tempo (%d -> %d): %d\n", _bpm, bpm, tempo);
     }
 
     /**

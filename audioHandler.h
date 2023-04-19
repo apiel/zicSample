@@ -9,7 +9,7 @@
 class AudioHandler {
 protected:
     Data& data = Data::get();
-    Tempo& tempo = Tempo::get();
+
     const float MIX_DIVIDER = 1.0f / APP_TRACKS;
 
     float volume = 1.0f;
@@ -22,6 +22,8 @@ protected:
     }
 
 public:
+    Tempo& tempo = Tempo::get();
+
     uint8_t stepCounter = 0;
 
     static AudioHandler* instance;

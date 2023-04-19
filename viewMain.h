@@ -159,7 +159,7 @@ protected:
             drawFilledRect({ 5, 40 }, { 85, 25 }, COLOR_FOREGROUND);
         }
         char bpm[4];
-        sprintf(bpm, "%d", Tempo::get().getBpm());
+        sprintf(bpm, "%d", audio.tempo.getBpm());
         unsigned int x = drawText({ 10, 40 }, bpm, COLOR_INFO, 22, APP_FONT_BOLD);
         drawText({ x + 5, 45 }, "BPM", COLOR_LABEL, 10);
         if (editMode && gridEdit.is(2, 0)) {
@@ -227,6 +227,9 @@ protected:
             step.setCondition(step.condition + keys.getOneDirection());
             renderHeaderStep();
             renderStep(track, grid.col - 1, grid.row);
+        } else if (isBpm()) {
+            audio.tempo.set(audio.tempo.getBpm() + keys.getDirection());
+            renderBPM(CLEAR);
         } else {
             return;
         }
