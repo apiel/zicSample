@@ -143,10 +143,10 @@ protected:
         drawFilledRect({ 92, 45 }, { SCREEN_W - 97, 20 }, COLOR_STEP_HEADER);
         if (grid.col != 0) {
             Step& step = data.tracks[grid.row].steps[grid.col - 1];
-            unsigned int x = step.enabled ? drawText({ 100, 47 }, "ON ", COLOR_STEP, 16, APP_FONT_BOLD)
+            unsigned int x = step.enabled ? drawText({ 100, 47 }, "ON  ", COLOR_STEP, 16, APP_FONT_BOLD)
                                           : drawText({ 100, 47 }, "OFF", COLOR_INFO);
             if (isStepStatus()) {
-                drawRect({ 98, 46 }, { 30, 18 }, COLOR_INFO);
+                drawRect({ 98, 46 }, { 36, 18 }, COLOR_INFO);
             }
             x = drawLabelValue({ x + 5, 47 }, "Velocity:", (int)(step.velocity * 100), "%", isStepVelocity());
             drawLabelValue({ x + 5, 47 }, "Condition:", STEP_CONDITIONS[step.condition], NULL, isStepCondition());
