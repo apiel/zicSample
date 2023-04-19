@@ -104,6 +104,10 @@
 
 // clang-format on
 
+#ifndef APP_MAX_VOLUME
+#define APP_MAX_VOLUME 2.0
+#endif
+
 #ifndef APP_TRACKS
 #define APP_TRACKS 16
 // #define APP_TRACKS 1

@@ -1,6 +1,7 @@
 #ifndef _VIEW_MAIN_H
 #define _VIEW_MAIN_H
 
+#include "audioHandler.h"
 #include "data.h"
 #include "draw.h"
 #include "progressBar.h"
@@ -17,6 +18,7 @@ protected:
     Grid gridEdit = Grid(4, 6);
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
+    AudioHandler& audio = AudioHandler::get();
 
     // 75 + 15 * row
     uint16_t rowY[APP_TRACKS] = { 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300 };
@@ -188,10 +190,22 @@ protected:
         color.a = 100;
         drawFilledRect({ 5, 67 }, { 84, 5 }, color);
         color.a = 200;
-        drawFilledRect({ 5, 67 }, { 60, 5 }, color);
+        unsigned int width = 84.0 * audio.getVolume() / APP_MAX_VOLUME;
+        drawFilledRect({ 5, 67 }, { width, 5 }, color);
         if (editMode && gridEdit.is(3, 0)) {
             drawRect({ 4, 66 }, { 86, 7 }, COLOR_WHITE);
         }
+    }
+
+    void updateHeader(UiKeys& keys)
+    {
+        if (isMasterVolume()) {
+            audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
+            renderMasterVolume();
+        } else {
+            return;
+        }
+        draw();
     }
 
 public:
@@ -224,7 +238,10 @@ public:
     void update(UiKeys& keys)
     {
         if (editMode) {
-            if (gridEdit.update(keys) == VIEW_CHANGED) {
+            if (keys.Edit) {
+                updateHeader(keys);
+                return;
+            } else if (gridEdit.update(keys) == VIEW_CHANGED) {
                 fixGridEdit();
                 renderHeader(OPTIMIZED);
                 draw();

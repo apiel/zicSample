@@ -3,8 +3,8 @@
 
 #include "data.h"
 #include "def.h"
+#include "state.h"
 #include "tempo.h"
-#include "viewMain.h"
 
 class AudioHandler {
 protected:
@@ -40,18 +40,12 @@ public:
         // if (tempo.next(SDL_GetTicks64()))
         // if (tempo.next())
         {
-            // bool needRender = false;
             stepCounter = (stepCounter + 1) % APP_TRACK_STEPS;
             for (uint8_t i = 0; i < APP_TRACKS; i++) {
                 if (data.tracks[i].next(stepCounter)) {
                     // needRender = true;
                 }
             }
-
-            // // TODO make this better
-            // if (needRender) {
-            //     ViewMain::get().render();
-            // }
             needToRenderProgressBar = true;
         }
 
@@ -70,11 +64,17 @@ public:
             }
         }
         delete[] buffer;
+
+        if (volume != 1.0f) {
+            for (int j = 0; j < len; j++) {
+                buf[j] = buf[j] * volume;
+            }
+        }
     }
 
     void setVolume(float volume)
     {
-        this->volume = range(volume, 0.0, 2.0);
+        this->volume = range(volume, 0.0, APP_MAX_VOLUME);
     }
 
     float getVolume()
