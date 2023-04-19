@@ -10,17 +10,6 @@
 #define CLEAR true
 #define OPTIMIZED true
 
-// struct RowCol {
-//     int8_t row;
-//     int8_t col;
-// };
-
-// class ViewMainGrid {
-//     RowCol patternName = { 0, 0 };
-//     RowCol tempo = { 0, 1 };
-//     RowCol trackName = { 0, 2 };
-// };
-
 class ViewMain : public View {
 protected:
     bool editMode = false;
@@ -106,10 +95,20 @@ protected:
         renderSlection();
     }
 
-    bool isSelected(unsigned int row, unsigned int col)
-    {
-        return editMode && gridEdit.is(row, col);
-    }
+    bool isName() { return editMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0)); }
+    bool isVolume() { return editMode && gridEdit.is(0, 1); }
+    bool isFilter() { return editMode && gridEdit.is(0, 2); }
+    bool isCutoff() { return editMode && gridEdit.is(0, 3); }
+    bool isResonance() { return editMode && gridEdit.is(0, 4); }
+    bool isSample() { return editMode && gridEdit.is(0, 5); }
+    bool isDelay() { return editMode && gridEdit.is(1, 1); }
+    bool isReverb() { return editMode && gridEdit.is(1, 2); }
+    bool isDistortion() { return editMode && gridEdit.is(1, 3); }
+    bool isBpm() { return editMode && gridEdit.is(2, 0); }
+    bool isStepStatus() { return editMode && gridEdit.is(2, 1); }
+    bool isVelocity() { return editMode && gridEdit.is(2, 2); }
+    bool isStepCondition() { return editMode && gridEdit.is(2, 3); }
+    bool isMasterVolume() { return editMode && gridEdit.is(3, 0); }
 
     void renderHeaderPattern(bool clear = false)
     {
@@ -119,19 +118,19 @@ protected:
 
         Track& track = data.tracks[grid.row];
         drawText({ 10, 10 }, track.name, COLOR_INFO);
-        if (editMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0))) {
+        if (isName()) {
             drawRect({ 5, 5 }, { 85, 30 }, COLOR_INFO);
         }
 
-        unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", 100, "%", isSelected(0, 1));
-        x = drawLabelValue({ x + 5, 5 }, "Filter:", "LPF", NULL, isSelected(0, 2));
-        x = drawLabelValue({ x + 5, 5 }, NULL, 4000.0f, "Hz", isSelected(0, 3));
-        x = drawLabelValue({ x + 5, 5 }, "Res:", 0, "%", isSelected(0, 4));
-        drawSelectableText(isSelected(0, 5), { x + 5, 5 }, track.sample, COLOR_INFO, 14);
+        unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", 100, "%", isVolume());
+        x = drawLabelValue({ x + 5, 5 }, "Filter:", "LPF", NULL, isFilter());
+        x = drawLabelValue({ x + 5, 5 }, NULL, 4000.0f, "Hz", isCutoff());
+        x = drawLabelValue({ x + 5, 5 }, "Res:", 0, "%", isResonance());
+        drawSelectableText(isSample(), { x + 5, 5 }, track.sample, COLOR_INFO, 14);
 
-        x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isSelected(1, 1));
-        x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isSelected(1, 2));
-        x = drawLabelValue({ x + 5, 22 }, "Compressor", 0, "%", isSelected(1, 3));
+        x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
+        x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isReverb());
+        x = drawLabelValue({ x + 5, 22 }, "Distortion:", 0, "%", isDistortion());
     }
 
     void renderHeaderStep()
@@ -141,11 +140,11 @@ protected:
             Step& step = data.tracks[grid.row].steps[grid.col - 1];
             unsigned int x = step.enabled ? drawText({ 100, 47 }, "ON ", COLOR_STEP, 16, APP_FONT_BOLD)
                                           : drawText({ 100, 47 }, "OFF", COLOR_INFO);
-            if (editMode && gridEdit.is(2, 1)) {
+            if (isStepStatus()) {
                 drawRect({ 98, 46 }, { 30, 18 }, COLOR_INFO);
             }
-            x = drawLabelValue({ x + 5, 47 }, "Velocity:", (int)(step.velocity * 100), "%", isSelected(2, 2));
-            drawLabelValue({ x + 5, 47 }, "Condition:", STEP_CONDITIONS[step.condition], NULL, isSelected(2, 3));
+            x = drawLabelValue({ x + 5, 47 }, "Velocity:", (int)(step.velocity * 100), "%", isVelocity());
+            drawLabelValue({ x + 5, 47 }, "Condition:", STEP_CONDITIONS[step.condition], NULL, isStepCondition());
         }
     }
 
