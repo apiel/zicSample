@@ -60,7 +60,7 @@ void drawRect(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
     SDL_RenderDrawRect(renderer, &rect);
 }
 
-int drawLabelValue(Point position, const char* label, const char* value, const char* unit)
+int drawLabelValue(Point position, const char* label, const char* value, const char* unit, bool selected = false)
 {
     unsigned int x = position.x;
     if (label) {
@@ -70,21 +70,33 @@ int drawLabelValue(Point position, const char* label, const char* value, const c
     if (unit) {
         x = drawText({ x + 1, position.y + 4 }, unit, COLOR_LABEL, 9);
     }
+    if (selected) {
+        drawRect({ position.x - 2, position.y }, { (x - position.x) + 4, 18 }, COLOR_INFO);
+    }
     return x;
 }
 
-int drawLabelValue(Point position, const char* label, float value, const char* unit)
+int drawLabelValue(Point position, const char* label, float value, const char* unit, bool selected = false)
 {
     char str[16];
     sprintf(str, "%.1f", value);
-    return drawLabelValue(position, label, str, unit);
+    return drawLabelValue(position, label, str, unit, selected);
 }
 
-int drawLabelValue(Point position, const char* label, int value, const char* unit)
+int drawLabelValue(Point position, const char* label, int value, const char* unit, bool selected = false)
 {
     char str[16];
     sprintf(str, "%d", value);
-    return drawLabelValue(position, label, str, unit);
+    return drawLabelValue(position, label, str, unit, selected);
+}
+
+int drawSelectableText(bool selected, Point position, const char* text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, const char* fontPath = APP_FONT)
+{
+    int x = drawText(position, text, color, size, fontPath);
+    if (selected) {
+        drawRect({ position.x - 2, position.y }, { (x - position.x) + 4, size + 2 }, COLOR_INFO);
+    }
+    return x;
 }
 
 #endif
