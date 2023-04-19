@@ -59,7 +59,7 @@ public:
             if (track.active) {
                 sample(track, buffer, len);
                 for (int j = 0; j < len; j++) {
-                    buf[j] += buffer[j] * MIX_DIVIDER * track.activeStep->velocity;
+                    buf[j] += buffer[j] * MIX_DIVIDER * track.activeStep->velocity * track.volume;
                 }
             }
         }
@@ -68,6 +68,7 @@ public:
         if (volume != 1.0f) {
             for (int j = 0; j < len; j++) {
                 buf[j] = buf[j] * volume;
+                // if buf[j] > 1.0f) || -1.0f trigger warning and adjust volume
             }
         }
     }

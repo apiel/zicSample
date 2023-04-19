@@ -31,6 +31,14 @@ public:
     bool active = false;
     bool nextState = false;
 
+    float volume = 1.0f;
+
+    Track& setVolume(float _volume)
+    {
+        volume = range(_volume, 0.0f, 1.0f);
+        return *this;
+    }
+
     Track& setName(char* _name)
     {
         strncpy(name, _name, APP_TRACK_NAME);

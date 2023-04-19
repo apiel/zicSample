@@ -124,7 +124,7 @@ protected:
             drawRect({ 5, 5 }, { 85, 30 }, COLOR_INFO);
         }
 
-        unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", 100, "%", isVolume());
+        unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
         x = drawLabelValue({ x + 5, 5 }, "Filter:", "LPF", NULL, isFilter());
         x = drawLabelValue({ x + 5, 5 }, NULL, 4000.0f, "Hz", isCutoff());
         x = drawLabelValue({ x + 5, 5 }, "Res:", 0, "%", isResonance());
@@ -202,6 +202,10 @@ protected:
         if (isMasterVolume()) {
             audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
             renderMasterVolume();
+        } else if (isVolume()) {
+            Track& track = data.tracks[grid.row];
+            track.setVolume(track.volume + keys.getDirection() * 0.01);
+            renderHeader(OPTIMIZED);
         } else {
             return;
         }
