@@ -210,17 +210,23 @@ protected:
             track.setVolume(track.volume + keys.getDirection() * 0.01);
             renderHeaderPattern(CLEAR);
         } else if (isStepStatus()) {
-            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            Track& track = data.tracks[grid.row];
+            Step& step = track.steps[grid.col - 1];
             step.enabled = !step.enabled;
             renderHeaderStep();
+            renderStep(track, grid.col - 1, grid.row);
         } else if (isStepVelocity()) {
-            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            Track& track = data.tracks[grid.row];
+            Step& step = track.steps[grid.col - 1];
             step.setVelocity(step.velocity + keys.getDirection() * 0.01);
             renderHeaderStep();
+            renderStep(track, grid.col - 1, grid.row);
         } else if (isStepCondition()) {
-            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            Track& track = data.tracks[grid.row];
+            Step& step = track.steps[grid.col - 1];
             step.setCondition(step.condition + keys.getOneDirection());
             renderHeaderStep();
+            renderStep(track, grid.col - 1, grid.row);
         } else {
             return;
         }
@@ -295,6 +301,7 @@ public:
             } else {
                 uint8_t step = grid.col - 1;
                 track.steps[step].toggle();
+                renderHeaderStep();
                 renderStep(track, step, grid.row);
                 draw();
                 return;
