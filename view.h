@@ -49,6 +49,11 @@ public:
         return this->row == row && this->col == col;
     }
 
+    bool lastIs(int8_t row, int8_t col)
+    {
+        return this->lastRow == row && this->lastCol == col;
+    }
+
     bool rowChanged()
     {
         return row != lastRow;

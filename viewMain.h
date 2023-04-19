@@ -8,6 +8,7 @@
 #include "view.h"
 
 #define CLEAR true
+#define OPTIMIZED true
 
 class ViewMain : public View {
 protected:
@@ -28,6 +29,8 @@ protected:
             gridEdit.row = 2;
         } else if (gridEdit.row == 1 && gridEdit.col > 3) {
             gridEdit.col = 3;
+        } else if (grid.col == 0 && gridEdit.row == 2 && gridEdit.col > 0) {
+            gridEdit.col = 0;
         } else if (gridEdit.row == 2 && gridEdit.col > 3) {
             gridEdit.col = 3;
         } else if (gridEdit.row == 3 && gridEdit.col > 0) {
@@ -134,8 +137,11 @@ protected:
         }
     }
 
-    void renderBPM()
+    void renderBPM(bool clear = false)
     {
+        if (clear) {
+            drawFilledRect({ 5, 40 }, { 85, 25 }, COLOR_FOREGROUND);
+        }
         char bpm[4];
         sprintf(bpm, "%d", Tempo::get().getBpm());
         unsigned int x = drawText({ 10, 40 }, bpm, COLOR_INFO, 22, APP_FONT_BOLD);
@@ -145,13 +151,23 @@ protected:
         }
     }
 
-    void renderHeader(Track& track)
+    void renderHeader(Track& track, bool optimized = false)
     {
-        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
-        renderHeaderPattern(track);
-        renderHeaderStep();
-        renderBPM();
-        renderMasterVolume();
+        if (!optimized) {
+            drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        }
+        if (!optimized || gridEdit.lastRow == 0 || gridEdit.lastRow == 1 || gridEdit.row == 0 || gridEdit.row == 1) {
+            renderHeaderPattern(track, optimized);
+        }
+        if (!optimized || gridEdit.lastRow == 2 || gridEdit.row == 2) {
+            renderHeaderStep();
+        }
+        if (!optimized || gridEdit.is(2, 0) || gridEdit.lastIs(2, 0)) {
+            renderBPM(optimized);
+        }
+        if (!optimized || gridEdit.is(3, 0) || gridEdit.lastIs(3, 0)) {
+            renderMasterVolume();
+        }
     }
 
     void renderMasterVolume()
@@ -200,8 +216,7 @@ public:
         if (editMode) {
             if (gridEdit.update(keys) == VIEW_CHANGED) {
                 fixGridEdit();
-                // FIXME ??? optimize ?
-                renderHeader(data.tracks[grid.row]);
+                renderHeader(data.tracks[grid.row], OPTIMIZED);
                 draw();
             }
         } else if (grid.update(keys) == VIEW_CHANGED) {
@@ -220,9 +235,9 @@ public:
 
         if (keys.Menu) {
             editMode = !editMode;
+            fixGridEdit();
             renderSlection();
-            // FIXME ??? optimize ?
-            renderHeader(data.tracks[grid.row]);
+            renderHeader(data.tracks[grid.row], OPTIMIZED);
             draw();
             return;
         } else if (keys.Edit) {
