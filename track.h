@@ -4,6 +4,32 @@
 #include "audioFile.h"
 #include "def.h"
 
+const char* STEP_CONDITIONS[] = {
+    "---",
+    "Pair",
+    "4th",
+    "6th",
+    "8th",
+    "Impair",
+    "1%",
+    "2%",
+    "5%",
+    "10%",
+    "20%",
+    "30%",
+    "40%",
+    "50%",
+    "60%",
+    "70%",
+    "80%",
+    "90%",
+    "95%",
+    "98%",
+    "99%",
+};
+
+uint8_t STEP_CONDITIONS_COUNT = sizeof(STEP_CONDITIONS) / sizeof(STEP_CONDITIONS[0]);
+
 class Step {
 public:
     bool enabled = false;
@@ -13,6 +39,18 @@ public:
     Step& toggle()
     {
         enabled = !enabled;
+        return *this;
+    }
+
+    Step& setVelocity(float _velocity)
+    {
+        velocity = range(_velocity, 0.0f, 1.0f);
+        return *this;
+    }
+
+    Step& setCondition(int8_t _condition)
+    {
+        condition = range(_condition, 0, STEP_CONDITIONS_COUNT - 1);
         return *this;
     }
 };

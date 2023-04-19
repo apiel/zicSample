@@ -167,28 +167,6 @@ enum {
     UI_KEY_COUNT
 };
 
-const char* STEP_CONDITIONS[] = {
-    "---",
-    "Pair",
-    "4th",
-    "6th",
-    "8th",
-    "Impair",
-    "1%",
-    "2%",
-    "5%",
-    "10%",
-    "20%",
-    "30%",
-    "40%",
-    "50%",
-    "60%",
-    "70%",
-    "80%",
-    "90%",
-    "95%",
-};
-
 class UiKeys {
 public:
     bool Up = false;

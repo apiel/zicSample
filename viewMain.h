@@ -108,7 +108,7 @@ protected:
     bool isDistortion() { return editMode && gridEdit.is(1, 3); }
     bool isBpm() { return editMode && gridEdit.is(2, 0); }
     bool isStepStatus() { return editMode && gridEdit.is(2, 1); }
-    bool isVelocity() { return editMode && gridEdit.is(2, 2); }
+    bool isStepVelocity() { return editMode && gridEdit.is(2, 2); }
     bool isStepCondition() { return editMode && gridEdit.is(2, 3); }
     bool isMasterVolume() { return editMode && gridEdit.is(3, 0); }
 
@@ -145,7 +145,7 @@ protected:
             if (isStepStatus()) {
                 drawRect({ 98, 46 }, { 30, 18 }, COLOR_INFO);
             }
-            x = drawLabelValue({ x + 5, 47 }, "Velocity:", (int)(step.velocity * 100), "%", isVelocity());
+            x = drawLabelValue({ x + 5, 47 }, "Velocity:", (int)(step.velocity * 100), "%", isStepVelocity());
             drawLabelValue({ x + 5, 47 }, "Condition:", STEP_CONDITIONS[step.condition], NULL, isStepCondition());
         }
     }
@@ -205,7 +205,19 @@ protected:
         } else if (isVolume()) {
             Track& track = data.tracks[grid.row];
             track.setVolume(track.volume + keys.getDirection() * 0.01);
-            renderHeader(OPTIMIZED);
+            renderMasterVolume();
+        } else if (isStepStatus()) {
+            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            step.enabled = !step.enabled;
+            renderHeaderStep();
+        } else if (isStepVelocity()) {
+            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            step.setVelocity(step.velocity + keys.getDirection() * 0.01);
+            renderHeaderStep();
+        } else if (isStepCondition()) {
+            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            step.setCondition(step.condition + keys.getOneDirection());
+            renderHeaderStep();
         } else {
             return;
         }
