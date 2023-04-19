@@ -12,6 +12,8 @@ protected:
     Tempo& tempo = Tempo::get();
     const float MIX_DIVIDER = 1.0f / APP_TRACKS;
 
+    float volume = 1.0f;
+
     AudioHandler() { }
 
     void sample(Track& track, float* buf, int len)
@@ -68,6 +70,16 @@ public:
             }
         }
         delete[] buffer;
+    }
+
+    void setVolume(float volume)
+    {
+        this->volume = range(volume, 0.0, 2.0);
+    }
+
+    float getVolume()
+    {
+        return volume;
     }
 };
 

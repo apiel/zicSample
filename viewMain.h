@@ -10,6 +10,17 @@
 #define CLEAR true
 #define OPTIMIZED true
 
+// struct RowCol {
+//     int8_t row;
+//     int8_t col;
+// };
+
+// class ViewMainGrid {
+//     RowCol patternName = { 0, 0 };
+//     RowCol tempo = { 0, 1 };
+//     RowCol trackName = { 0, 2 };
+// };
+
 class ViewMain : public View {
 protected:
     bool editMode = false;
@@ -100,12 +111,13 @@ protected:
         return editMode && gridEdit.is(row, col);
     }
 
-    void renderHeaderPattern(Track& track, bool clear = false)
+    void renderHeaderPattern(bool clear = false)
     {
         if (clear) {
             drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 40 });
         }
 
+        Track& track = data.tracks[grid.row];
         drawText({ 10, 10 }, track.name, COLOR_INFO);
         if (editMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0))) {
             drawRect({ 5, 5 }, { 85, 30 }, COLOR_INFO);
@@ -151,13 +163,13 @@ protected:
         }
     }
 
-    void renderHeader(Track& track, bool optimized = false)
+    void renderHeader(bool optimized = false)
     {
         if (!optimized) {
             drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
         }
         if (!optimized || gridEdit.lastRow == 0 || gridEdit.lastRow == 1 || gridEdit.row == 0 || gridEdit.row == 1) {
-            renderHeaderPattern(track, optimized);
+            renderHeaderPattern(optimized);
         }
         if (!optimized || gridEdit.lastRow == 2 || gridEdit.row == 2) {
             renderHeaderStep();
@@ -201,8 +213,7 @@ public:
         progressBar.init();
         renderMasterVolume();
 
-        Track& track = data.tracks[grid.row];
-        renderHeader(track);
+        renderHeader();
 
         for (unsigned int row = 0; row < APP_TRACKS; row++) {
             renderRow(row);
@@ -216,14 +227,13 @@ public:
         if (editMode) {
             if (gridEdit.update(keys) == VIEW_CHANGED) {
                 fixGridEdit();
-                renderHeader(data.tracks[grid.row], OPTIMIZED);
+                renderHeader(OPTIMIZED);
                 draw();
             }
         } else if (grid.update(keys) == VIEW_CHANGED) {
             renderSlection();
             if (grid.rowChanged()) {
-                Track& track = data.tracks[grid.row];
-                renderHeaderPattern(track, CLEAR);
+                renderHeaderPattern(CLEAR);
                 renderHeaderStep();
             }
             if (grid.colChanged()) {
@@ -237,7 +247,7 @@ public:
             editMode = !editMode;
             fixGridEdit();
             renderSlection();
-            renderHeader(data.tracks[grid.row], OPTIMIZED);
+            renderHeader(OPTIMIZED);
             draw();
             return;
         } else if (keys.Edit) {
