@@ -82,8 +82,8 @@
 #define COLOR_LABEL { 0x55, 0x55, 0x55, 255 }
 #endif
 
-#ifndef COLOR_TRACK_ON // #00b300
-#define COLOR_TRACK_ON { 0x00, 0xb3, 0x00, 255 }
+#ifndef COLOR_ON // #00b300
+#define COLOR_ON { 0x00, 0xb3, 0x00, 255 }
 #endif
 
 #ifndef COLOR_SELECTOR // #BBBBBB
@@ -92,6 +92,10 @@
 
 #ifndef COLOR_STEP // #3761a1
 #define COLOR_STEP { 0x37, 0x61, 0xa1, 255 }
+#endif
+
+#ifndef COLOR_STEP_HEADER // #2c343f
+#define COLOR_STEP_HEADER { 0x2c, 0x34, 0x3f, 255 }
 #endif
 
 #ifndef APP_DEFAULT_FONT_COLOR
@@ -157,6 +161,28 @@ enum {
     UI_KEY_MENU,
     UI_KEY_ACTION,
     UI_KEY_COUNT
+};
+
+const char* STEP_CONDITIONS[] = {
+    "---",
+    "Pair",
+    "4th",
+    "6th",
+    "8th",
+    "Impair",
+    "1%",
+    "2%",
+    "5%",
+    "10%",
+    "20%",
+    "30%",
+    "40%",
+    "50%",
+    "60%",
+    "70%",
+    "80%",
+    "90%",
+    "95%",
 };
 
 class UiKeys {

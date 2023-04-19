@@ -49,6 +49,16 @@ public:
         return this->row == row && this->col == col;
     }
 
+    bool rowChanged()
+    {
+        return row != lastRow;
+    }
+
+    bool colChanged()
+    {
+        return col != lastCol;
+    }
+
     uint8_t update(UiKeys& keys)
     {
         if (keys.Up) {

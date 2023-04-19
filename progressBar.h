@@ -36,7 +36,7 @@ public:
         unsigned int xPrevious = 92 + 12 * ((stepCounter - 1 + APP_TRACK_STEPS) % APP_TRACK_STEPS);
         drawFilledRect({ xPrevious, y }, { 10, h }, COLOR_FOREGROUND2);
         unsigned int x = 92 + 12 * stepCounter;
-        drawFilledRect({ x, y }, { 10, h }, COLOR_TRACK_ON);
+        drawFilledRect({ x, y }, { 10, h }, COLOR_ON);
     }
 };
 
