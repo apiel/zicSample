@@ -128,9 +128,9 @@ protected:
         }
 
         unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
-        x = drawLabelValue({ x + 5, 5 }, "Filter:", "LPF", NULL, isFilter());
-        x = drawLabelValue({ x + 5, 5 }, NULL, 4000.0f, "Hz", isCutoff());
-        x = drawLabelValue({ x + 5, 5 }, "Res:", 0, "%", isResonance());
+        x = drawLabelValue({ x + 5, 5 }, "Filter:", track.filter.getName(), NULL, isFilter());
+        x = drawLabelValue({ x + 5, 5 }, NULL, track.filter.frequency, "Hz", isCutoff());
+        x = drawLabelValue({ x + 5, 5 }, "Res:", track.filter.resonance * 100, "%", isResonance());
         drawSelectableText(isSample(), { x + 5, 5 }, track.sample, COLOR_INFO, 14);
 
         x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
@@ -230,6 +230,18 @@ protected:
         } else if (isBpm()) {
             audio.tempo.set(audio.tempo.getBpm() + keys.getDirection());
             renderBPM(CLEAR);
+        }  else if (isFilter()) {
+            Track& track = data.tracks[grid.row];
+            track.filter.setFilterMode(track.filter.mode + keys.getOneDirection());
+            renderHeaderPattern(CLEAR);
+        } else if (isCutoff()) {
+            Track& track = data.tracks[grid.row];
+            track.filter.setFrequency(track.filter.frequency + keys.getDirection() * 50);
+            renderHeaderPattern(CLEAR);
+        }  else if (isResonance()) {
+            Track& track = data.tracks[grid.row];
+            track.filter.setResonance(track.filter.resonance + keys.getDirection() * 0.01);
+            renderHeaderPattern(CLEAR);
         } else {
             return;
         }

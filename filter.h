@@ -140,7 +140,7 @@ public:
         return next(inputValue, _cutoff);
     }
 
-    Filter* setFrequency(uint16_t freq)
+    Filter* setFrequency(int16_t freq)
     {
         // Human can hear frequency between 20Hz and 20kHz. While 20 to 20,000Hz forms the absolute borders
         // of the human hearing range, our hearing is most sensitive in the 2000 - 5000 Hz frequency range.
@@ -187,7 +187,7 @@ public:
 
     Filter* setFilterMode(int8_t value)
     {
-        mode = value % FILTER_MODE_COUNT;
+        mode = range(value, 0, FILTER_MODE_COUNT);
 
         // printf("setFilterMode %d %d\n", value, mode);
 

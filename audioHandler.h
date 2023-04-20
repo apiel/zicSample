@@ -57,7 +57,7 @@ public:
             if (track.active) {
                 track.audioFile.sample(buffer, len);
                 for (int j = 0; j < len; j++) {
-                    buf[j] += buffer[j] * mixDivider * track.activeStep->velocity * track.volume;
+                    buf[j] += track.filter.next(buffer[j]) * mixDivider * track.activeStep->velocity * track.volume;
                 }
             }
         }
