@@ -235,9 +235,7 @@ protected:
             track.filter.setFilterMode(track.filter.mode + keys.getOneDirection());
             renderHeaderPattern(CLEAR);
         } else if (isCutoff()) {
-            Track& track = getTrack();
-            track.filter.setFrequency(track.filter.frequency + keys.getDirection(50));
-            renderHeaderPattern(CLEAR);
+            handleCutoff(keys.getDirection(50));
         } else if (isResonance()) {
             Track& track = getTrack();
             track.filter.setResonance(track.filter.resonance + keys.getDirection(0.01));
@@ -246,6 +244,13 @@ protected:
             return;
         }
         draw();
+    }
+
+    void handleCutoff(int16_t direction)
+    {
+        Track& track = getTrack();
+        track.filter.setFrequency(track.filter.frequency + direction);
+        renderHeaderPattern(CLEAR);
     }
 
     void handleVolume(float direction)
@@ -280,8 +285,18 @@ protected:
             renderMasterVolume(true);
             renderHeaderMaster();
         } else if (grid.col == 0) {
-            handleVolume(keys.getDirection(0.05, 0.1));
-            renderTrackName(getTrack(), grid.row);
+            if (keys.Right) {
+                handleVolume(0.05);
+                renderTrackName(getTrack(), grid.row);
+            } else if (keys.Left) {
+                handleVolume(-0.05);
+                renderTrackName(getTrack(), grid.row);
+            } else if (keys.Up) {
+                handleCutoff(50);
+            } else if (keys.Down) {
+                handleCutoff(-50);
+            }
+            return;
         } else {
             if (keys.Right) {
                 handleStepCondition(1);
