@@ -10,15 +10,11 @@ class AudioHandler {
 protected:
     Data& data = Data::get();
 
-    const float MIX_DIVIDER = 1.0f / APP_TRACKS;
-
     float volume = 1.0f;
+    float mixDivider = 1.0f / APP_TRACKS;
 
-    AudioHandler() { }
-
-    void sample(Track& track, float* buf, int len)
-    {
-        track.audioFile.sample(buf, len);
+    AudioHandler() {
+        setVolume(volume);
     }
 
 public:
@@ -59,25 +55,19 @@ public:
         for (uint8_t i = 0; i < APP_TRACKS; i++) {
             Track& track = data.tracks[i];
             if (track.active) {
-                sample(track, buffer, len);
+                track.audioFile.sample(buffer, len);
                 for (int j = 0; j < len; j++) {
-                    buf[j] += buffer[j] * MIX_DIVIDER * track.activeStep->velocity * track.volume;
+                    buf[j] += buffer[j] * mixDivider * track.activeStep->velocity * track.volume;
                 }
             }
         }
         delete[] buffer;
-
-        if (volume != 1.0f) {
-            for (int j = 0; j < len; j++) {
-                buf[j] = buf[j] * volume;
-                // if buf[j] > 1.0f) || -1.0f trigger warning and adjust volume
-            }
-        }
     }
 
-    void setVolume(float volume)
+    void setVolume(float _volume)
     {
-        this->volume = range(volume, 0.0, APP_MAX_VOLUME);
+        volume = range(_volume, 0.0, APP_MAX_VOLUME);
+        mixDivider = 1.0f / APP_TRACKS * volume;
     }
 
     float getVolume()

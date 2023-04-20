@@ -1,6 +1,7 @@
 #ifndef _TRACK_H_
 #define _TRACK_H_
 
+#include "filter.h"
 #include "audioFile.h"
 #include "def.h"
 
@@ -148,6 +149,7 @@ public:
 
 class Track {
 public:
+    Filter filter;
     AudioFile audioFile;
     uint8_t stepCounter = 0;
     uint8_t loopCounter = 0;

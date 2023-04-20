@@ -23,6 +23,10 @@ https://www.surina.net/soundtouch/README.html
 
 Dont know if it can be done live, however we could simply preprocess every sample and allow +12 -12 semitone...
 
+### Download samples
+
+Use freesound api: https://freesound.org/help/developers/#freesound-api
+
 ### synth mode
 
 Should there be synth feature?
