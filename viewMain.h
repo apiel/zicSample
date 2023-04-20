@@ -200,7 +200,7 @@ protected:
         }
     }
 
-    void updateHeader(UiKeys& keys)
+    void handleHeader(UiKeys& keys)
     {
         if (isMasterVolume()) {
             audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
@@ -267,7 +267,7 @@ public:
     {
         if (editMode) {
             if (keys.Edit) {
-                updateHeader(keys);
+                handleHeader(keys);
                 return;
             } else if (gridEdit.update(keys) == VIEW_CHANGED) {
                 fixGridEdit();
