@@ -4,6 +4,7 @@
 - standardise layout to be 4 label value per row
 - remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
 - make a unique filter with (left) hipass / lowpass (right) where center is no filtering, and maybe use similar concept with resonance, where postive value is normal resonnance, but negative could be something else, maybe distortion?
+Changing filter type could eventually be done from a menu?
 - load, save and save as pattern
 - copy, paste, select
 - menu to exit

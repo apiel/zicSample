@@ -14,10 +14,12 @@ public:
     uint8_t rows = 0;
     uint8_t cols = 0;
 
-    Grid(uint8_t rows, uint8_t cols)
+    Grid(uint8_t rows, uint8_t cols, int8_t row = 0, int8_t col = 0)
     {
         this->rows = rows;
         this->cols = cols;
+        this->row = row;
+        this->col = col;
     }
 
     void selectNextRow(int8_t dir)

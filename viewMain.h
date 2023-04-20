@@ -14,14 +14,14 @@
 class ViewMain : public View {
 protected:
     bool editMode = false;
-    Grid grid = Grid(APP_TRACKS, APP_TRACK_STEPS + 1);
+    Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1, 1);
     Grid gridEdit = Grid(4, 6);
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
     AudioHandler& audio = AudioHandler::get();
 
     // 75 + 15 * row
-    uint16_t rowY[APP_TRACKS] = { 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300 };
+    uint16_t rowY[APP_TRACKS + 1] = { 67, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300 };
 
     ViewMain() { }
 
@@ -43,11 +43,17 @@ protected:
     void renderSlection(int8_t row, int8_t col, SDL_Color color = COLOR_SELECTOR)
     {
         unsigned int y = rowY[row];
+        uint8_t h = 14;
+        if (row == 0) {
+            h = 7;
+            col = 0;
+        }
+
         if (col == 0) {
-            drawRect({ 4, y - 1 }, { 86, 14 }, color);
+            drawRect({ 4, y - 1 }, { 86, h }, color);
         } else {
             unsigned int x = 92 + 12 * (col - 1);
-            drawRect({ x - 1, y - 1 }, { 12, 14 }, color);
+            drawRect({ x - 1, y - 1 }, { 12, h }, color);
         }
     }
 
@@ -91,7 +97,7 @@ protected:
 
     void renderRow(unsigned int row)
     {
-        Track& track = data.tracks[row];
+        Track& track = getTrack(row);
         renderTrackName(track, row);
 
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
@@ -115,13 +121,16 @@ protected:
     bool isStepCondition() { return editMode && gridEdit.is(2, 3); }
     bool isMasterVolume() { return editMode && gridEdit.is(3, 0); }
 
+    Track& getTrack() { return getTrack(grid.row); }
+    Track& getTrack(int8_t gridRow) { return data.tracks[gridRow - 1]; }
+
     void renderHeaderPattern(bool clear = false)
     {
         if (clear) {
             drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 40 });
         }
 
-        Track& track = data.tracks[grid.row];
+        Track& track = getTrack();
         drawText({ 10, 10 }, track.name, COLOR_INFO);
         if (isName()) {
             drawRect({ 5, 5 }, { 85, 30 }, COLOR_INFO);
@@ -142,7 +151,7 @@ protected:
     {
         drawFilledRect({ 92, 45 }, { SCREEN_W - 97, 20 }, COLOR_STEP_HEADER);
         if (grid.col != 0) {
-            Step& step = data.tracks[grid.row].steps[grid.col - 1];
+            Step& step = getTrack().steps[grid.col - 1];
             unsigned int x = step.enabled ? drawText({ 100, 47 }, "ON  ", COLOR_STEP, 16, APP_FONT_BOLD)
                                           : drawText({ 100, 47 }, "OFF", COLOR_INFO);
             if (isStepStatus()) {
@@ -195,9 +204,9 @@ protected:
         color.a = 200;
         unsigned int width = 84.0 * audio.getVolume() / APP_MAX_VOLUME;
         drawFilledRect({ 5, 67 }, { width, 5 }, color);
-        if (editMode && gridEdit.is(3, 0)) {
-            drawRect({ 4, 66 }, { 86, 7 }, COLOR_WHITE);
-        }
+        // if (editMode && gridEdit.is(3, 0)) {
+        //     drawRect({ 4, 66 }, { 86, 7 }, COLOR_WHITE);
+        // }
     }
 
     void handleHeader(UiKeys& keys)
@@ -206,23 +215,23 @@ protected:
             audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
             renderMasterVolume();
         } else if (isVolume()) {
-            Track& track = data.tracks[grid.row];
+            Track& track = getTrack();
             track.setVolume(track.volume + keys.getDirection() * 0.01);
             renderHeaderPattern(CLEAR);
         } else if (isStepStatus()) {
-            Track& track = data.tracks[grid.row];
+            Track& track = getTrack();
             Step& step = track.steps[grid.col - 1];
             step.enabled = !step.enabled;
             renderHeaderStep();
             renderStep(track, grid.col - 1, grid.row);
         } else if (isStepVelocity()) {
-            Track& track = data.tracks[grid.row];
+            Track& track = getTrack();
             Step& step = track.steps[grid.col - 1];
             step.setVelocity(step.velocity + keys.getDirection() * 0.01);
             renderHeaderStep();
             renderStep(track, grid.col - 1, grid.row);
         } else if (isStepCondition()) {
-            Track& track = data.tracks[grid.row];
+            Track& track = getTrack();
             Step& step = track.steps[grid.col - 1];
             step.setCondition(step.condition + keys.getOneDirection());
             renderHeaderStep();
@@ -230,16 +239,16 @@ protected:
         } else if (isBpm()) {
             audio.tempo.set(audio.tempo.getBpm() + keys.getDirection());
             renderBPM(CLEAR);
-        }  else if (isFilter()) {
-            Track& track = data.tracks[grid.row];
+        } else if (isFilter()) {
+            Track& track = getTrack();
             track.filter.setFilterMode(track.filter.mode + keys.getOneDirection());
             renderHeaderPattern(CLEAR);
         } else if (isCutoff()) {
-            Track& track = data.tracks[grid.row];
+            Track& track = getTrack();
             track.filter.setFrequency(track.filter.frequency + keys.getDirection() * 50);
             renderHeaderPattern(CLEAR);
-        }  else if (isResonance()) {
-            Track& track = data.tracks[grid.row];
+        } else if (isResonance()) {
+            Track& track = getTrack();
             track.filter.setResonance(track.filter.resonance + keys.getDirection() * 0.01);
             renderHeaderPattern(CLEAR);
         } else {
@@ -268,7 +277,7 @@ public:
 
         renderHeader();
 
-        for (unsigned int row = 0; row < APP_TRACKS; row++) {
+        for (unsigned int row = 1; row < APP_TRACKS + 1; row++) {
             renderRow(row);
         }
 
@@ -307,7 +316,7 @@ public:
             draw();
             return;
         } else if (keys.Edit) {
-            Track& track = data.tracks[grid.row];
+            Track& track = getTrack();
             if (grid.col == 0) {
                 track.toggle();
                 renderTrackName(track, grid.row);
