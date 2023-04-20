@@ -192,23 +192,23 @@ public:
         Action = (keysBin >> UI_KEY_ACTION) & 1;
     }
 
-    int8_t getDirection()
+    float getDirection(float stepA, float stepB)
     {
         if (Right) {
-            return 1;
+            return stepA;
         } else if (Up) {
-            return 10;
+            return stepB;
         } else if (Left) {
-            return -1;
+            return -stepA;
         } else if (Down) {
-            return -10;
+            return -stepB;
         }
-        return 0;
+        return 0.0;
     }
 
-    float getDirection(float step)
+    float getDirection(float step = 1.0)
     {
-        return getDirection() * step;
+        return getDirection(step, step * 10);
     }
 
     int8_t getOneDirection()

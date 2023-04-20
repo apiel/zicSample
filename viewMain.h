@@ -65,13 +65,19 @@ protected:
     {
         unsigned int y = rowY[row];
 
-        SDL_Color trackColor = COLOR_FOREGROUND;
+        drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
+
+        SDL_Color trackColor = COLOR_FOREGROUND2;
         SDL_Color trackText = COLOR_INFO;
         if (track.active) {
             trackColor = COLOR_ON;
             trackText = COLOR_WHITE;
         }
+        trackColor.a = 50;
         drawFilledRect({ 5, y }, { 84, 12 }, trackColor);
+        trackColor.a = 200;
+        unsigned int width = 84.0 * track.volume;
+        drawFilledRect({ 5, y }, { width, 12 }, trackColor);
 
         drawText({ 8, y }, track.name, trackText, 10);
     }
@@ -210,7 +216,7 @@ protected:
     void handleHeader(UiKeys& keys)
     {
         if (isVolume()) {
-            handleVolume(keys.getDirection());
+            handleVolume(keys.getDirection(0.01));
         } else if (isStepStatus()) {
             Track& track = getTrack();
             Step& step = track.steps[grid.col - 1];
@@ -230,11 +236,11 @@ protected:
             renderHeaderPattern(CLEAR);
         } else if (isCutoff()) {
             Track& track = getTrack();
-            track.filter.setFrequency(track.filter.frequency + keys.getDirection() * 50);
+            track.filter.setFrequency(track.filter.frequency + keys.getDirection(50));
             renderHeaderPattern(CLEAR);
         } else if (isResonance()) {
             Track& track = getTrack();
-            track.filter.setResonance(track.filter.resonance + keys.getDirection() * 0.01);
+            track.filter.setResonance(track.filter.resonance + keys.getDirection(0.01));
             renderHeaderPattern(CLEAR);
         } else {
             return;
@@ -242,10 +248,10 @@ protected:
         draw();
     }
 
-    void handleVolume(int8_t direction)
+    void handleVolume(float direction)
     {
         Track& track = getTrack();
-        track.setVolume(track.volume + direction * 0.01);
+        track.setVolume(track.volume + direction);
         renderHeaderPattern(CLEAR);
     }
 
@@ -270,11 +276,12 @@ protected:
     void handleMain(UiKeys& keys)
     {
         if (grid.row == 0) {
-            audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
+            audio.setVolume(audio.getVolume() + keys.getDirection(0.05, 0.1));
             renderMasterVolume(true);
             renderHeaderMaster();
         } else if (grid.col == 0) {
-            handleVolume(keys.getDirection());
+            handleVolume(keys.getDirection(0.05, 0.1));
+            renderTrackName(getTrack(), grid.row);
         } else {
             if (keys.Right) {
                 handleStepCondition(1);
