@@ -187,15 +187,16 @@ protected:
         if (!optimized || gridEdit.lastRow == 2 || gridEdit.row == 2) {
             renderHeaderStep();
         }
-        if (!optimized || gridEdit.is(2, 0) || gridEdit.lastIs(2, 0)) {
-            renderBPM(optimized);
-        }
-        if (!optimized || gridEdit.is(3, 0) || gridEdit.lastIs(3, 0)) {
-            renderMasterVolume();
-        }
     }
 
-    void renderMasterVolume()
+    void renderHeaderMaster()
+    {
+        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        drawLabelValue({ 10, 10 }, "Vol:", (int)(audio.getVolume() * 100), "%", isVolume(), 20);
+        renderBPM();
+    }
+
+    void renderMasterVolume(bool selected = false)
     {
         drawFilledRect({ 4, 66 }, { 86, 7 }, COLOR_BACKGROUND);
         SDL_Color color = COLOR_ON;
@@ -204,17 +205,14 @@ protected:
         color.a = 200;
         unsigned int width = 84.0 * audio.getVolume() / APP_MAX_VOLUME;
         drawFilledRect({ 5, 67 }, { width, 5 }, color);
-        // if (editMode && gridEdit.is(3, 0)) {
-        //     drawRect({ 4, 66 }, { 86, 7 }, COLOR_WHITE);
-        // }
+        if (selected) {
+            drawRect({ 4, 66 }, { 86, 7 }, COLOR_WHITE);
+        }
     }
 
     void handleHeader(UiKeys& keys)
     {
-        if (isMasterVolume()) {
-            audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
-            renderMasterVolume();
-        } else if (isVolume()) {
+        if (isVolume()) {
             Track& track = getTrack();
             track.setVolume(track.volume + keys.getDirection() * 0.01);
             renderHeaderPattern(CLEAR);
@@ -257,6 +255,18 @@ protected:
         draw();
     }
 
+    void handleTrack(UiKeys& keys)
+    {
+        if (grid.row == 0) {
+            audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
+            renderMasterVolume(true);
+            renderHeaderMaster();
+        } else {
+            return;
+        }
+        draw();
+    }
+
 public:
     static ViewMain* instance;
 
@@ -286,6 +296,11 @@ public:
 
     void update(UiKeys& keys)
     {
+        if (keys.Edit) {
+            handleTrack(keys);
+            return;
+        }
+
         if (editMode) {
             if (keys.Edit) {
                 handleHeader(keys);
@@ -297,12 +312,16 @@ public:
             }
         } else if (grid.update(keys) == VIEW_CHANGED) {
             renderSlection();
-            if (grid.rowChanged()) {
-                renderHeaderPattern(CLEAR);
-                renderHeaderStep();
-            }
-            if (grid.colChanged()) {
-                renderHeaderStep();
+            if (grid.row == 0) {
+                renderHeaderMaster();
+            } else {
+                if (grid.rowChanged()) {
+                    renderHeaderPattern(CLEAR);
+                    renderHeaderStep();
+                }
+                if (grid.colChanged()) {
+                    renderHeaderStep();
+                }
             }
             draw();
             return;
@@ -315,7 +334,13 @@ public:
             renderHeader(OPTIMIZED);
             draw();
             return;
-        } else if (keys.Edit) {
+        } else if (keys.Action) {
+            if (grid.row == 0) {
+                // Could start to play pause
+                // audio.tempo.toggle();
+                // draw();
+                return;
+            }
             Track& track = getTrack();
             if (grid.col == 0) {
                 track.toggle();

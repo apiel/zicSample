@@ -60,15 +60,15 @@ void drawRect(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
     SDL_RenderDrawRect(renderer, &rect);
 }
 
-int drawLabelValue(Point position, const char* label, const char* value, const char* unit, bool selected = false)
+int drawLabelValue(Point position, const char* label, const char* value, const char* unit, bool selected = false, uint8_t size = 14)
 {
     unsigned int x = position.x;
     if (label) {
-        x = drawText({ x, position.y + 3 }, label, COLOR_LABEL, 11) + 2;
+        x = drawText({ x, position.y + 3 }, label, COLOR_LABEL, size - 3) + 2;
     }
-    x = drawText({ x, position.y }, value, COLOR_INFO, 14);
+    x = drawText({ x, position.y }, value, COLOR_INFO, size);
     if (unit) {
-        x = drawText({ x + 1, position.y + 4 }, unit, COLOR_LABEL, 9);
+        x = drawText({ x + 1, position.y + 4 }, unit, COLOR_LABEL, size - 5);
     }
     if (selected) {
         drawRect({ position.x - 2, position.y }, { (x - position.x) + 4, 18 }, COLOR_INFO);
@@ -76,18 +76,18 @@ int drawLabelValue(Point position, const char* label, const char* value, const c
     return x;
 }
 
-int drawLabelValue(Point position, const char* label, float value, const char* unit, bool selected = false)
+int drawLabelValue(Point position, const char* label, float value, const char* unit, bool selected = false, uint8_t size = 14)
 {
     char str[16];
     sprintf(str, "%.1f", value);
-    return drawLabelValue(position, label, str, unit, selected);
+    return drawLabelValue(position, label, str, unit, selected, size);
 }
 
-int drawLabelValue(Point position, const char* label, int value, const char* unit, bool selected = false)
+int drawLabelValue(Point position, const char* label, int value, const char* unit, bool selected = false, uint8_t size = 14)
 {
     char str[16];
     sprintf(str, "%d", value);
-    return drawLabelValue(position, label, str, unit, selected);
+    return drawLabelValue(position, label, str, unit, selected, size);
 }
 
 int drawSelectableText(bool selected, Point position, const char* text, SDL_Color color = APP_DEFAULT_FONT_COLOR, uint32_t size = APP_DEFAULT_FONT_SIZE, const char* fontPath = APP_FONT)
