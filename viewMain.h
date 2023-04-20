@@ -13,9 +13,9 @@
 
 class ViewMain : public View {
 protected:
-    bool editMode = false;
+    bool headerEditMode = false;
     Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1, 1);
-    Grid gridEdit = Grid(4, 6);
+    Grid gridEdit = Grid(3, 6);
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
     AudioHandler& audio = AudioHandler::get();
@@ -35,8 +35,6 @@ protected:
             gridEdit.col = 0;
         } else if (gridEdit.row == 2 && gridEdit.col > 3) {
             gridEdit.col = 3;
-        } else if (gridEdit.row == 3 && gridEdit.col > 0) {
-            gridEdit.col = 0;
         }
     }
 
@@ -106,20 +104,19 @@ protected:
         renderSlection();
     }
 
-    bool isName() { return editMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0)); }
-    bool isVolume() { return editMode && gridEdit.is(0, 1); }
-    bool isFilter() { return editMode && gridEdit.is(0, 2); }
-    bool isCutoff() { return editMode && gridEdit.is(0, 3); }
-    bool isResonance() { return editMode && gridEdit.is(0, 4); }
-    bool isSample() { return editMode && gridEdit.is(0, 5); }
-    bool isDelay() { return editMode && gridEdit.is(1, 1); }
-    bool isReverb() { return editMode && gridEdit.is(1, 2); }
-    bool isDistortion() { return editMode && gridEdit.is(1, 3); }
-    bool isBpm() { return editMode && gridEdit.is(2, 0); }
-    bool isStepStatus() { return editMode && gridEdit.is(2, 1); }
-    bool isStepVelocity() { return editMode && gridEdit.is(2, 2); }
-    bool isStepCondition() { return editMode && gridEdit.is(2, 3); }
-    bool isMasterVolume() { return editMode && gridEdit.is(3, 0); }
+    bool isName() { return headerEditMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0)); }
+    bool isVolume() { return headerEditMode && gridEdit.is(0, 1); }
+    bool isFilter() { return headerEditMode && gridEdit.is(0, 2); }
+    bool isCutoff() { return headerEditMode && gridEdit.is(0, 3); }
+    bool isResonance() { return headerEditMode && gridEdit.is(0, 4); }
+    bool isSample() { return headerEditMode && gridEdit.is(0, 5); }
+    bool isDelay() { return headerEditMode && gridEdit.is(1, 1); }
+    bool isReverb() { return headerEditMode && gridEdit.is(1, 2); }
+    bool isDistortion() { return headerEditMode && gridEdit.is(1, 3); }
+    bool isBpm() { return headerEditMode && gridEdit.is(2, 0); }
+    bool isStepStatus() { return headerEditMode && gridEdit.is(2, 1); }
+    bool isStepVelocity() { return headerEditMode && gridEdit.is(2, 2); }
+    bool isStepCondition() { return headerEditMode && gridEdit.is(2, 3); }
 
     Track& getTrack() { return getTrack(grid.row); }
     Track& getTrack(int8_t gridRow) { return data.tracks[gridRow - 1]; }
@@ -171,7 +168,7 @@ protected:
         sprintf(bpm, "%d", audio.tempo.getBpm());
         unsigned int x = drawText({ 10, 40 }, bpm, COLOR_INFO, 22, APP_FONT_BOLD);
         drawText({ x + 5, 45 }, "BPM", COLOR_LABEL, 10);
-        if (editMode && gridEdit.is(2, 0)) {
+        if (headerEditMode && gridEdit.is(2, 0)) {
             drawRect({ 5, 40 }, { 85, 25 }, COLOR_INFO);
         }
     }
@@ -213,9 +210,7 @@ protected:
     void handleHeader(UiKeys& keys)
     {
         if (isVolume()) {
-            Track& track = getTrack();
-            track.setVolume(track.volume + keys.getDirection() * 0.01);
-            renderHeaderPattern(CLEAR);
+            handleVolume(keys.getDirection());
         } else if (isStepStatus()) {
             Track& track = getTrack();
             Step& step = track.steps[grid.col - 1];
@@ -223,17 +218,9 @@ protected:
             renderHeaderStep();
             renderStep(track, grid.col - 1, grid.row);
         } else if (isStepVelocity()) {
-            Track& track = getTrack();
-            Step& step = track.steps[grid.col - 1];
-            step.setVelocity(step.velocity + keys.getDirection() * 0.01);
-            renderHeaderStep();
-            renderStep(track, grid.col - 1, grid.row);
+            handleStepVelocity(keys.getDirection());
         } else if (isStepCondition()) {
-            Track& track = getTrack();
-            Step& step = track.steps[grid.col - 1];
-            step.setCondition(step.condition + keys.getOneDirection());
-            renderHeaderStep();
-            renderStep(track, grid.col - 1, grid.row);
+            handleStepCondition(keys.getOneDirection());
         } else if (isBpm()) {
             audio.tempo.set(audio.tempo.getBpm() + keys.getDirection());
             renderBPM(CLEAR);
@@ -255,13 +242,49 @@ protected:
         draw();
     }
 
-    void handleTrack(UiKeys& keys)
+    void handleVolume(int8_t direction)
+    {
+        Track& track = getTrack();
+        track.setVolume(track.volume + direction * 0.01);
+        renderHeaderPattern(CLEAR);
+    }
+
+    void handleStepVelocity(int8_t direction)
+    {
+        Track& track = getTrack();
+        Step& step = track.steps[grid.col - 1];
+        step.setVelocity(step.velocity + direction * 0.01);
+        renderHeaderStep();
+        renderStep(track, grid.col - 1, grid.row);
+    }
+
+    void handleStepCondition(int8_t direction)
+    {
+        Track& track = getTrack();
+        Step& step = track.steps[grid.col - 1];
+        step.setCondition(step.condition + direction);
+        renderHeaderStep();
+        renderStep(track, grid.col - 1, grid.row);
+    }
+
+    void handleMain(UiKeys& keys)
     {
         if (grid.row == 0) {
             audio.setVolume(audio.getVolume() + keys.getDirection() * 0.01);
             renderMasterVolume(true);
             renderHeaderMaster();
+        } else if (grid.col == 0) {
+            handleVolume(keys.getDirection());
         } else {
+            if (keys.Right) {
+                handleStepCondition(1);
+            } else if (keys.Left) {
+                handleStepCondition(-1);
+            } else if (keys.Up) {
+                handleStepVelocity(5);
+            } else if (keys.Down) {
+                handleStepVelocity(-5);
+            }
             return;
         }
         draw();
@@ -297,15 +320,16 @@ public:
     void update(UiKeys& keys)
     {
         if (keys.Edit) {
-            handleTrack(keys);
+            if (headerEditMode) {
+                handleHeader(keys);
+            } else {
+                handleMain(keys);
+            }
             return;
         }
 
-        if (editMode) {
-            if (keys.Edit) {
-                handleHeader(keys);
-                return;
-            } else if (gridEdit.update(keys) == VIEW_CHANGED) {
+        if (headerEditMode) {
+            if (gridEdit.update(keys) == VIEW_CHANGED) {
                 fixGridEdit();
                 renderHeader(OPTIMIZED);
                 draw();
@@ -328,7 +352,7 @@ public:
         }
 
         if (keys.Menu) {
-            editMode = !editMode;
+            headerEditMode = !headerEditMode;
             fixGridEdit();
             renderSlection();
             renderHeader(OPTIMIZED);
