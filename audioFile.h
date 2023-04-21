@@ -54,6 +54,8 @@ public:
         }
         printf("Audio file %s sampleCount %ld sampleRate %d\n", filename, (long)sfinfo.frames, sfinfo.samplerate);
 
+        sf_seek(file, 0, SEEK_END); // Move to the end to avoid unwanted play on first sound toggle
+
 #if LOAD_SAMPLE_IN_MEMORY
         sf_read_float(file, buffer, AUDIO_BUFFER_SIZE);
 #endif
