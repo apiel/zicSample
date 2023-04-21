@@ -78,6 +78,10 @@
 #define COLOR_INFO { 0x88, 0x88, 0x88, 255 }
 #endif
 
+#ifndef COLOR_MENU // #AAAAAA
+#define COLOR_MENU { 0xAA, 0xAA, 0xAA, 255 }
+#endif
+
 #ifndef COLOR_LABEL // #555555
 #define COLOR_LABEL { 0x55, 0x55, 0x55, 255 }
 #endif
@@ -181,6 +185,7 @@ public:
     bool Edit = false;
     bool Edit2 = false;
     bool Mode = false;
+    bool Menu = false;
     bool Action = false;
 
     float getDirection(float stepA, float stepB)

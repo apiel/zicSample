@@ -86,7 +86,7 @@ public:
 class View {
 public:
     virtual void render() = 0;
-    virtual void update(UiKeys& keys) = 0;
+    virtual void handle(UiKeys& keys) = 0;
 };
 
 #endif

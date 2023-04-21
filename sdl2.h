@@ -38,6 +38,9 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
     case SDL_SCANCODE_Q:
         ui.keys.Mode = isDown;
         return true;
+    case SDL_SCANCODE_SPACE:
+        ui.keys.Menu = isDown;
+        return true;
     case SDL_SCANCODE_ESCAPE:
         return false;
     default:

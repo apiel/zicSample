@@ -4,6 +4,7 @@
 #include "audioHandler.h"
 #include "data.h"
 #include "draw.h"
+#include "menu.h"
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
@@ -19,6 +20,7 @@ protected:
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
     AudioHandler& audio = AudioHandler::get();
+    Menu& menu = Menu::get();
 
     // 75 + 15 * row
     uint16_t rowY[APP_TRACKS + 1] = { 67, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300 };
@@ -336,6 +338,16 @@ protected:
         draw();
     }
 
+    void renderRows(bool clear = false)
+    {
+        if (clear) {
+            drawFilledRect({ 0, 74 }, { SCREEN_W, SCREEN_H - 74 }, COLOR_BACKGROUND);
+        }
+        for (unsigned int row = 1; row < APP_TRACKS + 1; row++) {
+            renderRow(row);
+        }
+    }
+
 public:
     static ViewMain* instance;
 
@@ -355,16 +367,28 @@ public:
         renderMasterVolume();
 
         renderHeader();
-
-        for (unsigned int row = 1; row < APP_TRACKS + 1; row++) {
-            renderRow(row);
-        }
+        renderRows();
 
         draw();
     }
 
-    void update(UiKeys& keys)
+    void handle(UiKeys& keys)
     {
+        if (keys.Menu) {
+            if (menu.toggle()) {
+                menu.render();
+            } else {
+                renderRows(CLEAR);
+            }
+            draw();
+            return;
+        }
+
+        if (menu.isVisible) {
+            menu.handle(keys);
+            return;
+        }
+
         if (keys.Edit) {
             if (headerEditMode) {
                 handleHeader(keys);
