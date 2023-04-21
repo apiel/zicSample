@@ -391,8 +391,12 @@ public:
                 renderHeaderMaster();
             } else {
                 if (grid.rowChanged()) {
-                    renderHeaderPattern(CLEAR);
-                    renderHeaderStep();
+                    if (grid.lastRow == 0) { // If last row was 0, fully re-render
+                        renderHeader();
+                    } else {
+                        renderHeaderPattern(CLEAR);
+                        renderHeaderStep();
+                    }
                 }
                 if (grid.colChanged()) {
                     renderHeaderStep();

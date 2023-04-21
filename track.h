@@ -260,7 +260,10 @@ public:
             char* rest = (char*)loaded;
             setSample(strtok_r(rest, "\n", &rest));
             char* line = strtok_r(rest, "\n", &rest);
-            // TODO parse track params
+            volume = atof(strtok(line, " "));
+            filter.set(atoi(strtok(NULL, " ")));
+            filter.setResonance(atof(strtok(NULL, " ")));
+
             for (uint8_t i = 0; (line = strtok_r(rest, "\n", &rest)) && i < APP_TRACK_STEPS; i++) {
                 Step& step = steps[i];
                 // step.enabled = atoi(strtok(line, " "));
