@@ -10,6 +10,13 @@
 
 class Filter {
 protected:
+    enum FilterMode {
+        FILTER_MODE_OFF,
+        FILTER_MODE_LOWPASS_12,
+        FILTER_MODE_HIGHPASS_12,
+        FILTER_MODE_COUNT,
+    };
+
     // cutoff cannot be 1.0 else div by zero range(_cutoff, 0.01, 0.99);
     float cutoff = 0.99;
     float feedback;
@@ -23,11 +30,10 @@ protected:
 
     void calculateVar(float _cutoff, float _resonance)
     {
-        if (_cutoff == 1.0) { // Is this right??
-            feedback = _resonance + _resonance;
-        } else {
-            feedback = _resonance + _resonance / (1.0 - _cutoff);
-        }
+        // optimized if reso = 0 then feedback = 0, no need to calculate...
+
+        // cutoff cannot be 1.0 (should we ensure this?)
+        feedback = _resonance + _resonance / (1.0 - _cutoff);
     }
 
     float next(float inputValue, float _cutoff)
@@ -38,32 +44,21 @@ protected:
 
         buf0 += _cutoff * (inputValue - buf0 + feedback * (buf0 - buf1));
         buf1 += _cutoff * (buf0 - buf1);
-        switch (mode) {
-        case FILTER_MODE_LOWPASS_12:
+
+        if (mode == FILTER_MODE_LOWPASS_12) {
             return buf1;
-        case FILTER_MODE_HIGHPASS_12:
-            return inputValue - buf0;
-        default:
-            return inputValue;
         }
+        return inputValue - buf0;
     }
 
 public:
-    enum FilterMode {
-        FILTER_MODE_OFF,
-        FILTER_MODE_LOWPASS_12,
-        FILTER_MODE_HIGHPASS_12,
-        FILTER_MODE_COUNT,
-    };
-
-    int16_t frequency = 0;
+    int16_t value = 0;
     float resonance = 0.0;
     uint8_t mode = FILTER_MODE_OFF;
 
     Filter()
     {
-        // calculateVar();
-        setFrequency(frequency);
+        set(value);
     };
 
     float next(float inputValue)
@@ -73,52 +68,78 @@ public:
 
     float next(float inputValue, float modCutoff, float modResonance)
     {
-        float _cutoff = cutoff + ((1.0 - cutoff) * modCutoff);
+        // could be optimized and apply only if modCutoff or modResonance != 0
+        float _cutoff = cutoff + ((1.0 - cutoff) * modCutoff); // I am not sure this make sense!!
         float _resonance = resonance + ((1.0 - resonance) * modResonance);
+
+        // optimized if reso = 0 then feedback = 0, no need to calculate...
         calculateVar(_cutoff, _resonance);
 
         return next(inputValue, _cutoff);
     }
 
-    Filter& setFrequency(int16_t freq)
+    Filter& set(int16_t val)
     {
-        frequency = range(freq, -7950, 8000);
-        int16_t _frequency = frequency;
-        if (frequency == 0) {
+        // Frequency should be under 7350Hz else cutoff is = 1 and then no sound
+        // We dont want to have LPF/HPF under 50Hz
+
+        value = range(val, -7250, 7300);
+        int16_t frequency = value;
+        if (value == 0) {
             mode = FILTER_MODE_OFF;
-        } else if (frequency > 0) {
-            mode = FILTER_MODE_HIGHPASS_12;
-        } else {
-            _frequency = _frequency + 8000;
+        } else if (value > 0) {
             mode = FILTER_MODE_LOWPASS_12;
+            frequency = 7350 - frequency;
+        } else {
+            mode = FILTER_MODE_HIGHPASS_12;
+            frequency = frequency * -1 + 40;
         }
-        cutoff = 2.0 * sin(M_PI * _frequency / SAMPLE_RATE);
+        cutoff = 2.0 * sin(M_PI * frequency / SAMPLE_RATE);
+
+        // printf("Filter: %d -> %d cutoff %f\n", value, frequency, cutoff);
+
         calculateVar();
 
         return *this;
     }
 
+    int16_t getFrequency()
+    {
+        if (mode == FILTER_MODE_LOWPASS_12) {
+            return 7350 - value;
+        }
+        if (mode == FILTER_MODE_HIGHPASS_12) {
+            return value * -1 + 50;
+        }
+        return 0;
+    }
+
+    float getPctValue()
+    {
+        if (mode == FILTER_MODE_LOWPASS_12) {
+            return 100 * (float)value / 7300.0;
+        }
+        if (mode == FILTER_MODE_HIGHPASS_12) {
+            return 100 * (float)value / -7250.0;
+        }
+        return 0.0f;
+    }
+
     Filter& setResonance(float _res)
     {
-        resonance = range(_res, 0.00, 1.00);
+        resonance = range(_res, 0.00, 0.99);
         calculateVar();
 
         return *this;
     };
 
-    Filter& setFilterMode(int8_t value)
-    {
-        mode = range(value, 0, FILTER_MODE_COUNT);
-        return *this;
-    }
-
     const char* getName()
     {
         switch (mode) {
         case FILTER_MODE_LOWPASS_12:
-            return "LPF 12dB";
+            return "LPF";
         case FILTER_MODE_HIGHPASS_12:
-            return "HPF 12dB";
+            return "HPF";
         default:
             return "OFF";
         }
