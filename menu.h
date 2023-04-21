@@ -58,7 +58,7 @@ public:
         return isVisible;
     }
 
-    void handle(UiKeys& keys, Track& track)
+    bool handle(UiKeys& keys, Track& track)
     {
         if (keys.Up) {
             selected--;
@@ -74,7 +74,7 @@ public:
             }
             render();
             draw();
-        } else if (keys.Action) {
+        } else if (keys.Action || keys.Edit) {
             switch (selected) {
                 case 0:
                     track.save();
@@ -90,7 +90,9 @@ public:
                     break;
             }
             toggle();
+            return true;
         }
+        return false;
     }
 };
 

@@ -385,7 +385,10 @@ public:
         }
 
         if (menu.isVisible) {
-            menu.handle(keys, getTrack());
+            if (menu.handle(keys, getTrack())) {
+                renderRows(CLEAR);
+                draw();
+            }
             return;
         }
 

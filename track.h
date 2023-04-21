@@ -289,10 +289,10 @@ public:
                 return *this;
             }
             fprintf(file, "%s\n", sample);
-            fprintf(file, "%f %i %f\n\n", volume, filter.value, filter.resonance);
+            fprintf(file, "%.2f %i %.2f\n\n", volume, filter.value, filter.resonance);
             for (uint8_t i = 0; i < APP_TRACK_STEPS; i++) {
                 Step& step = steps[i];
-                fprintf(file, "%i %f %i\n", step.enabled, step.velocity, step.condition);
+                fprintf(file, "%i %.2f %i\n", step.enabled, step.velocity, step.condition);
             }
             fclose(file);
         }
