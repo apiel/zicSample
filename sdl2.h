@@ -82,7 +82,9 @@ bool handleController(SDL_ControllerButtonEvent* event)
     //     printf("should set Action\n");
     //     return true;
     case 9:
-        return false;
+        // return false;
+        ui.keys.Menu = isDown;
+        return true;
     default:
         return true;
     }
