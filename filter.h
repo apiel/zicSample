@@ -134,11 +134,11 @@ public:
     {
         switch (mode) {
         case FILTER_MODE_LOWPASS_12:
-            return "LPF";
+            return "LPF ";
         case FILTER_MODE_HIGHPASS_12:
-            return "HPF";
+            return "HPF ";
         default:
-            return "OFF";
+            return "Filter";
         }
     }
 };

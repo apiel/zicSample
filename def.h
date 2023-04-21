@@ -166,7 +166,8 @@ enum {
     UI_KEY_LEFT,
     UI_KEY_RIGHT,
     UI_KEY_EDIT,
-    UI_KEY_MENU,
+    UI_KEY_EDIT2,
+    UI_KEY_MODE,
     UI_KEY_ACTION,
     UI_KEY_COUNT
 };
@@ -178,7 +179,8 @@ public:
     bool Right = false;
     bool Left = false;
     bool Edit = false;
-    bool Menu = false;
+    bool Edit2 = false;
+    bool Mode = false;
     bool Action = false;
 
     UiKeys(uint8_t keysBin)
@@ -188,7 +190,8 @@ public:
         Left = (keysBin >> UI_KEY_LEFT) & 1;
         Right = (keysBin >> UI_KEY_RIGHT) & 1;
         Edit = (keysBin >> UI_KEY_EDIT) & 1;
-        Menu = (keysBin >> UI_KEY_MENU) & 1;
+        Edit2 = (keysBin >> UI_KEY_EDIT2) & 1;
+        Mode = (keysBin >> UI_KEY_MODE) & 1;
         Action = (keysBin >> UI_KEY_ACTION) & 1;
     }
 

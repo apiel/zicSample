@@ -4,15 +4,6 @@
 #include "def.h"
 #include "state.h"
 
-#define KEY_UP SDL_SCANCODE_UP
-#define KEY_DOWN SDL_SCANCODE_DOWN
-#define KEY_LEFT SDL_SCANCODE_LEFT
-#define KEY_RIGHT SDL_SCANCODE_RIGHT
-#define KEY_A SDL_SCANCODE_S
-#define KEY_B SDL_SCANCODE_A
-#define KEY_Y SDL_SCANCODE_Q
-#define KEY_MENU SDL_SCANCODE_ESCAPE
-
 bool handleKeyboard(SDL_KeyboardEvent* event)
 {
     uint16_t bit;
@@ -20,28 +11,31 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
     // SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
     // SDL_Log("handleKeyboard %d\n", event->repeat);
     switch (event->keysym.scancode) {
-    case KEY_UP:
+    case SDL_SCANCODE_UP:
         bit = UI_KEY_UP;
         break;
-    case KEY_DOWN:
+    case SDL_SCANCODE_DOWN:
         bit = UI_KEY_DOWN;
         break;
-    case KEY_LEFT:
+    case SDL_SCANCODE_LEFT:
         bit = UI_KEY_LEFT;
         break;
-    case KEY_RIGHT:
+    case SDL_SCANCODE_RIGHT:
         bit = UI_KEY_RIGHT;
         break;
-    case KEY_A:
+    case SDL_SCANCODE_S:
         bit = UI_KEY_EDIT;
         break;
-    case KEY_B: // Should be configurable!
-        bit = UI_KEY_MENU;
+    case SDL_SCANCODE_Y:
+        bit = UI_KEY_EDIT2;
         break;
-    case KEY_Y:
+    case SDL_SCANCODE_A:
         bit = UI_KEY_ACTION;
         break;
-    case KEY_MENU:
+    case SDL_SCANCODE_Q:
+        bit = UI_KEY_MODE;
+        break;
+    case SDL_SCANCODE_ESCAPE:
         return false;
     default:
         break;
@@ -82,8 +76,8 @@ bool handleController(SDL_ControllerButtonEvent* event)
     case 0:
         bit = UI_KEY_EDIT;
         break;
-    case 1: // Should be configurable!
-        bit = UI_KEY_MENU;
+    case 1:
+        bit = UI_KEY_MODE;
         break;
     // case 20:
     //     bit = UI_KEY_ACTION;

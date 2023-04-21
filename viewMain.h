@@ -15,7 +15,7 @@ class ViewMain : public View {
 protected:
     bool headerEditMode = false;
     Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1, 1);
-    Grid gridEdit = Grid(3, 6);
+    Grid gridEdit = Grid(3, 5);
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
     AudioHandler& audio = AudioHandler::get();
@@ -112,10 +112,9 @@ protected:
 
     bool isName() { return headerEditMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0)); }
     bool isVolume() { return headerEditMode && gridEdit.is(0, 1); }
-    bool isFilter() { return headerEditMode && gridEdit.is(0, 2); }
-    bool isCutoff() { return headerEditMode && gridEdit.is(0, 3); }
-    bool isResonance() { return headerEditMode && gridEdit.is(0, 4); }
-    bool isSample() { return headerEditMode && gridEdit.is(0, 5); }
+    bool isCutoff() { return headerEditMode && gridEdit.is(0, 2); }
+    bool isResonance() { return headerEditMode && gridEdit.is(0, 3); }
+    bool isSample() { return headerEditMode && gridEdit.is(0, 4); }
     bool isDelay() { return headerEditMode && gridEdit.is(1, 1); }
     bool isReverb() { return headerEditMode && gridEdit.is(1, 2); }
     bool isDistortion() { return headerEditMode && gridEdit.is(1, 3); }
@@ -140,8 +139,7 @@ protected:
         }
 
         unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
-        x = drawLabelValue({ x + 5, 5 }, "Filter:", track.filter.getName(), NULL, isFilter());
-        x = drawLabelValue({ x + 5, 5 }, NULL, track.filter.getPctValue(), "%", isCutoff());
+        x = drawLabelValue({ x + 5, 5 }, track.filter.getName(), track.filter.getPctValue(), "%", isCutoff());
         x = drawLabelValue({ x + 5, 5 }, "Res:", (int)(track.filter.resonance * 100), "%", isResonance());
         drawSelectableText(isSample(), { x + 5, 5 }, track.sample, COLOR_INFO, 14);
 
@@ -369,7 +367,7 @@ public:
             return;
         }
 
-        if (keys.Menu) {
+        if (keys.Mode) {
             headerEditMode = !headerEditMode;
             fixGridEdit();
             renderSlection();
