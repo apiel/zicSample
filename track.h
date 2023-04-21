@@ -276,6 +276,28 @@ public:
         }
         return *this;
     }
+
+    Track& save()
+    {
+        // SDL_Log("Track::save %s\n", name);
+        if (name[0] != '-') {
+            char filepath[strlen(APP_DATA_FOLDER) + 1 + strlen(name)];
+            sprintf(filepath, "%s/%s", APP_DATA_FOLDER, name);
+            FILE* file = fopen(filepath, "w");
+            if (!file) {
+                APP_LOG("Error: could not open file %s\n", filepath);
+                return *this;
+            }
+            fprintf(file, "%s\n", sample);
+            fprintf(file, "%f %i %f\n\n", volume, filter.value, filter.resonance);
+            for (uint8_t i = 0; i < APP_TRACK_STEPS; i++) {
+                Step& step = steps[i];
+                fprintf(file, "%i %f %i\n", step.enabled, step.velocity, step.condition);
+            }
+            fclose(file);
+        }
+        return *this;
+    }
 };
 
 #endif

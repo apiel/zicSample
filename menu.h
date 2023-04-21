@@ -3,6 +3,7 @@
 
 #include "def.h"
 #include "draw.h"
+#include "track.h"
 
 const char* MENU_ITEMS[] = {
     "Save track",
@@ -15,10 +16,12 @@ uint8_t MENU_ITEMS_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 
 class Menu {
 protected:
-    uint8_t x = 120;
-    uint8_t y = 75;
+    unsigned int x = 120;
+    unsigned int y = 75;
     uint16_t h = SCREEN_H - (y + 5);
     uint16_t w = SCREEN_W - (x * 2);
+
+    uint8_t selected = 0;
 
     Menu() { }
 
@@ -37,13 +40,14 @@ public:
 
     void render()
     {
-        SDL_Color color = COLOR_FOREGROUND2;
-        color.a = 235;
-        drawFilledRect({ x, y }, { w, h }, color);
+        drawFilledRect({ x, y }, { w, h }, COLOR_FOREGROUND);
         drawRect({ x, y }, { w, h }, COLOR_INFO);
 
         for (uint8_t i = 0; i < MENU_ITEMS_COUNT; i++) {
-            drawText({ (unsigned int)x + 20, (unsigned int)y + 5 + (i * 25) }, MENU_ITEMS[i], COLOR_MENU);
+            drawText({ x + 20, y + 5 + (i * 25) }, MENU_ITEMS[i], COLOR_MENU);
+            if (i == selected) {
+                drawFilledRect({ x + 5, y + 5 + (i * 25) }, { 10, 18 }, COLOR_INFO);
+            }
         }
     }
 
@@ -54,8 +58,39 @@ public:
         return isVisible;
     }
 
-    void handle(UiKeys& keys)
+    void handle(UiKeys& keys, Track& track)
     {
+        if (keys.Up) {
+            selected--;
+            if (selected < 0) {
+                selected = MENU_ITEMS_COUNT - 1;
+            }
+            render();
+            draw();
+        } else if (keys.Down) {
+            selected++;
+            if (selected >= MENU_ITEMS_COUNT) {
+                selected = 0;
+            }
+            render();
+            draw();
+        } else if (keys.Action) {
+            switch (selected) {
+                case 0:
+                    track.save();
+                    break;
+                // case 1:
+                //     track.saveAs();
+                //     break;
+                // case 2:
+                //     track.reload();
+                //     break;
+                case 3:
+                    exit(0);
+                    break;
+            }
+            toggle();
+        }
     }
 };
 

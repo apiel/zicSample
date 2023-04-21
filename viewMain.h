@@ -385,7 +385,7 @@ public:
         }
 
         if (menu.isVisible) {
-            menu.handle(keys);
+            menu.handle(keys, getTrack());
             return;
         }
 
