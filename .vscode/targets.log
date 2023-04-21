@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Apr 19 07:29:32 2023
+# Make data base, printed on Fri Apr 21 07:59:17 2023
 
 # Variables
 
@@ -16,14 +16,13 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
+NO_AT_BRIDGE = 1
+# environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
 TERMINATOR_DBUS_NAME = net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # makefile (from 'makefile', line 42)
 RG351_IP = 192.168.1.109
 # environment
@@ -39,7 +38,7 @@ VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
 VSCODE_CWD = /home/alex
 # environment
-TERMINATOR_UUID = urn:uuid:a4d67ff0-0049-454d-a2ec-662ec1ee49da
+TERMINATOR_UUID = urn:uuid:ab5733db-374a-4cff-afc2-33feba645358
 # environment
 LC_ADDRESS = de_AT.UTF-8
 # default
@@ -73,7 +72,7 @@ VSCODE_CODE_CACHE_PATH = /home/alex/.config/Code/CachedData/704ed70d4fd1c6bd6342
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.2V2B31
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.K7FY31
 # default
 .LOADED := 
 # default
@@ -101,7 +100,6 @@ SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # default
 .SHELLFLAGS := -c
 # environment
- 
 WAYLAND_DISPLAY = wayland-0
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
@@ -112,7 +110,7 @@ MAKEFILE_LIST := makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 96319
+VSCODE_PID = 146652
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -120,7 +118,7 @@ XDG_SESSION_TYPE = wayland
 # makefile (from 'makefile', line 39)
 LIBRTMIDI = `pkg-config --cflags --libs rtmidi`
 # environment
-SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/3528,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/3528
+SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/3796,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/3796
 # automatic
 *F = $(notdir $*)
 # environment
@@ -176,8 +174,7 @@ LC_TIME = de_AT.UTF-8
 # environment
 SNAP = /snap/code/126
 # environment
-INVOCATION_ID = 535bd59ed94f40d9ab374570b256c071
- 
+INVOCATION_ID = 821a5d09384d46df87c4bbdd991610d7
 # environment
 SNAP_REVISION = 126
 # environment
@@ -215,7 +212,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := linux
 # environment
-SYSTEMD_EXEC_PID = 3547
+SYSTEMD_EXEC_PID = 3864
 # environment
 DISPLAY = :0
 # environment
@@ -231,11 +228,11 @@ SNAP_DATA = /var/snap/code/126
 # environment
 SNAP_CONTEXT = SwaaAWCM8SvWrzRKuVkqR9SQxBzJM4aTNENG2SlRyWkNO9mupTTK
 # environment
-MANAGERPID = 3371
+MANAGERPID = 3391
 # environment
 LC_MEASUREMENT = de_AT.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 95681
+GIO_LAUNCHED_DESKTOP_FILE_PID = 141852
 # environment
 LC_PAPER = de_AT.UTF-8
 # environment
@@ -247,7 +244,7 @@ GDK_PIXBUF_MODULE_FILE = /home/alex/snap/code/common/.cache/gdk-pixbuf-loaders.c
 # environment
 GIO_MODULE_DIR = /home/alex/snap/code/common/.cache/gio-modules
 # environment
-JOURNAL_STREAM = 8:43934
+JOURNAL_STREAM = 8:50641
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -284,7 +281,6 @@ VSCODE_CLI = 1
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 VTE_VERSION = 6800
- 
 # environment
 SNAP_COMMON = /var/snap/code/common
 # default
@@ -298,11 +294,14 @@ XDG_MENU_PREFIX = gnome-
 # environment
 GDMSESSION = ubuntu
 # environment
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 LC_IDENTIFICATION = de_AT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=142/1024=14%, Rehash=0, Collisions=5/172=3%
+# Load=143/1024=14%, Rehash=0, Collisions=5/173=3%
 
 # Pattern-specific Variable Values
 
@@ -350,7 +349,6 @@ rg351Libpd:
 rg351SCP:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
- 
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 83):
 	sshpass -p "ark" scp zicTrackerRG351 ark@$(RG351_IP):/roms/ports/zic/zicTracker
@@ -398,7 +396,6 @@ rg351Kill:
 #  recipe to execute (from 'makefile', line 86):
 	sshpass -p "ark" ssh ark@$(RG351_IP) /roms/ports/zic/kill.sh
 
- 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
@@ -416,7 +413,6 @@ run:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
- 
 #  recipe to execute (from 'makefile', line 115):
 	echo start zicTracker
 	LD_LIBRARY_PATH=. ./zicTracker
@@ -480,7 +476,6 @@ linux: puredata duk build run
 
 rg351Next:
 #  Implicit rule search has not been done.
- 
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 67):
@@ -495,14 +490,13 @@ rg351Next:
 
 # No general ('VPATH' variable) search path.
 
- 
 # strcache buffers: 1 (0) / strings = 43 / storage = 481 B / avg = 11 B
 # current buf: size = 8162 B / used = 481 B / count = 43 / avg = 11 B
 
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Wed Apr 19 07:29:32 2023
+# Finished Make data base on Fri Apr 21 07:59:17 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  

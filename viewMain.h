@@ -142,7 +142,7 @@ protected:
         unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
         x = drawLabelValue({ x + 5, 5 }, "Filter:", track.filter.getName(), NULL, isFilter());
         x = drawLabelValue({ x + 5, 5 }, NULL, track.filter.frequency, "Hz", isCutoff());
-        x = drawLabelValue({ x + 5, 5 }, "Res:", track.filter.resonance * 100, "%", isResonance());
+        x = drawLabelValue({ x + 5, 5 }, "Res:", (int)(track.filter.resonance * 100), "%", isResonance());
         drawSelectableText(isSample(), { x + 5, 5 }, track.sample, COLOR_INFO, 14);
 
         x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
@@ -235,7 +235,7 @@ protected:
             track.filter.setFilterMode(track.filter.mode + keys.getOneDirection());
             renderHeaderPattern(CLEAR);
         } else if (isCutoff()) {
-            handleCutoff(keys.getDirection(50));
+            handleCutoff(keys.getDirection(10));
         } else if (isResonance()) {
             Track& track = getTrack();
             track.filter.setResonance(track.filter.resonance + keys.getDirection(0.01));
