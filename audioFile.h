@@ -13,7 +13,7 @@
 #if AUDIO_BUFFER_SECONDS > 0
 // 10 seconds
 #define LOAD_SAMPLE_IN_MEMORY 1
-#define AUDIO_BUFFER_SIZE SAMPLE_RATE * AUDIO_BUFFER_SECONDS
+#define AUDIO_BUFFER_SIZE SAMPLE_RATE* AUDIO_BUFFER_SECONDS
 #endif
 
 class AudioFile {
@@ -22,6 +22,8 @@ protected:
     int samplePos = 0;
     float buffer[AUDIO_BUFFER_SIZE];
 #endif
+
+    bool isOpen = false;
 
 public:
     SF_INFO sfinfo;
@@ -39,6 +41,7 @@ public:
 
     void close()
     {
+        isOpen = false;
         if (file) {
             sf_close(file);
         }
@@ -53,6 +56,7 @@ public:
             return NULL;
         }
         printf("Audio file %s sampleCount %ld sampleRate %d\n", filename, (long)sfinfo.frames, sfinfo.samplerate);
+        isOpen = true;
 
         sf_seek(file, 0, SEEK_END); // Move to the end to avoid unwanted play on first sound toggle
 
@@ -75,7 +79,9 @@ public:
             }
         }
 #else
-        sf_read_float(file, buf, len);
+        if (isOpen) {
+            sf_read_float(file, buf, len);
+        }
 #endif
     }
 

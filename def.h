@@ -126,7 +126,7 @@
 #endif
 
 #ifndef APP_SAMPLE_NAME
-#define APP_SAMPLE_NAME 50
+#define APP_SAMPLE_NAME 255
 #endif
 
 #ifndef APP_DEFAULT_FONT_SIZE

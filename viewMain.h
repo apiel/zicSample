@@ -232,6 +232,10 @@ protected:
             handleCutoff(keys.getDirection(10, 50));
         } else if (isResonance()) {
             handelResonance(keys.getDirection(0.01));
+        } else if (isSample()) {
+            Track& track = getTrack();
+            track.setNextSample(keys.getOneDirection());
+            renderHeaderPattern(CLEAR);
         } else {
             return;
         }

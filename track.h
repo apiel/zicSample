@@ -1,9 +1,10 @@
 #ifndef _TRACK_H_
 #define _TRACK_H_
 
-#include "filter.h"
 #include "audioFile.h"
 #include "def.h"
+#include "filter.h"
+#include "fs.h"
 
 const char* STEP_CONDITIONS[] = {
     "---",
@@ -148,6 +149,14 @@ public:
 };
 
 class Track {
+protected:
+    void openSample()
+    {
+        char filepath[strlen(APP_SAMPLES_FOLDER) + 1 + strlen(sample)];
+        sprintf(filepath, "%s/%s", APP_SAMPLES_FOLDER, sample);
+        audioFile.open(filepath);
+    }
+
 public:
     Filter filter;
     AudioFile audioFile;
@@ -220,10 +229,17 @@ public:
     Track& setSample(char* _sample)
     {
         strncpy(sample, _sample, APP_SAMPLE_NAME);
-        char filepath[strlen(APP_SAMPLES_FOLDER) + 1 + strlen(sample)];
-        sprintf(filepath, "%s/%s", APP_SAMPLES_FOLDER, sample);
-        audioFile.open(filepath);
+        openSample();
         // SDL_Log("Audio file %s sampleCount %ld\n", filepath, (long)audioFile.sfinfo.frames);
+        return *this;
+    }
+
+    Track& setNextSample(int8_t direction = 0)
+    {
+        // TODO if direction > 1 then should jump to next letter
+        direction = range(direction, -1, 1);
+        nextFile(sample, APP_SAMPLES_FOLDER, sample, direction);
+        openSample();
         return *this;
     }
 
