@@ -3,8 +3,8 @@
 
 #include "def.h"
 #include "draw.h"
-#include "track.h"
 #include "grid.h"
+#include "track.h"
 
 const char* MENU_ITEMS[] = {
     "Save track",
@@ -23,13 +23,38 @@ protected:
     uint16_t h = SCREEN_H - (y + 5);
     unsigned int w = SCREEN_W - (x * 2);
 
-    Grid grid = Grid(7, 10);
+    Grid grid = Grid(8, 10);
 
     uint8_t selected = 0;
 
     Track* isSaveAs = NULL;
 
     Menu() { }
+
+    void fixGrid()
+    {
+        if (grid.row == 7) {
+            if (grid.lastRow != 7) {
+                if (grid.lastCol < 3) {
+                    grid.col = 0;
+                } else if (grid.lastCol < 6) {
+                    grid.col = 1;
+                } else {
+                    grid.col = 2;
+                }
+            } else if (grid.lastCol > 2) {
+                grid.col = 2;
+            }
+        } else if (grid.lastRow == 7) {
+            if (grid.lastCol == 0) {
+                grid.col = 0;
+            } else if (grid.lastCol == 1) {
+                grid.col = 3;
+            } else {
+                grid.col = 6;
+            }
+        }
+    }
 
     const char* alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.!@$+&";
 
@@ -50,13 +75,25 @@ protected:
                 drawText({ x + 20 + (j * 20), y + 30 + (i * 25) }, c, COLOR_INFO);
             }
         }
+
+        drawText({ x + 20, y + 30 + (7 * 25) }, "Save   Cancel   Backspace", COLOR_INFO);
+
+        renderSelection();
     }
 
     void renderSelection(int8_t row, int8_t col, SDL_Color color = COLOR_INFO)
     {
-        unsigned int _y = y + 30 + (row * 25);
-        unsigned int _x = x + 20 + (col * 20);
-        drawRect({ _x - 3, _y - 3 }, { 16, 23 }, color);
+            unsigned int _y = y + 30 + (row * 25);
+        if (row < 7) {
+            unsigned int _x = x + 20 + (col * 20);
+            drawRect({ _x - 3, _y - 3 }, { 16, 23 }, color);
+        } else if (col == 0) {
+            drawRect({ x + 18, _y - 3 }, { 42, 23 }, color);
+        } else if (col == 1) {
+            drawRect({ x + 65, _y - 3 }, { 60, 23 }, color);
+        } else {
+            drawRect({ x + 126, _y - 3 }, { 90, 23 }, color);
+        }
     }
 
     void renderSelection()
@@ -107,6 +144,7 @@ public:
     bool handleSaveAs(UiKeys& keys, Track& track)
     {
         if (grid.update(keys) == VIEW_CHANGED) {
+            fixGrid();
             renderSelection();
             draw();
         }
