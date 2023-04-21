@@ -26,7 +26,7 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
     case SDL_SCANCODE_S:
         bit = UI_KEY_EDIT;
         break;
-    case SDL_SCANCODE_Y:
+    case SDL_SCANCODE_Z: // Y
         bit = UI_KEY_EDIT2;
         break;
     case SDL_SCANCODE_A:

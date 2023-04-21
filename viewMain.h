@@ -231,13 +231,18 @@ protected:
         } else if (isCutoff()) {
             handleCutoff(keys.getDirection(10, 50));
         } else if (isResonance()) {
-            Track& track = getTrack();
-            track.filter.setResonance(track.filter.resonance + keys.getDirection(0.01));
-            renderHeaderPattern(CLEAR);
+            handelResonance(keys.getDirection(0.01));
         } else {
             return;
         }
         draw();
+    }
+
+    void handelResonance(float direction)
+    {
+        Track& track = getTrack();
+        track.filter.setResonance(track.filter.resonance + direction);
+        renderHeaderPattern(CLEAR);
     }
 
     void handleCutoff(int16_t direction)
@@ -306,6 +311,27 @@ protected:
         draw();
     }
 
+    void handleMainEdit2(UiKeys& keys)
+    {
+        if (grid.row == 0) {
+            return;
+        } else if (grid.col == 0) {
+            if (keys.Right) {
+                handelResonance(0.01);
+            } else if (keys.Left) {
+                handelResonance(-0.01);
+            } else if (keys.Up) {
+                handleCutoff(50);
+            } else if (keys.Down) {
+                handleCutoff(-50);
+            }
+            return;
+        } else {
+            return;
+        }
+        draw();
+    }
+
 public:
     static ViewMain* instance;
 
@@ -341,6 +367,11 @@ public:
             } else {
                 handleMain(keys);
             }
+            return;
+        }
+
+        if (keys.Edit2) {
+            handleMainEdit2(keys);
             return;
         }
 
