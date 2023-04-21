@@ -4,11 +4,13 @@
 #include "def.h"
 #include "draw.h"
 #include "track.h"
+#include "grid.h"
 
 const char* MENU_ITEMS[] = {
     "Save track",
     "Save track as",
     "Reload track",
+    "Delete track",
     "Exit",
 };
 
@@ -19,11 +21,49 @@ protected:
     unsigned int x = 120;
     unsigned int y = 75;
     uint16_t h = SCREEN_H - (y + 5);
-    uint16_t w = SCREEN_W - (x * 2);
+    unsigned int w = SCREEN_W - (x * 2);
+
+    Grid grid = Grid(7, 10);
 
     uint8_t selected = 0;
 
+    Track* isSaveAs = NULL;
+
     Menu() { }
+
+    const char* alphanum = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-.!@$+&";
+
+    void renderSaveAs()
+    {
+        char name[APP_TRACK_NAME + 1];
+        memset(name, 0, sizeof(name));
+        strncpy(name, isSaveAs->name, sizeof(name) - 1);
+
+        drawFilledRect({ x + 1, y + 1 }, { w - 2, 25 }, COLOR_FOREGROUND2);
+        drawText({ x + 20, y + 5 }, name, COLOR_MENU);
+
+        for (uint8_t i = 0; i < 7; i++) {
+            for (uint8_t j = 0; j < 10; j++) {
+                char c[2];
+                c[0] = alphanum[(i * 10) + j];
+                c[1] = '\0';
+                drawText({ x + 20 + (j * 20), y + 30 + (i * 25) }, c, COLOR_INFO);
+            }
+        }
+    }
+
+    void renderSelection(int8_t row, int8_t col, SDL_Color color = COLOR_INFO)
+    {
+        unsigned int _y = y + 30 + (row * 25);
+        unsigned int _x = x + 20 + (col * 20);
+        drawRect({ _x - 3, _y - 3 }, { 16, 23 }, color);
+    }
+
+    void renderSelection()
+    {
+        renderSelection(grid.lastRow, grid.lastCol, COLOR_FOREGROUND);
+        renderSelection(grid.row, grid.col);
+    }
 
 public:
     bool isVisible = false;
@@ -43,6 +83,11 @@ public:
         drawFilledRect({ x, y }, { w, h }, COLOR_FOREGROUND);
         drawRect({ x, y }, { w, h }, COLOR_INFO);
 
+        if (isSaveAs) {
+            renderSaveAs();
+            return;
+        }
+
         for (uint8_t i = 0; i < MENU_ITEMS_COUNT; i++) {
             drawText({ x + 20, y + 5 + (i * 25) }, MENU_ITEMS[i], COLOR_MENU);
             if (i == selected) {
@@ -54,12 +99,25 @@ public:
     bool toggle()
     {
         isVisible = !isVisible;
+        isSaveAs = NULL;
 
         return isVisible;
     }
 
+    bool handleSaveAs(UiKeys& keys, Track& track)
+    {
+        if (grid.update(keys) == VIEW_CHANGED) {
+            renderSelection();
+            draw();
+        }
+        return false;
+    }
+
     bool handle(UiKeys& keys, Track& track)
     {
+        if (isSaveAs) {
+            return handleSaveAs(keys, track);
+        }
         if (keys.Up) {
             selected--;
             if (selected < 0) {
@@ -76,18 +134,20 @@ public:
             draw();
         } else if (keys.Action || keys.Edit) {
             switch (selected) {
-                case 0:
-                    track.save();
-                    break;
-                // case 1:
-                //     track.saveAs();
-                //     break;
-                case 2:
-                    track.load();
-                    break;
-                case 3:
-                    exit(0);
-                    break;
+            case 0:
+                track.save();
+                break;
+            case 1:
+                isSaveAs = &track;
+                render();
+                draw();
+                return false;
+            case 2:
+                track.load();
+                break;
+            case 3:
+                exit(0);
+                break;
             }
             toggle();
             return true;

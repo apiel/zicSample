@@ -8,6 +8,7 @@
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
+#include "grid.h"
 
 #define CLEAR true
 #define OPTIMIZED true
@@ -40,7 +41,7 @@ protected:
         }
     }
 
-    void renderSlection(int8_t row, int8_t col, SDL_Color color = COLOR_SELECTOR)
+    void renderSelection(int8_t row, int8_t col, SDL_Color color = COLOR_SELECTOR)
     {
         unsigned int y = rowY[row];
         uint8_t h = 14;
@@ -57,10 +58,10 @@ protected:
         }
     }
 
-    void renderSlection()
+    void renderSelection()
     {
-        renderSlection(grid.lastRow, grid.lastCol, COLOR_BACKGROUND);
-        renderSlection(grid.row, grid.col);
+        renderSelection(grid.lastRow, grid.lastCol, COLOR_BACKGROUND);
+        renderSelection(grid.row, grid.col);
     }
 
     void renderTrackName(Track& track, unsigned int row)
@@ -109,7 +110,7 @@ protected:
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
             renderStep(track, step, row);
         }
-        renderSlection();
+        renderSelection();
     }
 
     bool isName() { return headerEditMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0)); }
@@ -414,7 +415,7 @@ public:
                 draw();
             }
         } else if (grid.update(keys) == VIEW_CHANGED) {
-            renderSlection();
+            renderSelection();
             if (grid.row == 0) {
                 renderHeaderMaster();
             } else {
@@ -437,7 +438,7 @@ public:
         if (keys.Mode) {
             headerEditMode = !headerEditMode;
             fixGridEdit();
-            renderSlection();
+            renderSelection();
             renderHeader(OPTIMIZED);
             draw();
             return;
