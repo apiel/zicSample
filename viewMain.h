@@ -386,7 +386,8 @@ public:
 
         if (menu.isVisible) {
             if (menu.handle(keys, getTrack())) {
-                renderRows(CLEAR);
+                // renderRows(CLEAR);
+                render();
                 draw();
             }
             return;

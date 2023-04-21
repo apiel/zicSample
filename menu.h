@@ -82,9 +82,9 @@ public:
                 // case 1:
                 //     track.saveAs();
                 //     break;
-                // case 2:
-                //     track.reload();
-                //     break;
+                case 2:
+                    track.load();
+                    break;
                 case 3:
                     exit(0);
                     break;
