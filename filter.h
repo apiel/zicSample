@@ -105,13 +105,10 @@ public:
 
     int16_t getFrequency()
     {
-        if (mode == FILTER_MODE_LOWPASS_12) {
-            return 7350 - value;
+        if (mode == FILTER_MODE_OFF) {
+            return 0;
         }
-        if (mode == FILTER_MODE_HIGHPASS_12) {
-            return value * -1 + 50;
-        }
-        return 0;
+        return (int16_t)(asin(cutoff / 2.0) * SAMPLE_RATE / M_PI);
     }
 
     float getPctValue()
