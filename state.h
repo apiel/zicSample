@@ -5,7 +5,7 @@
 
 typedef struct {
     bool keysChanged = false;
-    uint16_t keys = 0;
+    UiKeys keys;
 } Ui;
 
 Ui ui;

@@ -58,8 +58,7 @@ int main(int argc, char* args[])
     while (handleEvent()) {
         if (ui.keysChanged) {
             ui.keysChanged = false;
-            UiKeys keys(ui.keys);
-            viewMain.update(keys);
+            viewMain.update(ui.keys);
         }
         if (needToRenderProgressBar) {
             needToRenderProgressBar = false;

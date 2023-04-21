@@ -6,97 +6,83 @@
 
 bool handleKeyboard(SDL_KeyboardEvent* event)
 {
-    uint16_t bit;
+    bool isDown = event->type == SDL_KEYDOWN;
+
+    // we could skip keyChange on A repeat
+    ui.keysChanged = true;
 
     // SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
     // SDL_Log("handleKeyboard %d\n", event->repeat);
     switch (event->keysym.scancode) {
     case SDL_SCANCODE_UP:
-        bit = UI_KEY_UP;
-        break;
+        ui.keys.Up = isDown;
+        return true;
     case SDL_SCANCODE_DOWN:
-        bit = UI_KEY_DOWN;
-        break;
+        ui.keys.Down = isDown;
+        return true;
     case SDL_SCANCODE_LEFT:
-        bit = UI_KEY_LEFT;
-        break;
+        ui.keys.Left = isDown;
+        return true;
     case SDL_SCANCODE_RIGHT:
-        bit = UI_KEY_RIGHT;
-        break;
+        ui.keys.Right = isDown;
+        return true;
     case SDL_SCANCODE_S:
-        bit = UI_KEY_EDIT;
-        break;
+        ui.keys.Edit = isDown;
+        return true;
     case SDL_SCANCODE_Z: // Y
-        bit = UI_KEY_EDIT2;
-        break;
+        ui.keys.Edit2 = isDown;
+        return true;
     case SDL_SCANCODE_A:
-        bit = UI_KEY_ACTION;
-        break;
+        ui.keys.Action = isDown;
+        return true;
     case SDL_SCANCODE_Q:
-        bit = UI_KEY_MODE;
-        break;
+        ui.keys.Mode = isDown;
+        return true;
     case SDL_SCANCODE_ESCAPE:
         return false;
     default:
-        break;
+        return true;
     }
-
-    if (event->type == SDL_KEYDOWN) {
-        ui.keys |= 1 << bit; // Set bit to 1
-    } else {
-        ui.keys &= ~(1 << bit); // unset bit (to 0)
-    }
-
-    // printf("keys %d\n", ui.keys);
-
-    // we could skip keyChange on A repeat
-    ui.keysChanged = true;
 
     return true;
 }
 
 bool handleController(SDL_ControllerButtonEvent* event)
 {
-    uint16_t bit;
+    bool isDown = event->state == SDL_PRESSED;
+
+    // we could skip keyChange on A repeat
+    ui.keysChanged = true;
 
     SDL_Log("handleController btn %d state %d\n", event->button, event->state);
     switch (event->button) {
     case 11:
-        bit = UI_KEY_UP;
-        break;
+        ui.keys.Up = isDown;
+        return true;
     case 12:
-        bit = UI_KEY_DOWN;
-        break;
+        ui.keys.Down = isDown;
+        return true;
     case 13:
-        bit = UI_KEY_LEFT;
-        break;
+        ui.keys.Left = isDown;
+        return true;
     case 14:
-        bit = UI_KEY_RIGHT;
-        break;
+        ui.keys.Right = isDown;
+        return true;
     case 0:
-        bit = UI_KEY_EDIT;
-        break;
+        ui.keys.Edit = isDown;
+        return true;
     case 1:
-        bit = UI_KEY_MODE;
-        break;
+        ui.keys.Edit2 = isDown;
+        return true;
     // case 20:
     //     bit = UI_KEY_ACTION;
     //     printf("should set Action\n");
-    //     break;
+    //     return true;
     case 9:
         return false;
     default:
-        break;
+        return true;
     }
-
-    if (event->state == SDL_PRESSED) {
-        ui.keys |= 1 << bit; // Set bit to 1
-    } else {
-        ui.keys &= ~(1 << bit); // unset bit (to 0)
-    }
-
-    // we could skip keyChange on A repeat
-    ui.keysChanged = true;
 
     return true;
 }
