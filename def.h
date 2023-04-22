@@ -17,8 +17,12 @@
 #define APP_DATA_FOLDER "./data"
 #endif
 
+#ifndef APP_DATA_MAIN_FILE
+#define APP_DATA_MAIN_FILE "__main__"
+#endif
+
 #ifndef APP_DATA_MAIN
-#define APP_DATA_MAIN APP_DATA_FOLDER "/__main__"
+#define APP_DATA_MAIN APP_DATA_FOLDER "/" APP_DATA_MAIN_FILE
 #endif
 
 #ifndef APP_FONT
@@ -127,6 +131,10 @@
 
 #ifndef APP_TRACK_NAME
 #define APP_TRACK_NAME 12
+#endif
+
+#ifndef APP_TRACK_FOLDER_MAX
+#define APP_TRACK_FOLDER_MAX 1000
 #endif
 
 #ifndef APP_SAMPLE_NAME

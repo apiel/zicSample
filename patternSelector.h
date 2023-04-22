@@ -9,6 +9,9 @@
 
 class PatternSelector {
 protected:
+    char name[APP_TRACK_NAME][APP_TRACK_FOLDER_MAX];
+    uint16_t count = 0;
+
     unsigned int x = 20;
     unsigned int y = 22;
     uint16_t h = SCREEN_H - (y * 2);
@@ -20,7 +23,10 @@ protected:
 
     Track* track = NULL;
 
-    PatternSelector() { }
+    PatternSelector()
+    {
+        load();
+    }
 
     void fixGrid()
     {
@@ -97,6 +103,32 @@ public:
             return true;
         }
         return false;
+    }
+
+    void load()
+    {
+        DIR* x = opendir(APP_DATA_FOLDER);
+        if (x != NULL) {
+            struct dirent* directory;
+            for (count = 0; count < APP_TRACK_FOLDER_MAX && (directory = readdir(x)) != NULL;) {
+                if (!strcmp(directory->d_name, ".") == 0
+                    && !strcmp(directory->d_name, "..") == 0
+                    && !strcmp(directory->d_name, APP_DATA_MAIN_FILE) == 0) {
+                    // printf("- %s\n", directory->d_name);
+                    strncpy(name[count], directory->d_name, APP_TRACK_NAME);
+                    count++;
+                }
+            }
+            closedir(x);
+
+            if (count > 1) {
+                qsort(name, count, sizeof name[0], fileCompare);
+            }
+
+            // for(int i = 0; i < count; i++) {
+            //     printf("- %s\n", name[i]);
+            // }
+        }
     }
 };
 

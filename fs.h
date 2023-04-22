@@ -74,4 +74,14 @@ bool fileExists(const char* filename)
     return (stat(filename, &buffer) == 0);
 }
 
+static int fileCompare(const void *p, const void *q)
+{
+    const char *l= (const char *)p;
+    const char *r= (const char *)q;
+    int cmp;
+
+    cmp= strcmp (l, r);
+    return cmp;
+}
+
 #endif
