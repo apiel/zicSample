@@ -17,7 +17,7 @@ protected:
     uint16_t h = SCREEN_H - (y * 2);
     unsigned int w = SCREEN_W - (x * 2);
 
-    Grid grid = Grid(8, 10);
+    Grid grid = Grid(17, 5);
 
     uint8_t selected = 0;
 
@@ -28,23 +28,11 @@ protected:
         load();
     }
 
-    void fixGrid()
-    {
-    }
-
     void renderSelection(int8_t row, int8_t col, SDL_Color color = COLOR_INFO)
     {
-        unsigned int _y = y + 30 + (row * 25);
-        if (row < 7) {
-            unsigned int _x = x + 20 + (col * 20);
-            drawRect({ _x - 3, _y - 3 }, { 18, 23 }, color);
-        } else if (col == 0) {
-            drawRect({ x + 18, _y - 3 }, { 42, 23 }, color);
-        } else if (col == 1) {
-            drawRect({ x + 65, _y - 3 }, { 60, 23 }, color);
-        } else {
-            drawRect({ x + 126, _y - 3 }, { 90, 23 }, color);
-        }
+        unsigned int _y = row * 16 + y + 3;
+        unsigned int _x = col * 87 + x + 3;
+        drawRect({ _x, _y }, { 86, 14 }, color);
     }
 
     void renderSelection()
@@ -58,13 +46,13 @@ protected:
         drawFilledRect({ x, y }, { w, h }, COLOR_FOREGROUND);
         drawRect({ x, y }, { w, h }, COLOR_INFO);
 
-        for (int row = 0; row < 17; row++) {
-            for (int col = 0; col < 5; col++) {
+        for (int row = 0; row < grid.rows; row++) {
+            for (int col = 0; col < grid.cols; col++) {
                 unsigned int _y = row * 16 + y + 4;
                 unsigned int _x = col * 87 + x + 4;
                 SDL_Color color = COLOR_FOREGROUND2;
 
-                uint16_t index = row * 5 + col;
+                uint16_t index = row * grid.cols + col;
                 if (index < count) {
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
                     drawText({ _x + 3, _y }, names[index], COLOR_INFO, 10);
@@ -74,6 +62,7 @@ protected:
                 }
             }
         }
+        renderSelection();
     }
 
 public:
@@ -103,6 +92,25 @@ public:
         if (keys.Edit) {
             track = NULL;
             return true;
+        }
+        if (keys.Action) {
+            uint16_t index = grid.row * grid.cols + grid.col;
+            if (index < count) {
+                strcpy(track->name, names[index]);
+                track->load();
+                return true;
+            }
+        } else if (keys.Edit2) {
+            uint16_t index = grid.row * grid.cols + grid.col;
+            if (index < count) {
+                strcpy(track->name, names[index]);
+                track->load();
+            }
+        }
+
+        if (grid.update(keys) == VIEW_CHANGED) {
+            renderSelection();
+            draw();
         }
         return false;
     }
