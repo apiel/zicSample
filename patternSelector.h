@@ -56,6 +56,10 @@ protected:
                 if (index < count) {
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
                     drawText({ _x + 3, _y }, names[index], COLOR_INFO, 10);
+                    if (strcmp(names[index], track->name) == 0) {
+                        grid.col = col;
+                        grid.row = row;
+                    }
                 } else {
                     color.a = 0x80;
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
@@ -134,10 +138,6 @@ public:
             if (count > 1) {
                 qsort(names, count, sizeof names[0], fileCompare);
             }
-
-            // for(int i = 0; i < count; i++) {
-            //     printf("- %s\n", name[i]);
-            // }
         }
     }
 };
