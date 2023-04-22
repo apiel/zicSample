@@ -9,7 +9,7 @@
 
 class PatternSelector {
 protected:
-    char name[APP_TRACK_NAME][APP_TRACK_FOLDER_MAX];
+    char names[APP_TRACK_NAME][APP_TRACK_FOLDER_MAX];
     uint16_t count = 0;
 
     unsigned int x = 20;
@@ -53,15 +53,6 @@ protected:
         renderSelection(grid.row, grid.col);
     }
 
-    void renderName(const char* name, unsigned int row, unsigned int col)
-    {
-        unsigned int _y = row * 16 + y + 4;
-        unsigned int _x = col * 87 + x + 4;
-
-        drawFilledRect({ _x, _y }, { 84, 12 }, COLOR_FOREGROUND2);
-        drawText({ _x + 3, _y }, name, COLOR_INFO, 10);
-    }
-
     void render()
     {
         drawFilledRect({ x, y }, { w, h }, COLOR_FOREGROUND);
@@ -69,7 +60,18 @@ protected:
 
         for (int row = 0; row < 17; row++) {
             for (int col = 0; col < 5; col++) {
-                renderName("Pattern 1", row, col);
+                unsigned int _y = row * 16 + y + 4;
+                unsigned int _x = col * 87 + x + 4;
+                SDL_Color color = COLOR_FOREGROUND2;
+
+                uint16_t index = row * 5 + col;
+                if (index < count) {
+                    drawFilledRect({ _x, _y }, { 84, 12 }, color);
+                    drawText({ _x + 3, _y }, names[index], COLOR_INFO, 10);
+                } else {
+                    color.a = 0x80;
+                    drawFilledRect({ _x, _y }, { 84, 12 }, color);
+                }
             }
         }
     }
@@ -115,14 +117,14 @@ public:
                     && !strcmp(directory->d_name, "..") == 0
                     && !strcmp(directory->d_name, APP_DATA_MAIN_FILE) == 0) {
                     // printf("- %s\n", directory->d_name);
-                    strncpy(name[count], directory->d_name, APP_TRACK_NAME);
+                    strncpy(names[count], directory->d_name, APP_TRACK_NAME);
                     count++;
                 }
             }
             closedir(x);
 
             if (count > 1) {
-                qsort(name, count, sizeof name[0], fileCompare);
+                qsort(names, count, sizeof names[0], fileCompare);
             }
 
             // for(int i = 0; i < count; i++) {
