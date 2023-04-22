@@ -127,7 +127,21 @@ public:
         }
 
         if (grid.update(keys) == VIEW_CHANGED) {
-            renderSelection();
+            if (grid.row == grid.lastRow && grid.col == grid.lastCol) {
+                if (keys.Up) {
+                    if (startPosition > 0) {
+                        startPosition -= grid.cols;
+                        render();
+                    }
+                } else if (keys.Down) {
+                    if (startPosition + grid.rows * grid.cols < count) {
+                        startPosition += grid.cols;
+                        render();
+                    }
+                }
+            } else {
+                renderSelection();
+            }
             draw();
         }
         return false;
