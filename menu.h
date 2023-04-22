@@ -84,7 +84,7 @@ protected:
 
     void renderSelection(int8_t row, int8_t col, SDL_Color color = COLOR_INFO)
     {
-            unsigned int _y = y + 30 + (row * 25);
+        unsigned int _y = y + 30 + (row * 25);
         if (row < 7) {
             unsigned int _x = x + 20 + (col * 20);
             drawRect({ _x - 3, _y - 3 }, { 18, 23 }, color);
@@ -148,14 +148,16 @@ public:
             fixGrid();
             renderSelection();
             draw();
-        } else if (keys.Action) {
+        } else if (keys.Action || keys.Edit) {
             if (grid.row < 7) {
-                char c[2];
-                c[0] = alphanum[(grid.row * 10) + grid.col];
-                c[1] = '\0';
-                strcat(isSaveAs->name, c);
-                renderSaveAs();
-                draw();
+                if (strlen(isSaveAs->name) < APP_TRACK_NAME) {
+                    char c[2];
+                    c[0] = alphanum[(grid.row * 10) + grid.col];
+                    c[1] = '\0';
+                    strcat(isSaveAs->name, c);
+                    renderSaveAs();
+                    draw();
+                }
             } else if (grid.col == 0) {
                 isSaveAs->save();
                 isSaveAs = NULL;
@@ -173,10 +175,10 @@ public:
                 renderSaveAs();
                 draw();
             }
-        } else if (keys.Edit) {
-                isSaveAs->name[strlen(isSaveAs->name) - 1] = '\0';
-                renderSaveAs();
-                draw();
+        } else if (keys.Edit2) {
+            isSaveAs->name[strlen(isSaveAs->name) - 1] = '\0';
+            renderSaveAs();
+            draw();
         }
         return false;
     }
