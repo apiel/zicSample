@@ -6,6 +6,7 @@
 #include "draw.h"
 #include "grid.h"
 #include "menu.h"
+#include "patternSelector.h"
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
@@ -25,6 +26,7 @@ protected:
     Data& data = Data::get();
     AudioHandler& audio = AudioHandler::get();
     Menu& menu = Menu::get();
+    PatternSelector& patternSelector = PatternSelector::get();
 
     uint16_t rowY[APP_TRACKS + 1] = {
         GRID_PATTERN_TOP,
@@ -255,6 +257,8 @@ protected:
             handleCutoff(keys.getDirection(10, 50));
         } else if (isResonance()) {
             handelResonance(keys.getDirection(0.01));
+        } else if (isName()) {
+            patternSelector.show(&getTrack());
         } else if (isSample()) {
             Track& track = getTrack();
             track.setNextSample(keys.getOneDirection());
@@ -395,6 +399,14 @@ public:
 
     void handle(UiKeys& keys)
     {
+        if (patternSelector.isVisible()) {
+            if (patternSelector.handle(keys)) {
+                render();
+                draw();
+            }
+            return;
+        }
+
         if (keys.Menu) {
             if (menu.toggle()) {
                 menu.render();
