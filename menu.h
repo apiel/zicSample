@@ -142,6 +142,9 @@ public:
     bool toggle()
     {
         isVisible = !isVisible;
+        if (isSaveAs) {
+            strcpy(isSaveAs->name, saveAsOriginalName);
+        }
         isSaveAs = NULL;
 
         return isVisible;
