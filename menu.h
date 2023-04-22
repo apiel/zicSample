@@ -28,6 +28,7 @@ protected:
     uint8_t selected = 0;
 
     Track* isSaveAs = NULL;
+    char saveAsOriginalName[APP_TRACK_NAME + 1];
 
     Menu() { }
 
@@ -86,7 +87,7 @@ protected:
             unsigned int _y = y + 30 + (row * 25);
         if (row < 7) {
             unsigned int _x = x + 20 + (col * 20);
-            drawRect({ _x - 3, _y - 3 }, { 16, 23 }, color);
+            drawRect({ _x - 3, _y - 3 }, { 18, 23 }, color);
         } else if (col == 0) {
             drawRect({ x + 18, _y - 3 }, { 42, 23 }, color);
         } else if (col == 1) {
@@ -147,6 +148,35 @@ public:
             fixGrid();
             renderSelection();
             draw();
+        } else if (keys.Action) {
+            if (grid.row < 7) {
+                char c[2];
+                c[0] = alphanum[(grid.row * 10) + grid.col];
+                c[1] = '\0';
+                strcat(isSaveAs->name, c);
+                renderSaveAs();
+                draw();
+            } else if (grid.col == 0) {
+                isSaveAs->save();
+                isSaveAs = NULL;
+                render();
+                draw();
+                return true;
+            } else if (grid.col == 1) {
+                strcpy(isSaveAs->name, saveAsOriginalName);
+                isSaveAs = NULL;
+                render();
+                draw();
+                return false;
+            } else {
+                isSaveAs->name[strlen(isSaveAs->name) - 1] = '\0';
+                renderSaveAs();
+                draw();
+            }
+        } else if (keys.Edit) {
+                isSaveAs->name[strlen(isSaveAs->name) - 1] = '\0';
+                renderSaveAs();
+                draw();
         }
         return false;
     }
@@ -177,6 +207,7 @@ public:
                 break;
             case 1:
                 isSaveAs = &track;
+                strcpy(saveAsOriginalName, isSaveAs->name);
                 render();
                 draw();
                 return false;
