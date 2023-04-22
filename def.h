@@ -133,8 +133,8 @@
 #define APP_TRACK_NAME 12
 #endif
 
-#ifndef APP_TRACK_FOLDER_MAX
-#define APP_TRACK_FOLDER_MAX 1000
+#ifndef APP_TRACK_LIST_MAX
+#define APP_TRACK_LIST_MAX 1000
 #endif
 
 #ifndef APP_SAMPLE_NAME

@@ -9,8 +9,8 @@
 
 class PatternSelector {
 protected:
-    char names[APP_TRACK_NAME][APP_TRACK_FOLDER_MAX];
-    uint16_t count = 0;
+    int16_t count = 0;
+    char names[APP_TRACK_LIST_MAX][APP_TRACK_NAME];
 
     unsigned int x = 20;
     unsigned int y = 22;
@@ -20,6 +20,7 @@ protected:
     Grid grid = Grid(17, 5);
 
     uint8_t selected = 0;
+    uint16_t startPosition = 0;
 
     Track* track = NULL;
 
@@ -53,10 +54,10 @@ protected:
                 SDL_Color color = COLOR_FOREGROUND2;
 
                 uint16_t index = row * grid.cols + col;
-                if (index < count) {
+                if (startPosition + index < count) {
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
-                    drawText({ _x + 3, _y }, names[index], COLOR_INFO, 10);
-                    if (strcmp(names[index], track->name) == 0) {
+                    drawText({ _x + 3, _y }, names[startPosition + index], COLOR_INFO, 10);
+                    if (strcmp(names[startPosition + index], track->name) == 0) {
                         grid.col = col;
                         grid.row = row;
                     }
@@ -83,6 +84,19 @@ public:
     void show(Track* _track)
     {
         track = _track;
+        uint16_t i = 0;
+        for (; i < count; i++) {
+            if (strcmp(names[i], track->name) == 0) {
+                break;
+            }
+        }
+        SDL_Log("i: %d spot: %d\n", i, grid.rows * grid.cols);
+        if (i < grid.rows * grid.cols) {
+            startPosition = 0;
+        } else {
+            startPosition = i - ((grid.rows - 1) * grid.cols);
+            startPosition = startPosition - startPosition % grid.cols;
+        }
         render();
     }
 
@@ -124,12 +138,14 @@ public:
         DIR* x = opendir(APP_DATA_FOLDER);
         if (x != NULL) {
             struct dirent* directory;
-            for (count = 0; count < APP_TRACK_FOLDER_MAX && (directory = readdir(x)) != NULL;) {
+            count = 0;
+            while (count < APP_TRACK_LIST_MAX && (directory = readdir(x)) != NULL) {
                 if (!strcmp(directory->d_name, ".") == 0
                     && !strcmp(directory->d_name, "..") == 0
                     && !strcmp(directory->d_name, APP_DATA_MAIN_FILE) == 0) {
-                    // printf("- %s\n", directory->d_name);
+                    // printf("(%d) %s\n", count, directory->d_name);
                     strncpy(names[count], directory->d_name, APP_TRACK_NAME);
+                    names[count][APP_TRACK_NAME - 1] = '\0';
                     count++;
                 }
             }
@@ -139,6 +155,11 @@ public:
                 qsort(names, count, sizeof names[0], fileCompare);
             }
         }
+        SDL_Log("Found %d patterns\n", count);
+
+        // for (uint16_t i = 0; i < count; i++) {
+        //     SDL_Log("# %s\n", names[i]);
+        // }
     }
 };
 
