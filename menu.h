@@ -20,8 +20,8 @@ uint8_t MENU_ITEMS_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 class Menu {
 protected:
     unsigned int x = 120;
-    unsigned int y = 75;
-    uint16_t h = SCREEN_H - (y + 5);
+    unsigned int y = 30;
+    uint16_t h = SCREEN_H - (y * 2);
     unsigned int w = SCREEN_W - (x * 2);
 
     Grid grid = Grid(8, 10);
@@ -224,7 +224,8 @@ public:
             case 2:
                 track.load();
                 break;
-            case 3:
+            case 4:
+                SDL_Log("EXIT\n");
                 exit(0);
                 break;
             }

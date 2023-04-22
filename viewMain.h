@@ -88,7 +88,7 @@ protected:
     {
         unsigned int y = rowY[row];
 
-        // drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
+        drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
 
         SDL_Color trackColor = COLOR_FOREGROUND2;
         SDL_Color trackText = COLOR_INFO;
@@ -399,7 +399,7 @@ public:
             if (menu.toggle()) {
                 menu.render();
             } else {
-                renderRows(CLEAR);
+                render();
             }
             draw();
             return;
@@ -407,7 +407,6 @@ public:
 
         if (menu.isVisible) {
             if (menu.handle(keys, getTrack())) {
-                // renderRows(CLEAR);
                 render();
                 draw();
             }
