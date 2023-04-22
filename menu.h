@@ -5,6 +5,7 @@
 #include "draw.h"
 #include "grid.h"
 #include "track.h"
+#include "fs.h"
 
 const char* MENU_ITEMS[] = {
     "Save track",
@@ -67,6 +68,10 @@ protected:
 
         drawFilledRect({ x + 1, y + 1 }, { w - 2, 25 }, COLOR_FOREGROUND2);
         drawText({ x + 20, y + 5 }, name, COLOR_MENU);
+
+        if (fileExists(isSaveAs->getFilePath())) {
+            drawText({ x + 180, y + 8 }, "overwrite", COLOR_INFO, 11);
+        }
 
         for (uint8_t i = 0; i < 7; i++) {
             for (uint8_t j = 0; j < 10; j++) {

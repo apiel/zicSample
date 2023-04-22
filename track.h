@@ -150,6 +150,8 @@ public:
 
 class Track {
 protected:
+    char filepath[strlen(APP_DATA_FOLDER) + 1 + APP_TRACK_NAME];
+
     void openSample()
     {
         char filepath[strlen(APP_SAMPLES_FOLDER) + 1 + strlen(sample)];
@@ -243,16 +245,20 @@ public:
         return *this;
     }
 
+    char* getFilePath()
+    {
+        sprintf(filepath, "%s/%s", APP_DATA_FOLDER, name);
+        return filepath;
+    }
+
     Track& load()
     {
         // SDL_Log("Track::load %s\n", name);
         if (name[0] != '-') {
             size_t sz;
-            char filepath[strlen(APP_DATA_FOLDER) + 1 + strlen(name)];
-            sprintf(filepath, "%s/%s", APP_DATA_FOLDER, name);
-            void* loaded = SDL_LoadFile(filepath, &sz);
+            void* loaded = SDL_LoadFile(getFilePath(), &sz);
             if (!loaded) {
-                APP_LOG("Error: could not load file %s\n", filepath);
+                APP_LOG("Error: could not load file %s\n", getFilePath());
                 return *this;
             }
             // APP_LOG("Track data (%lu):\n%s\n\n", sz, (char*)loaded);
@@ -281,11 +287,9 @@ public:
     {
         // SDL_Log("Track::save %s\n", name);
         if (name[0] != '-') {
-            char filepath[strlen(APP_DATA_FOLDER) + 1 + strlen(name)];
-            sprintf(filepath, "%s/%s", APP_DATA_FOLDER, name);
-            FILE* file = fopen(filepath, "w");
+            FILE* file = fopen(getFilePath(), "w");
             if (!file) {
-                APP_LOG("Error: could not open file %s\n", filepath);
+                APP_LOG("Error: could not open file %s\n", getFilePath());
                 return *this;
             }
             fprintf(file, "%s\n", sample);

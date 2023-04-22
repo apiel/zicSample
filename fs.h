@@ -68,4 +68,10 @@ bool firstFile(char* filename, const char* folder, uint8_t len = 255)
     return initialized;
 }
 
+bool fileExists(const char* filename)
+{
+    struct stat buffer;
+    return (stat(filename, &buffer) == 0);
+}
+
 #endif
