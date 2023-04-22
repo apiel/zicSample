@@ -4,27 +4,47 @@
 #include "audioHandler.h"
 #include "data.h"
 #include "draw.h"
+#include "grid.h"
 #include "menu.h"
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
-#include "grid.h"
 
 #define CLEAR true
 #define OPTIMIZED true
 
+#define GRID_PATTERN_TOP 69
+#define GRID_PATTERN_ROW_H 15
+
 class ViewMain : public View {
 protected:
     bool headerEditMode = false;
-    Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1, 1);
+    Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1);
     Grid gridEdit = Grid(3, 5);
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
     AudioHandler& audio = AudioHandler::get();
     Menu& menu = Menu::get();
 
-    // 75 + 15 * row
-    uint16_t rowY[APP_TRACKS + 1] = { 67, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300 };
+    uint16_t rowY[APP_TRACKS + 1] = {
+        GRID_PATTERN_TOP,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 2,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 3,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 4,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 5,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 6,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 7,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 8,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 9,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 10,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 11,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 12,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 13,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 14,
+        GRID_PATTERN_TOP + GRID_PATTERN_ROW_H * 15,
+        progressBar.y
+    };
 
     ViewMain() { }
 
@@ -45,7 +65,7 @@ protected:
     {
         unsigned int y = rowY[row];
         uint8_t h = 14;
-        if (row == 0) {
+        if (row == APP_TRACKS) {
             h = 7;
             col = 0;
         }
@@ -68,7 +88,7 @@ protected:
     {
         unsigned int y = rowY[row];
 
-        drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
+        // drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
 
         SDL_Color trackColor = COLOR_FOREGROUND2;
         SDL_Color trackText = COLOR_INFO;
@@ -127,7 +147,7 @@ protected:
     bool isStepCondition() { return headerEditMode && gridEdit.is(2, 3); }
 
     Track& getTrack() { return getTrack(grid.row); }
-    Track& getTrack(int8_t gridRow) { return data.tracks[gridRow - 1]; }
+    Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
 
     void renderHeaderPattern(bool clear = false)
     {
@@ -202,15 +222,15 @@ protected:
 
     void renderMasterVolume(bool selected = false)
     {
-        drawFilledRect({ 4, 66 }, { 86, 7 }, COLOR_BACKGROUND);
+        drawFilledRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_BACKGROUND);
         SDL_Color color = COLOR_ON;
         color.a = 100;
-        drawFilledRect({ 5, 67 }, { 84, 5 }, color);
+        drawFilledRect({ 5, progressBar.y }, { 84, progressBar.h }, color);
         color.a = 200;
         unsigned int width = 84.0 * audio.getVolume() / APP_MAX_VOLUME;
-        drawFilledRect({ 5, 67 }, { width, 5 }, color);
+        drawFilledRect({ 5, progressBar.y }, { width, progressBar.h }, color);
         if (selected) {
-            drawRect({ 4, 66 }, { 86, 7 }, COLOR_WHITE);
+            drawRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_WHITE);
         }
     }
 
@@ -286,7 +306,7 @@ protected:
 
     void handleMain(UiKeys& keys)
     {
-        if (grid.row == 0) {
+        if (grid.row == APP_TRACKS) {
             audio.setVolume(audio.getVolume() + keys.getDirection(0.05, 0.1));
             renderMasterVolume(true);
             renderHeaderMaster();
@@ -320,7 +340,7 @@ protected:
 
     void handleMainEdit2(UiKeys& keys)
     {
-        if (grid.row == 0) {
+        if (grid.row == APP_TRACKS) {
             return;
         } else if (grid.col == 0) {
             if (keys.Right) {
@@ -342,9 +362,9 @@ protected:
     void renderRows(bool clear = false)
     {
         if (clear) {
-            drawFilledRect({ 0, 74 }, { SCREEN_W, SCREEN_H - 74 }, COLOR_BACKGROUND);
+            drawFilledRect({ 0, rowY[0] }, { SCREEN_W, rowY[0] - progressBar.y }, COLOR_BACKGROUND);
         }
-        for (unsigned int row = 1; row < APP_TRACKS + 1; row++) {
+        for (unsigned int row = 0; row < APP_TRACKS; row++) {
             renderRow(row);
         }
     }
@@ -416,11 +436,11 @@ public:
             }
         } else if (grid.update(keys) == VIEW_CHANGED) {
             renderSelection();
-            if (grid.row == 0) {
+            if (grid.row == APP_TRACKS) {
                 renderHeaderMaster();
             } else {
                 if (grid.rowChanged()) {
-                    if (grid.lastRow == 0) { // If last row was 0, fully re-render
+                    if (grid.lastRow == APP_TRACKS) { // If last row was 0, fully re-render
                         renderHeader();
                     } else {
                         renderHeaderPattern(CLEAR);
@@ -443,7 +463,7 @@ public:
             draw();
             return;
         } else if (keys.Action) {
-            if (grid.row == 0) {
+            if (grid.row == APP_TRACKS) {
                 // Could start to play pause
                 // audio.tempo.toggle();
                 // draw();
