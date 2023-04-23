@@ -55,8 +55,13 @@ protected:
 
                 uint16_t index = row * grid.cols + col;
                 if (startPosition + index < count) {
+                    SDL_Color textColor = COLOR_INFO;
+                    if (strcmp(getName(index), track->name) == 0) {
+                        color = COLOR_INFO;
+                        textColor = COLOR_WHITE;
+                    }
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
-                    drawText({ _x + 3, _y }, names[startPosition + index], COLOR_INFO, 10);
+                    drawText({ _x + 3, _y }, getName(index), textColor, 10);
                 } else {
                     color.a = 0x80;
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
@@ -64,6 +69,14 @@ protected:
             }
         }
         renderSelection();
+    }
+
+    const char * getName(uint16_t index)
+    {
+        if (index < count) {
+            return names[startPosition + index];
+        }
+        return NULL;
     }
 
 public:
@@ -114,15 +127,16 @@ public:
         if (keys.Action) {
             uint16_t index = grid.row * grid.cols + grid.col;
             if (index < count) {
-                strcpy(track->name, names[index]);
+                strcpy(track->name, getName(index));
                 track->load();
                 return true;
             }
         } else if (keys.Edit2) {
             uint16_t index = grid.row * grid.cols + grid.col;
             if (index < count) {
-                strcpy(track->name, names[index]);
+                strcpy(track->name, getName(index));
                 track->load();
+                render();
             }
         }
 
