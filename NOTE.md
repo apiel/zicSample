@@ -1,19 +1,14 @@
 # TODO
 
-- move volume on track toggle
+- freesound api
+- negative resonance could be something else, maybe distortion?
 - standardise layout to be 4 label value per row
-- remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
-- make a unique filter with (left) hipass / lowpass (right) where center is no filtering, and maybe use similar concept with resonance, where postive value is normal resonnance, but negative could be something else, maybe distortion?
-Changing filter type could eventually be done from a menu?
-- load, save and save as pattern
-- copy, paste, select
-- menu to exit
-
-- maybe the volume bar can be selected from the none edit mode and this would display the master parameters like BPM, master filter, fx1, fx2. (in another way, it could be great to have a view where everything is visible in one screen, so maybe remove unecessary thing in a menu, like bpm..., bpm could be changed by selecting the progress bar!!)
-
+  BUT should there even be this top bar edit mode, there is 4 button (A,B,X,Y) giving the possibility to edit 2 values per button (even the main toggle button can have more feature if press long) and could also use double press. For fine tuning could use R1!!
 - use jostick to apply master fitler, and track filter and also use L1 R1... to apply grid effect
 
 
+- remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
+- copy, paste, select
 
 
 ### pitch shifting
