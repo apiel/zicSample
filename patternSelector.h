@@ -57,10 +57,6 @@ protected:
                 if (startPosition + index < count) {
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
                     drawText({ _x + 3, _y }, names[startPosition + index], COLOR_INFO, 10);
-                    if (strcmp(names[startPosition + index], track->name) == 0) {
-                        grid.col = col;
-                        grid.row = row;
-                    }
                 } else {
                     color.a = 0x80;
                     drawFilledRect({ _x, _y }, { 84, 12 }, color);
@@ -90,13 +86,17 @@ public:
                 break;
             }
         }
-        SDL_Log("i: %d spot: %d\n", i, grid.rows * grid.cols);
+        // SDL_Log("i: %d spot: %d\n", i, grid.rows * grid.cols);
         if (i < grid.rows * grid.cols) {
             startPosition = 0;
         } else {
             startPosition = i - ((grid.rows - 1) * grid.cols);
             startPosition = startPosition - startPosition % grid.cols;
         }
+
+        grid.col = (i - startPosition) % grid.cols;
+        grid.row = (i - startPosition) / grid.cols;
+
         render();
     }
 
