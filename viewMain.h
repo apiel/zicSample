@@ -52,12 +52,12 @@ protected:
 
     void fixGridEdit()
     {
-        if (gridEdit.row == 1 && gridEdit.col == 0 && gridEdit.lastRow == 0 && gridEdit.lastCol == 0) {
-            gridEdit.row = 2;
-        } else if (gridEdit.row == 1 && gridEdit.col > 3) {
+        if (gridEdit.row == 1 && gridEdit.col > 3) {
             gridEdit.col = 3;
-        } else if (grid.col == 0 && gridEdit.row == 2 && gridEdit.col > 0) {
-            gridEdit.col = 0;
+        } else if (gridEdit.row == 2 && grid.col == 0) {
+            gridEdit.row = 1;
+        } else if (gridEdit.row == 2 && gridEdit.col < 1) {
+            gridEdit.col = 1;
         } else if (gridEdit.row == 2 && gridEdit.col > 3) {
             gridEdit.col = 3;
         }

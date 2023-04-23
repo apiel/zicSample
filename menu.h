@@ -3,9 +3,9 @@
 
 #include "def.h"
 #include "draw.h"
+#include "fs.h"
 #include "grid.h"
 #include "track.h"
-#include "fs.h"
 
 const char* MENU_ITEMS[] = {
     "Save track",
@@ -158,7 +158,11 @@ public:
             draw();
         } else if (keys.Action || keys.Edit) {
             if (grid.row < 7) {
-                if (strlen(isSaveAs->name) < APP_TRACK_NAME) {
+                if (strlen(isSaveAs->name) < APP_TRACK_NAME
+                    && strlen(isSaveAs->name) > 0
+                    && strcmp(track.name, "-") != 0
+                    && strcmp(track.name, ".") != 0
+                    && strcmp(track.name, "..") != 0) {
                     char c[2];
                     c[0] = alphanum[(grid.row * 10) + grid.col];
                     c[1] = '\0';
@@ -213,8 +217,10 @@ public:
         } else if (keys.Action || keys.Edit) {
             switch (selected) {
             case 0:
-                track.save();
-                break;
+                if (strcmp(track.name, "-") != 0) {
+                    track.save();
+                    break;
+                }
             case 1:
                 isSaveAs = &track;
                 strcpy(saveAsOriginalName, isSaveAs->name);
