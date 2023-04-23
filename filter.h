@@ -23,6 +23,16 @@ protected:
     float buf0 = 0;
     float buf1 = 0;
 
+    // Distorion
+    float distortionShape;
+    float distortionApply(float sample)
+    {
+        if (distortionDrive == 0.0) {
+            return sample;
+        }
+        return (1 + distortionShape) * sample / (1 + distortionShape * fabsf(sample));
+    }
+
     void calculateVar()
     {
         calculateVar(cutoff, resonance);
@@ -30,6 +40,7 @@ protected:
 
     void calculateVar(float _cutoff, float _resonance)
     {
+        // TODO when using LFO or ENV to modulate the filter...
         // optimized if reso = 0 then feedback = 0, no need to calculate...
 
         // cutoff cannot be 1.0 (should we ensure this?)
@@ -39,22 +50,24 @@ protected:
     float next(float inputValue, float _cutoff)
     {
         if (mode == FILTER_MODE_OFF || inputValue == 0) {
-            return inputValue;
+            return distortionApply(inputValue);
         }
 
         buf0 += _cutoff * (inputValue - buf0 + feedback * (buf0 - buf1));
         buf1 += _cutoff * (buf0 - buf1);
 
         if (mode == FILTER_MODE_LOWPASS_12) {
-            return buf1;
+            return distortionApply(buf1);
         }
-        return inputValue - buf0;
+        return distortionApply(inputValue - buf0);
     }
 
 public:
     int16_t value = 0;
     float resonance = 0.0;
     uint8_t mode = FILTER_MODE_OFF;
+
+    float distortionDrive = 0.0;
 
     Filter()
     {
@@ -140,6 +153,16 @@ public:
         default:
             return "Filter";
         }
+    }
+
+    Filter& setDistortion(float drive)
+    {
+        distortionDrive = range(drive, 0.0, 1.0);
+        if (distortionDrive > 0.0) {
+            distortionShape = 2 * (distortionDrive - 0.000001) / (1 - (distortionDrive - 0.000001));
+        }
+
+        return *this;
     }
 };
 

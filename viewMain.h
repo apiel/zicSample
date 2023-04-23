@@ -170,7 +170,7 @@ protected:
 
         x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
         x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isReverb());
-        x = drawLabelValue({ x + 5, 22 }, "Distortion:", 0, "%", isDistortion());
+        x = drawLabelValue({ x + 5, 22 }, "Distortion:", (int)(track.filter.distortionDrive * 100), "%", isDistortion());
     }
 
     void renderHeaderStep()
@@ -257,6 +257,10 @@ protected:
             handleCutoff(keys.getDirection(10, 50));
         } else if (isResonance()) {
             handelResonance(keys.getDirection(0.01));
+        } else if (isDistortion()) {
+            Track& track = getTrack();
+            track.filter.setDistortion(track.filter.distortionDrive + keys.getDirection(0.01));
+            renderHeaderPattern(CLEAR);
         } else if (isName()) {
             patternSelector.show(&getTrack());
         } else if (isSample()) {
