@@ -48,6 +48,8 @@ protected:
         progressBar.y
     };
 
+    static ViewMain* instance;
+
     ViewMain() { }
 
     void fixGridEdit()
@@ -378,8 +380,6 @@ protected:
     }
 
 public:
-    static ViewMain* instance;
-
     static ViewMain& get()
     {
         if (!instance) {

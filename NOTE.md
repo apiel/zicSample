@@ -1,12 +1,11 @@
 # TODO
 
 - freesound api
-- negative resonance could be something else, maybe distortion?
 - standardise layout to be 4 label value per row
   BUT should there even be this top bar edit mode, there is 4 button (A,B,X,Y) giving the possibility to edit 2 values per button (even the main toggle button can have more feature if press long) and could also use double press. For fine tuning could use R1!!
 - use jostick to apply master fitler, and track filter and also use L1 R1... to apply grid effect
 
-
+- negative resonance could do something else, maybe make a resoance with envelop?
 - remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
 - copy, paste, select
 

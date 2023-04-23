@@ -24,6 +24,8 @@ protected:
 
     Track* track = NULL;
 
+    static PatternSelector* instance;
+
     PatternSelector()
     {
         load();
@@ -80,8 +82,6 @@ protected:
     }
 
 public:
-    static PatternSelector* instance;
-
     static PatternSelector& get()
     {
         if (!instance) {

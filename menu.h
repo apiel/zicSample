@@ -31,6 +31,8 @@ protected:
     Track* isSaveAs = NULL;
     char saveAsOriginalName[APP_TRACK_NAME + 1];
 
+    static Menu* instance;
+
     Menu() { }
 
     void fixGrid()
@@ -110,8 +112,6 @@ protected:
 
 public:
     bool isVisible = false;
-
-    static Menu* instance;
 
     static Menu& get()
     {

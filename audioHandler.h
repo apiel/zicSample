@@ -13,6 +13,8 @@ protected:
     float volume = 1.0f;
     float mixDivider = 1.0f / APP_TRACKS;
 
+    static AudioHandler* instance;
+
     AudioHandler() {
         setVolume(volume);
     }
@@ -21,8 +23,6 @@ public:
     Tempo& tempo = Tempo::get();
 
     uint8_t stepCounter = 0;
-
-    static AudioHandler* instance;
 
     static AudioHandler& get()
     {

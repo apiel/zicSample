@@ -7,13 +7,12 @@
 
 class ProgressBar {
 protected:
+    static ProgressBar* instance;
     ProgressBar() { }
 
 public:
     const unsigned int h = 5;
     const unsigned int y = SCREEN_H - (h + 5);
-
-    static ProgressBar* instance;
 
     static ProgressBar& get()
     {

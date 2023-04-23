@@ -18,6 +18,8 @@ protected:
     uint16_t sampleCount = 0;
     unsigned long time;
 
+    static Tempo* instance;
+
     Tempo()
     {
         set(120);
@@ -25,8 +27,6 @@ protected:
 
 public:
     uint16_t bpm;
-
-    static Tempo* instance;
 
     static Tempo& get()
     {
