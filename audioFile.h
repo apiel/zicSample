@@ -67,7 +67,7 @@ public:
         return file;
     }
 
-    void sample(float* buf, int len)
+    void samples(float* buf, int len)
     {
 #if LOAD_SAMPLE_IN_MEMORY
         for (int i = 0; i < len; i++) {

@@ -17,12 +17,12 @@ public:
         set(drive);
     };
 
-    float next(float sample)
+    float sample(float buf)
     {
-        if (drive == 0.0) {
-            return sample;
+        if (drive == 0.0 || buf == 0.0) {
+            return buf;
         }
-        return (1 + shape) * sample / (1 + shape * fabsf(sample));
+        return (1 + shape) * buf / (1 + shape * fabsf(buf));
     }
 
     Distortion& set(float _drive)

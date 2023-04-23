@@ -23,16 +23,6 @@ protected:
     float buf0 = 0;
     float buf1 = 0;
 
-    // Distorion
-    float distortionShape;
-    float distortionApply(float sample)
-    {
-        if (distortionDrive == 0.0) {
-            return sample;
-        }
-        return (1 + distortionShape) * sample / (1 + distortionShape * fabsf(sample));
-    }
-
     void calculateVar()
     {
         calculateVar(cutoff, resonance);
@@ -47,19 +37,19 @@ protected:
         feedback = _resonance + _resonance / (1.0 - _cutoff);
     }
 
-    float next(float inputValue, float _cutoff)
+    float sample(float inputValue, float _cutoff)
     {
         if (mode == FILTER_MODE_OFF || inputValue == 0) {
-            return distortionApply(inputValue);
+            return inputValue;
         }
 
         buf0 += _cutoff * (inputValue - buf0 + feedback * (buf0 - buf1));
         buf1 += _cutoff * (buf0 - buf1);
 
         if (mode == FILTER_MODE_LOWPASS_12) {
-            return distortionApply(buf1);
+            return buf1;
         }
-        return distortionApply(inputValue - buf0);
+        return inputValue - buf0;
     }
 
 public:
@@ -67,19 +57,17 @@ public:
     float resonance = 0.0;
     uint8_t mode = FILTER_MODE_OFF;
 
-    float distortionDrive = 0.0;
-
     Filter()
     {
         set(value);
     };
 
-    float next(float inputValue)
+    float sample(float inputValue)
     {
-        return next(inputValue, cutoff);
+        return sample(inputValue, cutoff);
     }
 
-    float next(float inputValue, float modCutoff, float modResonance)
+    float sample(float inputValue, float modCutoff, float modResonance)
     {
         // could be optimized and apply only if modCutoff or modResonance != 0
         float _cutoff = cutoff + ((1.0 - cutoff) * modCutoff); // I am not sure this make sense!!
@@ -88,7 +76,7 @@ public:
         // optimized if reso = 0 then feedback = 0, no need to calculate...
         calculateVar(_cutoff, _resonance);
 
-        return next(inputValue, _cutoff);
+        return sample(inputValue, _cutoff);
     }
 
     Filter& set(int16_t val)
@@ -153,16 +141,6 @@ public:
         default:
             return "Filter";
         }
-    }
-
-    Filter& setDistortion(float drive)
-    {
-        distortionDrive = range(drive, 0.0, 1.0);
-        if (distortionDrive > 0.0) {
-            distortionShape = 2 * (distortionDrive - 0.000001) / (1 - (distortionDrive - 0.000001));
-        }
-
-        return *this;
     }
 };
 

@@ -32,7 +32,7 @@ public:
         return *instance;
     }
 
-    void sample(float* buf, int len)
+    void samples(float* buf, int len)
     {
         if (tempo.next(SDL_GetTicks()))
         // if (tempo.next(SDL_GetTicks64()))
@@ -55,9 +55,10 @@ public:
         for (uint8_t i = 0; i < APP_TRACKS; i++) {
             Track& track = data.tracks[i];
             if (track.active) {
-                track.audioFile.sample(buffer, len);
+                track.audioFile.samples(buffer, len);
                 for (int j = 0; j < len; j++) {
-                    buf[j] += track.filter.next(buffer[j]) * mixDivider * track.activeStep->velocity * track.volume;
+                    // buf[j] += track.filter.sample(buffer[j]) * mixDivider * track.activeStep->velocity * track.volume;
+                    buf[j] += track.sampleModulation(buffer[j], mixDivider);
                 }
             }
         }

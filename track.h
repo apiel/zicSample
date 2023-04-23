@@ -3,6 +3,7 @@
 
 #include "audioFile.h"
 #include "def.h"
+#include "distortion.h"
 #include "filter.h"
 #include "fs.h"
 
@@ -152,21 +153,22 @@ class Track {
 protected:
     char filepath[strlen(APP_DATA_FOLDER) + 1 + APP_TRACK_NAME];
 
-    void openSample()
+    void openAudioFileName()
     {
-        char filepath[strlen(APP_SAMPLES_FOLDER) + 1 + strlen(sample)];
-        sprintf(filepath, "%s/%s", APP_SAMPLES_FOLDER, sample);
+        char filepath[strlen(APP_SAMPLES_FOLDER) + 1 + strlen(audioFileName)];
+        sprintf(filepath, "%s/%s", APP_SAMPLES_FOLDER, audioFileName);
         audioFile.open(filepath);
     }
 
 public:
     Filter filter;
+    Distortion distortion;
     AudioFile audioFile;
     uint8_t stepCounter = 0;
     uint8_t loopCounter = 0;
 
     char name[APP_TRACK_NAME];
-    char sample[APP_SAMPLE_NAME];
+    char audioFileName[APP_SAMPLE_NAME];
 
     Step steps[APP_TRACK_STEPS];
     Step* activeStep = &steps[0];
@@ -228,20 +230,24 @@ public:
         return ret;
     }
 
-    Track& setSample(char* _sample)
+    float sampleModulation(float buf, float mixDivider)
     {
-        strncpy(sample, _sample, APP_SAMPLE_NAME);
-        openSample();
-        // SDL_Log("Audio file %s sampleCount %ld\n", filepath, (long)audioFile.sfinfo.frames);
+        return distortion.sample(filter.sample(buf)) * mixDivider * activeStep->velocity * volume;
+    }
+
+    Track& setAudioFileName(char* name)
+    {
+        strncpy(audioFileName, name, APP_SAMPLE_NAME);
+        openAudioFileName();
         return *this;
     }
 
-    Track& setNextSample(int8_t direction = 0)
+    Track& setNextAudioFileName(int8_t direction = 0)
     {
         // TODO if direction > 1 then should jump to next letter
         direction = range(direction, -1, 1);
-        nextFile(sample, APP_SAMPLES_FOLDER, sample, direction);
-        openSample();
+        nextFile(audioFileName, APP_SAMPLES_FOLDER, audioFileName, direction);
+        openAudioFileName();
         return *this;
     }
 
@@ -264,7 +270,7 @@ public:
             // APP_LOG("Track data (%lu):\n%s\n\n", sz, (char*)loaded);
 
             char* rest = (char*)loaded;
-            setSample(strtok_r(rest, "\n", &rest));
+            setAudioFileName(strtok_r(rest, "\n", &rest));
             char* line = strtok_r(rest, "\n", &rest);
             volume = atof(strtok(line, " "));
             filter.set(atoi(strtok(NULL, " ")));
@@ -292,7 +298,7 @@ public:
                 APP_LOG("Error: could not open file %s\n", getFilePath());
                 return *this;
             }
-            fprintf(file, "%s\n", sample);
+            fprintf(file, "%s\n", audioFileName);
             fprintf(file, "%.2f %i %.2f\n\n", volume, filter.value, filter.resonance);
             for (uint8_t i = 0; i < APP_TRACK_STEPS; i++) {
                 Step& step = steps[i];

@@ -10,7 +10,7 @@ float lenDivider = 1.0f / sizeof(float);
 void audioCallBack(void* userdata, Uint8* stream, int len)
 {
     float* buf = (float*)stream;
-    audio.sample(buf, len * lenDivider);
+    audio.samples(buf, len * lenDivider);
 }
 
 int main(int argc, char* args[])

@@ -166,11 +166,11 @@ protected:
         unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
         x = drawLabelValue({ x + 5, 5 }, track.filter.getName(), track.filter.getPctValue(), "%", isCutoff());
         x = drawLabelValue({ x + 5, 5 }, "Res:", (int)(track.filter.resonance * 100), "%", isResonance());
-        drawSelectableText(isSample(), { x + 5, 5 }, track.sample, COLOR_INFO, 14);
+        drawSelectableText(isSample(), { x + 5, 5 }, track.audioFileName, COLOR_INFO, 14);
 
         x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
         x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isReverb());
-        x = drawLabelValue({ x + 5, 22 }, "Distortion:", (int)(track.filter.distortionDrive * 100), "%", isDistortion());
+        x = drawLabelValue({ x + 5, 22 }, "Distortion:", (int)(track.distortion.drive * 100), "%", isDistortion());
     }
 
     void renderHeaderStep()
@@ -259,13 +259,13 @@ protected:
             handelResonance(keys.getDirection(0.01));
         } else if (isDistortion()) {
             Track& track = getTrack();
-            track.filter.setDistortion(track.filter.distortionDrive + keys.getDirection(0.01));
+            track.distortion.set(track.distortion.drive + keys.getDirection(0.01));
             renderHeaderPattern(CLEAR);
         } else if (isName()) {
             patternSelector.show(&getTrack());
         } else if (isSample()) {
             Track& track = getTrack();
-            track.setNextSample(keys.getOneDirection());
+            track.setNextAudioFileName(keys.getOneDirection());
             renderHeaderPattern(CLEAR);
         } else {
             return;
