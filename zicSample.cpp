@@ -3,11 +3,12 @@
 #include "def.h"
 #include "sdl2.h"
 #include "viewMain.h"
+
+#ifdef FREESOUND_ENABLED
 #include "freesound.h"
+#endif
 
 AudioHandler& audio = AudioHandler::get();
-
-Freesound& freesound = Freesound::get();
 
 float lenDivider = 1.0f / sizeof(float);
 void audioCallBack(void* userdata, Uint8* stream, int len)
@@ -20,7 +21,9 @@ int main(int argc, char* args[])
 {
     SDL_Log(">>>>>>> Start Zic Tracker\n");
 
-    freesound.init();
+#ifdef FREESOUND_ENABLED
+    Freesound::get().init();
+#endif
 
     Data::get().load();
 

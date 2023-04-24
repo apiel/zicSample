@@ -11,9 +11,11 @@ SDL2_TTF=`pkg-config --cflags --libs SDL2_ttf`
 
 CURL=`curl-config --cflags --libs`
 
+# FREESOUND=$(CURL) -DFREESOUND_ENABLED
+
 RG351P=-ldl `pkg-config wayland-client --cflags --libs` -lasound -lpulse -lX11 -lXext -lXdamage -lXfixes -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread  -lwayland-egl -lwayland-cursor -lxkbcommon -lXss
 
-BUILD=-Wall zicSample.cpp -fopenmp -Wno-narrowing $(SDL2) $(SDL2_TTF) $(LIDSND) $(CURL)
+BUILD=-Wall zicSample.cpp -fopenmp -Wno-narrowing $(SDL2) $(SDL2_TTF) $(LIDSND) $(FREESOUND)
 
 linux: build run
 

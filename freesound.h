@@ -9,6 +9,9 @@
 #define FREESOUND_FILE_KEY ".freesound.key"
 #endif
 
+// https://niranjanmalviya.wordpress.com/2018/06/23/get-json-data-using-curl/
+// https://stackoverflow.com/questions/24884490/using-libcurl-and-jsoncpp-to-parse-from-https-webserver
+
 class Freesound {
 protected:
     struct curl_slist* headerlist = NULL;
