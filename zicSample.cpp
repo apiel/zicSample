@@ -66,8 +66,8 @@ int main(int argc, char* args[])
     draw();
 
     while (handleEvent()) {
-        if (ui.keysChanged) {
-            ui.keysChanged = false;
+        if (ui.update) {
+            ui.update = false;
             viewMain.handle(ui.keys);
         }
         if (needToRenderProgressBar) {

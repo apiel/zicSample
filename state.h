@@ -4,7 +4,7 @@
 #include "def.h"
 
 typedef struct {
-    bool keysChanged = false;
+    bool update = false;
     UiKeys keys;
 } Ui;
 

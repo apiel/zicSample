@@ -192,9 +192,16 @@ public:
     bool Left = false;
     bool Edit = false;
     bool Edit2 = false;
+    bool Edit3 = false;
     bool Mode = false;
     bool Menu = false;
     bool Action = false;
+    bool R1 = false;
+    bool R2 = false;
+    bool L1 = false;
+    bool L2 = false;
+    bool joystickRight = false;
+    bool joystickLeft = false;
 
     float getDirection(float stepA, float stepB)
     {

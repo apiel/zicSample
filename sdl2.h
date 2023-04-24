@@ -6,40 +6,39 @@
 
 bool handleKeyboard(SDL_KeyboardEvent* event)
 {
-    bool isDown = event->type == SDL_KEYDOWN;
+    bool isPressed = event->type == SDL_KEYDOWN;
 
-    // we could skip keyChange on A repeat
-    ui.keysChanged = true;
+    ui.update = true;
 
     // SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
     // SDL_Log("handleKeyboard %d\n", event->repeat);
     switch (event->keysym.scancode) {
     case SDL_SCANCODE_UP:
-        ui.keys.Up = isDown;
+        ui.keys.Up = isPressed;
         return true;
     case SDL_SCANCODE_DOWN:
-        ui.keys.Down = isDown;
+        ui.keys.Down = isPressed;
         return true;
     case SDL_SCANCODE_LEFT:
-        ui.keys.Left = isDown;
+        ui.keys.Left = isPressed;
         return true;
     case SDL_SCANCODE_RIGHT:
-        ui.keys.Right = isDown;
+        ui.keys.Right = isPressed;
         return true;
     case SDL_SCANCODE_S:
-        ui.keys.Edit = isDown;
+        ui.keys.Edit = isPressed;
         return true;
-    case SDL_SCANCODE_Z: // Y
-        ui.keys.Edit2 = isDown;
+    case SDL_SCANCODE_Z: // Y on German keyboard
+        ui.keys.Edit2 = isPressed;
         return true;
     case SDL_SCANCODE_A:
-        ui.keys.Action = isDown;
+        ui.keys.Action = isPressed;
         return true;
     case SDL_SCANCODE_Q:
-        ui.keys.Mode = isDown;
+        ui.keys.Mode = isPressed;
         return true;
     case SDL_SCANCODE_SPACE:
-        ui.keys.Menu = isDown;
+        ui.keys.Menu = isPressed;
         return true;
     case SDL_SCANCODE_ESCAPE:
         return false;
@@ -50,51 +49,110 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
     return true;
 }
 
-bool handleController(SDL_ControllerButtonEvent* event)
+// On RG351P, some button trigger both SDL_CONTROLLERBUTTON and SDL_JOYBUTTON
+// Let's focus on SDL_JOYBUTTON as SDL_CONTROLLERBUTTON doesn't work for all button
+bool handleControllerButton(SDL_ControllerButtonEvent* event)
 {
-    bool isDown = event->state == SDL_PRESSED;
+    // SDL_Log("handleController btn %d state %d type %d which %d pad1 %d pad2 %d\n",
+    //     event->button, event->state, event->type, event->which, event->padding1, event->padding2);
 
-    // we could skip keyChange on A repeat
-    ui.keysChanged = true;
+    bool isPressed = event->state == SDL_PRESSED;
+    ui.update = true;
 
-    // SDL_Log("handleController btn %d state %d\n", event->button, event->state);
-    SDL_Log("handleController btn %d state %d type %d which %d pad1 %d pad2 %d\n",
-        event->button, event->state, event->type, event->which, event->padding1, event->padding2);
     switch (event->button) {
     case 11:
-        ui.keys.Up = isDown;
+        ui.keys.Up = isPressed;
         return true;
     case 12:
-        ui.keys.Down = isDown;
+        ui.keys.Down = isPressed;
         return true;
     case 13:
-        ui.keys.Left = isDown;
+        ui.keys.Left = isPressed;
         return true;
     case 14:
-        ui.keys.Right = isDown;
+        ui.keys.Right = isPressed;
         return true;
+    // case 0: // A
+    //     ui.keys.Edit = isPressed;
+    //     return true;
+    // case 1: // B
+    //     ui.keys.Action = isPressed;
+    //     return true;
+    // case 3: // Y
+    //     ui.keys.Edit2 = isPressed;
+    //     return true;
+    // case 2: // L1
+    //     return true;
+    // case 5: // R1 ?
+    //     return true;
+    // case 4: // L2
+    //     return true;
+    // case 6: // R2
+    //     return true;
+    // case 9: // start
+    //     ui.keys.Menu = isPressed;
+    //     return true;
+    // case 10: // select
+    //     ui.keys.Mode = isPressed;
+    //     return true;
+    default:
+        return true;
+    }
+
+    return true;
+}
+
+bool handleJoyButton(SDL_JoyButtonEvent* event)
+{
+    // SDL_Log("handleJoyButton btn %d state %d type %d which %d pad1 %d pad2 %d\n",
+    //     event->button, event->state, event->type, event->which, event->padding1, event->padding2);
+
+    bool isPressed = event->state == SDL_PRESSED;
+    ui.update = true;
+
+    switch (event->button) {
     case 0: // A
-        ui.keys.Edit = isDown;
+        ui.keys.Edit = isPressed;
         return true;
     case 1: // B
-        ui.keys.Action = isDown;
+        ui.keys.Action = isPressed;
+        return true;
+    case 2: // X
+        SDL_Log("handleJoyButton btn X state %d\n", event->state);
+        ui.keys.Edit3 = isPressed;
         return true;
     case 3: // Y
-        ui.keys.Edit2 = isDown;
-        return true;
-    case 2: // L1
+        ui.keys.Edit2 = isPressed;
         return true;
     case 5: // R1 ?
+        SDL_Log("handleJoyButton btn R1 state %d\n", event->state);
+        ui.keys.R1 = isPressed;
         return true;
-    case 4: // L2
+    case 11: // R2
+        SDL_Log("handleJoyButton btn R2 state %d\n", event->state);
+        ui.keys.R2 = isPressed;
         return true;
-    case 6: // R2
+    case 4: // L1
+        SDL_Log("handleJoyButton btn L1 state %d\n", event->state);
+        ui.keys.L1 = isPressed;
         return true;
-    case 9: // start
-        ui.keys.Menu = isDown;
+    case 10: // L2
+        SDL_Log("handleJoyButton btn L2 state %d\n", event->state);
+        ui.keys.L2 = isPressed;
         return true;
-    case 10: // select
-        ui.keys.Mode = isDown;
+    case 6: // start
+        ui.keys.Menu = isPressed;
+        return true;
+    case 7: // select
+        ui.keys.Mode = isPressed;
+        return true;
+    case 8: // joystick left
+        SDL_Log("handleJoyButton btn joystick left state %d\n", event->state);
+        ui.keys.joystickLeft = isPressed;
+        return true;
+    case 9: // joystick right
+        SDL_Log("handleJoyButton btn joystick right state %d\n", event->state);
+        ui.keys.joystickRight = isPressed;
         return true;
     default:
         return true;
@@ -150,6 +208,9 @@ bool handleEvent()
 {
     SDL_Event event;
 
+    // TODO on RG351P, SDL_CONTROLLER doesn't automatically repeat like computer keyboard
+    // Need to make a repeat system to simulate base on timing...
+
     while (SDL_PollEvent(&event)) {
         // if (event.type > 0x300 && event.type < 0x800) {
         //     SDL_Log("handleEvent %d\n", event.type);
@@ -162,36 +223,17 @@ bool handleEvent()
         case SDL_KEYUP:
         case SDL_KEYDOWN:
             return handleKeyboard(&event.key);
-            // could be useful to simulate a pot
-            // case SDL_MOUSEWHEEL:
-            //     break;
-
-        // case SDL_JOYDEVICEADDED:
-        //     SDL_Log("handleEvent SDL_JOYDEVICEADDED\n");
-        //     break;
         case SDL_JOYAXISMOTION:
-            // SDL_Log("SDL_JOYAXISMOTION which %d axis %d value %d pad1 %d pad2 %d pad3 %d pad4 %d\n",
-            //     event.jaxis.which, event.jaxis.axis, event.jaxis.value,
-            //     event.jaxis.padding1, event.jaxis.padding2, event.jaxis.padding3, event.jaxis.padding4);
             return handleAxisEvent(&event.jaxis);
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
-            // SDL_Log("SDL_JOYBUTTON \n");
-            SDL_Log("SDL_JOYBUTTON which %d button %d state %d pad1 %d pad2 %d\n",
-                event.jbutton.which, event.jbutton.button, event.jbutton.state,
-                event.jbutton.padding1, event.jbutton.padding2);
-            break;
-
-        case SDL_CONTROLLERDEVICEADDED:
-            // SDL_Log("SDL_CONTROLLERDEVICEADDED\n");
-            initGameController();
-            break;
-        // case SDL_CONTROLLERAXISMOTION:
-        //     SDL_Log("SDL_CONTROLLERAXISMOTION\n");
-        //     break;
+            return handleJoyButton(&event.jbutton);
         case SDL_CONTROLLERBUTTONDOWN:
         case SDL_CONTROLLERBUTTONUP:
-            return handleController(&event.cbutton);
+            return handleControllerButton(&event.cbutton);
+        case SDL_CONTROLLERDEVICEADDED:
+            initGameController();
+            break;
         }
     }
 
