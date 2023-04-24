@@ -29,8 +29,14 @@ protected:
     void calculateVar()
     {
         // calculateVar(cutoff, resonance);
-        float _cutoff = range(cutoff + (joystickCutoffMod *  0.3), 0.0, 0.999999f);
-        float _resonance = range(resonance + (joystickResonanceMod * 0.3), 0.0, resonance > 0.95f ? resonance : 0.95f);
+
+        if (joystickCutoffMod == 0.0 && joystickResonanceMod == 0.0) {
+            calculateVar(cutoff, resonance);
+            return;
+        }
+
+        float _cutoff = range(cutoff + (joystickCutoffMod *  0.1), 0.0, 0.999999f);
+        float _resonance = range(resonance + (joystickResonanceMod * 0.1), 0.0, resonance > 0.95f ? resonance : 0.95f);
 
         APP_LOG("Filter cutoff: %f, resonance: %f\n\n", _cutoff, _resonance);
         fflush(stdout);
@@ -145,8 +151,8 @@ public:
 
     Filter& setJoystickMod(float cutoffMod, float resonanceMod)
     {
-        joystickCutoffMod = range(cutoffMod, 0.0f, 1.0f);
-        joystickResonanceMod = range(resonanceMod, 0.0f, 1.0f);
+        joystickCutoffMod = range(cutoffMod, -1.0f, 1.0f);
+        joystickResonanceMod = range(resonanceMod, -1.0f, 1.0f);
         calculateVar();
 
         return *this;
