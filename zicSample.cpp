@@ -56,6 +56,8 @@ int main(int argc, char* args[])
         return 1;
     }
 
+    initGameController();
+
     ViewMain& viewMain = ViewMain::get();
     viewMain.render();
 
