@@ -9,13 +9,59 @@
 #define FREESOUND_FILE_KEY ".freesound.key"
 #endif
 
+#ifndef FREESOUND_PAGE_SIZE
+#define FREESOUND_PAGE_SIZE 20
+#endif
+
+#ifndef FREESOUND_DATA_SIZE
+#define FREESOUND_DATA_SIZE FREESOUND_PAGE_SIZE * 1000
+#endif
+
+#ifndef FREESOUND_SEARCH_FIELDS
+#define FREESOUND_SEARCH_FIELDS "id,name,tags,filesize,duration,download,previews,num_downloads,avg_rating"
+#endif
+
+#ifndef FREESOUND_SEARCH_FILTER
+#define FREESOUND_SEARCH_FILTER "type:wav"
+#endif
+
+#ifndef FREESOUND_SEARCH_URL
+#define FREESOUND_SEARCH_URL "https://freesound.org/apiv2/search/text/?query=%s&page_size=%d&fields=" FREESOUND_SEARCH_FIELDS "&filter=" FREESOUND_SEARCH_FILTER
+#endif
+
+#ifndef FREESOUND_SEARCH_URL_SIZE
+#define FREESOUND_SEARCH_URL_SIZE 512
+#endif
+
 // https://niranjanmalviya.wordpress.com/2018/06/23/get-json-data-using-curl/
 // https://stackoverflow.com/questions/24884490/using-libcurl-and-jsoncpp-to-parse-from-https-webserver
+
+char freesoundData[FREESOUND_DATA_SIZE];
+char* freesoundDataPtr = freesoundData;
+
+static size_t freesoundDataCallback(void* contents, size_t size, size_t nmemb, void* userp)
+{
+    size_t realsize = size * nmemb;
+
+    if (realsize + freesoundDataPtr - freesoundData > FREESOUND_DATA_SIZE) {
+        APP_LOG("Error: freesound data buffer overflow\n");
+        return 0;
+    }
+
+    memcpy(freesoundDataPtr, contents, realsize);
+    freesoundDataPtr += realsize;
+    *freesoundDataPtr = 0;
+
+    return realsize;
+}
 
 class Freesound {
 protected:
     struct curl_slist* headerlist = NULL;
     bool isEnable = false;
+
+    char previousUrl[FREESOUND_SEARCH_URL_SIZE];
+    char nextUrl[FREESOUND_SEARCH_URL_SIZE];
 
     static Freesound* instance;
 
@@ -46,6 +92,33 @@ protected:
         SDL_free(loaded);
     }
 
+    void setChar(char* rest, char * target)
+    {
+        if (rest[1] == 'n') { // :null
+            strcpy(nextUrl, "");
+        } else {
+            strtok_r(rest, "\"", &rest);
+            char* field = strtok_r(rest, "\"", &rest);
+            strcpy(target, field);
+        }
+    }
+
+    void parseData()
+    {
+        char* rest = freesoundData;
+        char* field;
+        while ((field = strtok_r(rest, "\"", &rest))) {
+            // APP_LOG("field: %s\n", field);
+            if (strcmp(field, "next") == 0) {
+                setChar(rest, nextUrl);
+                APP_LOG("next: '%s'\n", nextUrl);
+            } else if (strcmp(field, "previous") == 0) {
+                setChar(rest, previousUrl);
+                APP_LOG("previous: '%s'\n", previousUrl);
+            }
+        }
+    }
+
 public:
     static Freesound& get()
     {
@@ -62,20 +135,25 @@ public:
 
         curl = curl_easy_init();
         if (curl) {
-            curl_easy_setopt(curl, CURLOPT_URL, "https://freesound.org/apiv2/search/text/?query=piano&page_size=50&fields=id,name,tags,description,type,filesize,duration,download,previews,num_downloads,avg_rating");
+            char url[FREESOUND_SEARCH_URL_SIZE];
+            snprintf(url, FREESOUND_SEARCH_URL_SIZE, FREESOUND_SEARCH_URL, "kick", FREESOUND_PAGE_SIZE);
+            curl_easy_setopt(curl, CURLOPT_URL, url);
             /* example.com is redirected, so we tell libcurl to follow redirection */
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
+
+            freesoundDataPtr = freesoundData;
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, freesoundDataCallback);
 
             /* Perform the request, res will get the return code */
             res = curl_easy_perform(curl);
             /* Check for errors */
-            if (res != CURLE_OK)
-                fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                    curl_easy_strerror(res));
-
-            printf("curl_easy_perform() done with code %d (%s).\n", res, curl_easy_strerror(res));
-
-            /* always cleanup */
+            if (res != CURLE_OK) {
+                fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            } else {
+                // APP_LOG("Freesound data: %s\n", freesoundData);
+                APP_LOG("curl_easy_perform() done with code %d (%s).\n", res, curl_easy_strerror(res));
+                parseData();
+            }
             curl_easy_cleanup(curl);
         }
     }
