@@ -36,10 +36,11 @@ protected:
         }
 
         float _cutoff = range(cutoff + (joystickCutoffMod *  0.1), 0.007124f, 0.999999f);
-        float _resonance = range(resonance + (joystickResonanceMod * 0.1), 0.0, resonance > 0.95f ? resonance : 0.95f);
+        // float _resonance = range(resonance + (joystickResonanceMod * 0.1), 0.0, resonance > 0.95f ? resonance : 0.95f);
+        float _resonance = resonance;
 
-        // APP_LOG("Filter cutoff: %f, resonance: %f\n\n", _cutoff, _resonance);
-        // fflush(stdout);
+        APP_LOG("Filter cutoff: %f, resonance: %f\n\n", _cutoff, _resonance);
+        fflush(stdout);
 
         calculateVar(_cutoff, _resonance);
     }
