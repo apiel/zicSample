@@ -150,7 +150,6 @@ protected:
     bool isStepVelocity() { return headerEditMode && gridEdit.is(2, 2); }
     bool isStepCondition() { return headerEditMode && gridEdit.is(2, 3); }
 
-    Track& getTrack() { return getTrack(grid.row); }
     Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
 
     void renderHeaderPattern(bool clear = false)
@@ -387,6 +386,8 @@ public:
         }
         return *instance;
     }
+
+    Track& getTrack() { return getTrack(grid.row); }
 
     void render()
     {

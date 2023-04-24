@@ -23,15 +23,23 @@ protected:
     float buf0 = 0;
     float buf1 = 0;
 
+    float joystickCutoffMod = 0.0;
+    float joystickResonanceMod = 0.0;
+
     void calculateVar()
     {
-        calculateVar(cutoff, resonance);
+        // calculateVar(cutoff, resonance);
+        float _cutoff = range(cutoff + (joystickCutoffMod *  0.3), 0.0, 0.999999f);
+        float _resonance = range(resonance + (joystickResonanceMod * 0.3), 0.0, 0.999999f);
+        calculateVar(_cutoff, _resonance);
     }
 
     void calculateVar(float _cutoff, float _resonance)
     {
-        // TODO when using LFO or ENV to modulate the filter...
-        // optimized if reso = 0 then feedback = 0, no need to calculate...
+        if (_resonance == 0.0f) {
+            feedback = 0.0f;
+            return;
+        }
 
         // cutoff cannot be 1.0 (should we ensure this?)
         feedback = _resonance + _resonance / (1.0 - _cutoff);
@@ -67,17 +75,17 @@ public:
         return sample(inputValue, cutoff);
     }
 
-    float sample(float inputValue, float modCutoff, float modResonance)
-    {
-        // could be optimized and apply only if modCutoff or modResonance != 0
-        float _cutoff = cutoff + ((1.0 - cutoff) * modCutoff); // I am not sure this make sense!!
-        float _resonance = resonance + ((1.0 - resonance) * modResonance);
+    // float sample(float inputValue, float modCutoff, float modResonance)
+    // {
+    //     // could be optimized and apply only if modCutoff or modResonance != 0
+    //     float _cutoff = cutoff + ((1.0 - cutoff) * modCutoff); // I am not sure this make sense!!
+    //     float _resonance = resonance + ((1.0 - resonance) * modResonance);
 
-        // optimized if reso = 0 then feedback = 0, no need to calculate...
-        calculateVar(_cutoff, _resonance);
+    //     // optimized if reso = 0 then feedback = 0, no need to calculate...
+    //     calculateVar(_cutoff, _resonance);
 
-        return sample(inputValue, _cutoff);
-    }
+    //     return sample(inputValue, _cutoff);
+    // }
 
     Filter& set(int16_t val)
     {
@@ -126,6 +134,22 @@ public:
     Filter& setResonance(float _res)
     {
         resonance = range(_res, 0.00, 0.99);
+        calculateVar();
+
+        return *this;
+    };
+
+    Filter& setJoystickCutoffMod(float mod)
+    {
+        joystickCutoffMod = range(mod, 0.0f, 1.0f);
+        calculateVar();
+
+        return *this;
+    };
+
+    Filter& setJoystickResonanceMod(float mod)
+    {
+        joystickResonanceMod = range(mod, 0.0f, 1.0f);
         calculateVar();
 
         return *this;

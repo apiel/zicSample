@@ -3,6 +3,7 @@
 #include "def.h"
 #include "sdl2.h"
 #include "viewMain.h"
+#include "joystickModulation.h"
 
 #ifdef FREESOUND_ENABLED
 #include "freesound.h"
@@ -66,8 +67,8 @@ int main(int argc, char* args[])
     draw();
 
     while (handleEvent()) {
-        if (ui.update) {
-            ui.update = false;
+        if (ui.keys.update) {
+            ui.keys.update = false;
             viewMain.handle(ui.keys);
         }
         if (needToRenderProgressBar) {
@@ -75,6 +76,7 @@ int main(int argc, char* args[])
             ProgressBar::get().render(audio.stepCounter);
             draw();
         }
+        joystickModulation(ui.joysticks);
         SDL_Delay(10);
     }
 

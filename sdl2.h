@@ -8,7 +8,7 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
 {
     bool isPressed = event->type == SDL_KEYDOWN;
 
-    ui.update = true;
+    ui.keys.update = true;
 
     // SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
     // SDL_Log("handleKeyboard %d\n", event->repeat);
@@ -43,7 +43,7 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
     case SDL_SCANCODE_ESCAPE:
         return false;
     default:
-        ui.update = false;
+        ui.keys.update = false;
         break;
     }
 
@@ -58,7 +58,7 @@ bool handleControllerButton(SDL_ControllerButtonEvent* event)
     //     event->button, event->state, event->type, event->which, event->padding1, event->padding2);
 
     bool isPressed = event->state == SDL_PRESSED;
-    ui.update = true;
+    ui.keys.update = true;
 
     switch (event->button) {
     case 11:
@@ -74,7 +74,7 @@ bool handleControllerButton(SDL_ControllerButtonEvent* event)
         ui.keys.Right = isPressed;
         break;
     default:
-        ui.update = false;
+        ui.keys.update = false;
         break;
     }
 
@@ -87,7 +87,7 @@ bool handleJoyButton(SDL_JoyButtonEvent* event)
     //     event->button, event->state, event->type, event->which, event->padding1, event->padding2);
 
     bool isPressed = event->state == SDL_PRESSED;
-    ui.update = true;
+    ui.keys.update = true;
 
     switch (event->button) {
     case 0: // A
@@ -134,7 +134,7 @@ bool handleJoyButton(SDL_JoyButtonEvent* event)
         ui.keys.joystickRight = isPressed;
         break;
     default:
-        ui.update = false;
+        ui.keys.update = false;
         break;
     }
 
@@ -150,16 +150,20 @@ bool handleAxisEvent(SDL_JoyAxisEvent* event)
     float value = roundf(event->value * 0.00305175f) * 0.01f;
     switch (event->axis) {
     case 0: // left/right (left joystick)
-        SDL_Log("handleAxisEvent axis X1 value %f\n", value);
+        ui.joysticks.X1 = value;
+        ui.joysticks.X1Changed = true;
         break;
     case 1: // up/down (left joystick)
-        SDL_Log("handleAxisEvent axis Y1 value %f\n", value);
+        ui.joysticks.Y1 = value;
+        ui.joysticks.Y1Changed = true;
         break;
     case 2: // left/right (right joystick)
-        SDL_Log("handleAxisEvent axis X2 value %f\n", value);
+        ui.joysticks.X2 = value;
+        ui.joysticks.X2Changed = true;
         break;
     case 3: // up/down (right joystick)
-        SDL_Log("handleAxisEvent axis Y2 value %f\n", value);
+        ui.joysticks.Y2 = value;
+        ui.joysticks.Y2Changed = true;
         break;
     default:
         break;

@@ -4,8 +4,8 @@
 #include "def.h"
 
 typedef struct {
-    bool update = false;
     UiKeys keys;
+    UiJoysticks joysticks;
 } Ui;
 
 Ui ui;
