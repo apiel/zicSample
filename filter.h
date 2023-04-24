@@ -28,22 +28,22 @@ protected:
 
     void calculateVar()
     {
-        // calculateVar(cutoff, resonance);
+        calculateVar(cutoff, resonance);
 
-        if (joystickCutoffMod == 0.0 && joystickResonanceMod == 0.0) {
-            calculateVar(cutoff, resonance);
-            return;
-        }
+        // if (joystickCutoffMod == 0.0 && joystickResonanceMod == 0.0) {
+        //     calculateVar(cutoff, resonance);
+        //     return;
+        // }
 
-        // float _cutoff = range(cutoff + (joystickCutoffMod *  0.1), 0.007124f, 0.999999f);
-        float _cutoff = cutoff;
-        float _resonance = range(resonance + (joystickResonanceMod * 0.1), 0.0, resonance > 0.95f ? resonance : 0.95f);
-        // float _resonance = resonance;
+        // // float _cutoff = range(cutoff + (joystickCutoffMod *  0.1), 0.007124f, 0.999999f);
+        // float _cutoff = cutoff;
+        // float _resonance = range(resonance + (joystickResonanceMod * 0.1), 0.0, resonance > 0.95f ? resonance : 0.95f);
+        // // float _resonance = resonance;
 
-        APP_LOG("Filter cutoff: %f, resonance: %f\n\n", _cutoff, _resonance);
-        fflush(stdout);
+        // APP_LOG("Filter cutoff: %f, resonance: %f\n\n", _cutoff, _resonance);
+        // fflush(stdout);
 
-        calculateVar(_cutoff, _resonance);
+        // calculateVar(_cutoff, _resonance);
     }
 
     void calculateVar(float _cutoff, float _resonance)
@@ -155,7 +155,19 @@ public:
     {
         joystickCutoffMod = range(cutoffMod, -1.0f, 1.0f);
         joystickResonanceMod = range(resonanceMod, -1.0f, 1.0f);
-        calculateVar();
+
+        int16_t frequency = value + (730 * joystickCutoffMod);
+        if (value == 0) {
+            mode = FILTER_MODE_OFF;
+        } else if (value > 0) {
+            mode = FILTER_MODE_LOWPASS_12;
+            frequency = 7350 - frequency;
+        } else {
+            mode = FILTER_MODE_HIGHPASS_12;
+            frequency = frequency * -1 + 40;
+        }
+        float myCutoff = 2.0 * sin(M_PI * frequency / SAMPLE_RATE);
+        calculateVar(myCutoff, resonance + (0.20 * joystickResonanceMod));
 
         return *this;
     };
