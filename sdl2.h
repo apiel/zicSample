@@ -15,35 +15,36 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
     switch (event->keysym.scancode) {
     case SDL_SCANCODE_UP:
         ui.keys.Up = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_DOWN:
         ui.keys.Down = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_LEFT:
         ui.keys.Left = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_RIGHT:
         ui.keys.Right = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_S:
         ui.keys.Edit = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_Z: // Y on German keyboard
         ui.keys.Edit2 = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_A:
         ui.keys.Action = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_Q:
         ui.keys.Mode = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_SPACE:
         ui.keys.Menu = isPressed;
-        return true;
+        break;
     case SDL_SCANCODE_ESCAPE:
         return false;
     default:
-        return true;
+        ui.update = false;
+        break;
     }
 
     return true;
@@ -62,41 +63,19 @@ bool handleControllerButton(SDL_ControllerButtonEvent* event)
     switch (event->button) {
     case 11:
         ui.keys.Up = isPressed;
-        return true;
+        break;
     case 12:
         ui.keys.Down = isPressed;
-        return true;
+        break;
     case 13:
         ui.keys.Left = isPressed;
-        return true;
+        break;
     case 14:
         ui.keys.Right = isPressed;
-        return true;
-    // case 0: // A
-    //     ui.keys.Edit = isPressed;
-    //     return true;
-    // case 1: // B
-    //     ui.keys.Action = isPressed;
-    //     return true;
-    // case 3: // Y
-    //     ui.keys.Edit2 = isPressed;
-    //     return true;
-    // case 2: // L1
-    //     return true;
-    // case 5: // R1 ?
-    //     return true;
-    // case 4: // L2
-    //     return true;
-    // case 6: // R2
-    //     return true;
-    // case 9: // start
-    //     ui.keys.Menu = isPressed;
-    //     return true;
-    // case 10: // select
-    //     ui.keys.Mode = isPressed;
-    //     return true;
+        break;
     default:
-        return true;
+        ui.update = false;
+        break;
     }
 
     return true;
@@ -113,49 +92,50 @@ bool handleJoyButton(SDL_JoyButtonEvent* event)
     switch (event->button) {
     case 0: // A
         ui.keys.Edit = isPressed;
-        return true;
+        break;
     case 1: // B
         ui.keys.Action = isPressed;
-        return true;
+        break;
     case 2: // X
-        SDL_Log("handleJoyButton btn X state %d\n", event->state);
+        SDL_Log("handleJoyButton btn X state %d\n", isPressed);
         ui.keys.Edit3 = isPressed;
-        return true;
+        break;
     case 3: // Y
         ui.keys.Edit2 = isPressed;
-        return true;
+        break;
     case 5: // R1 ?
-        SDL_Log("handleJoyButton btn R1 state %d\n", event->state);
+        SDL_Log("handleJoyButton btn R1 state %d\n", isPressed);
         ui.keys.R1 = isPressed;
-        return true;
+        break;
     case 11: // R2
-        SDL_Log("handleJoyButton btn R2 state %d\n", event->state);
+        SDL_Log("handleJoyButton btn R2 state %d\n", isPressed);
         ui.keys.R2 = isPressed;
-        return true;
+        break;
     case 4: // L1
-        SDL_Log("handleJoyButton btn L1 state %d\n", event->state);
+        SDL_Log("handleJoyButton btn L1 state %d\n", isPressed);
         ui.keys.L1 = isPressed;
-        return true;
+        break;
     case 10: // L2
-        SDL_Log("handleJoyButton btn L2 state %d\n", event->state);
+        SDL_Log("handleJoyButton btn L2 state %d\n", isPressed);
         ui.keys.L2 = isPressed;
-        return true;
+        break;
     case 6: // start
         ui.keys.Menu = isPressed;
-        return true;
+        break;
     case 7: // select
         ui.keys.Mode = isPressed;
-        return true;
+        break;
     case 8: // joystick left
-        SDL_Log("handleJoyButton btn joystick left state %d\n", event->state);
+        SDL_Log("handleJoyButton btn joystick left state %d\n", isPressed);
         ui.keys.joystickLeft = isPressed;
-        return true;
+        break;
     case 9: // joystick right
-        SDL_Log("handleJoyButton btn joystick right state %d\n", event->state);
+        SDL_Log("handleJoyButton btn joystick right state %d\n", isPressed);
         ui.keys.joystickRight = isPressed;
-        return true;
+        break;
     default:
-        return true;
+        ui.update = false;
+        break;
     }
 
     return true;
@@ -171,18 +151,18 @@ bool handleAxisEvent(SDL_JoyAxisEvent* event)
     switch (event->axis) {
     case 0: // left/right (left joystick)
         SDL_Log("handleAxisEvent axis X1 value %f\n", value);
-        return true;
+        break;
     case 1: // up/down (left joystick)
         SDL_Log("handleAxisEvent axis Y1 value %f\n", value);
-        return true;
+        break;
     case 2: // left/right (right joystick)
         SDL_Log("handleAxisEvent axis X2 value %f\n", value);
-        return true;
+        break;
     case 3: // up/down (right joystick)
         SDL_Log("handleAxisEvent axis Y2 value %f\n", value);
-        return true;
+        break;
     default:
-        return true;
+        break;
     }
 
     return true;
