@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 24 07:21:08 2023
+# Make data base, printed on Mon Apr 24 08:08:20 2023
 
 # Variables
 
@@ -36,7 +36,7 @@ VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
 VSCODE_CWD = /home/alex
 # environment
-TERMINATOR_UUID = urn:uuid:1fe90aae-f105-487e-b9a4-297575b1148c
+TERMINATOR_UUID = urn:uuid:125495e0-0c4b-4d5c-ab95-ec3d42c30b25
 # environment
 LC_ADDRESS = de_AT.UTF-8
 # default
@@ -108,7 +108,7 @@ MAKEFILE_LIST := makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 9539
+VSCODE_PID = 198149
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -280,9 +280,6 @@ ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 VTE_VERSION = 6800
 # environment
- 
-make: *** No rule to make target 'all'.  Stop.
-
 SNAP_COMMON = /var/snap/code/common
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
@@ -295,6 +292,9 @@ XDG_MENU_PREFIX = gnome-
 # environment
 GDMSESSION = ubuntu
 # environment
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 LC_IDENTIFICATION = de_AT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
@@ -494,7 +494,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Mon Apr 24 07:21:08 2023
+# Finished Make data base on Mon Apr 24 08:08:20 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  

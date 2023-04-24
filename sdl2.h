@@ -57,7 +57,9 @@ bool handleController(SDL_ControllerButtonEvent* event)
     // we could skip keyChange on A repeat
     ui.keysChanged = true;
 
-    SDL_Log("handleController btn %d state %d\n", event->button, event->state);
+    // SDL_Log("handleController btn %d state %d\n", event->button, event->state);
+    SDL_Log("handleController btn %d state %d type %d which %d pad1 %d pad2 %d\n",
+        event->button, event->state, event->type, event->which, event->padding1, event->padding2);
     switch (event->button) {
     case 11:
         ui.keys.Up = isDown;
@@ -71,19 +73,27 @@ bool handleController(SDL_ControllerButtonEvent* event)
     case 14:
         ui.keys.Right = isDown;
         return true;
-    case 0:
+    case 0: // A
         ui.keys.Edit = isDown;
         return true;
-    case 1:
+    case 1: // B
+        ui.keys.Action = isDown;
+        return true;
+    case 3: // Y
         ui.keys.Edit2 = isDown;
         return true;
-    // case 20:
-    //     bit = UI_KEY_ACTION;
-    //     printf("should set Action\n");
-    //     return true;
-    case 9:
-        // return false;
+    case 2: // L1
+        return true;
+    case 5: // R1 ?
+        return true;
+    case 4: // L2
+        return true;
+    case 6: // R2
+        return true;
+    case 9: // start
         ui.keys.Menu = isDown;
+        return true;
+    case 10: // select
         return true;
     default:
         return true;
@@ -98,12 +108,12 @@ void initController()
     // SDL_Log("%d joysticks connected\n", num);
     for (int i = 0; i < num; i++) {
         SDL_JoystickOpen(i);
-        // SDL_Joystick* joystick = SDL_JoystickOpen(i);
-        // SDL_Log("Joystick %d: %s\n", i, SDL_JoystickName(joystick));
+        SDL_Joystick* joystick = SDL_JoystickOpen(i);
+        SDL_Log("Joystick %d: %s\n", i, SDL_JoystickName(joystick));
         if (SDL_IsGameController(i)) {
             SDL_GameControllerOpen(i);
-            // SDL_GameController* controller = SDL_GameControllerOpen(i);
-            // SDL_Log("Game controller %d: %s\n", i, SDL_GameControllerName(controller));
+            SDL_GameController* controller = SDL_GameControllerOpen(i);
+            SDL_Log("Game controller %d: %s\n", i, SDL_GameControllerName(controller));
         }
     }
 }
@@ -113,9 +123,9 @@ bool handleEvent()
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
-        // if (event.type > 0x300 && event.type < 0x800) {
-        //     SDL_Log("handleEvent %d\n", event.type);
-        // }
+if (event.type > 0x300 && event.type < 0x800) {
+    SDL_Log("handleEvent %d\n", event.type);
+}
 
         switch (event.type) {
         case SDL_QUIT:
@@ -132,7 +142,9 @@ bool handleEvent()
         //     SDL_Log("handleEvent SDL_JOYDEVICEADDED\n");
         //     break;
         case SDL_JOYAXISMOTION:
-            SDL_Log("SDL_JOYAXISMOTION\n");
+            SDL_Log("SDL_JOYAXISMOTION which %d axis %d value %d pad1 %d pad2 %d pad3 %d pad4 %d\n", 
+                event.jaxis.which, event.jaxis.axis, event.jaxis.value, 
+                event.jaxis.padding1, event.jaxis.padding2, event.jaxis.padding3, event.jaxis.padding4);
             break;
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
