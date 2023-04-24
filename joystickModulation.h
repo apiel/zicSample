@@ -10,12 +10,12 @@ unsigned long lastTrackFilterModulation = 0;
 
 void joystickModulation(UiJoysticks& joysticks)
 {
-    if ((joysticks.X1Changed || joysticks.Y1Changed) && (SDL_GetTicks() - lastTrackFilterModulation > 100000)) {
-        Track& track = viewMain.getTrack();
-        track.filter.setJoystickMod(joysticks.Y1, joysticks.X1);
+    if ((joysticks.X1Changed || joysticks.Y1Changed) && (SDL_GetTicks() - lastTrackFilterModulation > 100)) {
+        lastTrackFilterModulation = SDL_GetTicks();
         joysticks.Y1Changed = false;
         joysticks.X1Changed = false;
-        lastTrackFilterModulation = SDL_GetTicks();
+        Track& track = viewMain.getTrack();
+        track.filter.setJoystickMod(joysticks.Y1, joysticks.X1);
     }
 }
 
