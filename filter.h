@@ -139,17 +139,10 @@ public:
         return *this;
     };
 
-    Filter& setJoystickCutoffMod(float mod)
+    Filter& setJoystickMod(float cutoffMod, float resonanceMod)
     {
-        joystickCutoffMod = range(mod, 0.0f, 1.0f);
-        calculateVar();
-
-        return *this;
-    };
-
-    Filter& setJoystickResonanceMod(float mod)
-    {
-        joystickResonanceMod = range(mod, 0.0f, 1.0f);
+        joystickCutoffMod = range(cutoffMod, 0.0f, 1.0f);
+        joystickResonanceMod = range(resonanceMod, 0.0f, 1.0f);
         calculateVar();
 
         return *this;

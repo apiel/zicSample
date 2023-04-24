@@ -6,17 +6,16 @@
 
 ViewMain& viewMain = ViewMain::get();
 
+unsigned long lastTrackFilterModulation = 0;
+
 void joystickModulation(UiJoysticks& joysticks)
 {
-    if (joysticks.X1Changed) {
+    if ((joysticks.X1Changed || joysticks.Y1Changed) && (SDL_GetTicks() - lastTrackFilterModulation > 100)) {
         Track& track = viewMain.getTrack();
-        track.filter.setJoystickResonanceMod(joysticks.X1);
-        joysticks.X1Changed = false;
-    }
-    if (joysticks.Y1Changed) {
-        Track& track = viewMain.getTrack();
-        track.filter.setJoystickCutoffMod(joysticks.Y1);
+        track.filter.setJoystickMod(joysticks.Y1, joysticks.X1);
         joysticks.Y1Changed = false;
+        joysticks.X1Changed = false;
+        lastTrackFilterModulation = SDL_GetTicks();
     }
 }
 
