@@ -30,7 +30,10 @@ protected:
     {
         // calculateVar(cutoff, resonance);
         float _cutoff = range(cutoff + (joystickCutoffMod *  0.3), 0.0, 0.999999f);
-        float _resonance = range(resonance + (joystickResonanceMod * 0.3), 0.0, 0.999999f);
+        float _resonance = range(resonance + (joystickResonanceMod * 0.3), 0.0, resonance > 0.95f ? resonance : 0.95f);
+
+        APP_LOG("Filter cutoff: %f, resonance: %f\n", _cutoff, _resonance);
+
         calculateVar(_cutoff, _resonance);
     }
 
