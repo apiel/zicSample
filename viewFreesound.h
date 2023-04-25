@@ -27,19 +27,19 @@ protected:
     {
         unsigned int y = 35 + pos * 75;
         drawFilledRect({ 5, y }, { SCREEN_W - 10 , 70 }, COLOR_FOREGROUND);
-        drawText({ 10, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO);
-        drawText({ 10, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO2, 12);
+        drawText({ 10, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
+        drawText({ 10, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
 
         char info[20];
-        unsigned int x = drawText({ 10, y + 39 }, "Size: ", COLOR_INFO2, 12);
+        unsigned int x = drawText({ 10, y + 39 }, "Size: ", COLOR_INFO_DARK, 12);
         x = drawText({ x + 2, y + 39 }, data.items[currentPos + pos].filesizeStr, COLOR_INFO, 12);
-        x = drawText({ x + 10, y + 39 }, "Duration: ", COLOR_INFO2, 12);
+        x = drawText({ x + 10, y + 39 }, "Duration: ", COLOR_INFO_DARK, 12);
         sprintf(info, "%.1fsec", data.items[currentPos + pos].duration);
         x = drawText({ x + 2, y + 39 }, info, COLOR_INFO, 12);
-        x = drawText({ x + 10, y + 39 }, "Downloads: ", COLOR_INFO2, 12);
+        x = drawText({ x + 10, y + 39 }, "Downloads: ", COLOR_INFO_DARK, 12);
         sprintf(info, "%d", data.items[currentPos + pos].num_downloads);
         x = drawText({ x + 2, y + 39 }, info, COLOR_INFO, 12);
-        x = drawText({ x + 10, y + 39 }, "Rating: ", COLOR_INFO2, 12);
+        x = drawText({ x + 10, y + 39 }, "Rating: ", COLOR_INFO_DARK, 12);
         sprintf(info, "%.1f/5", data.items[currentPos + pos].avg_rating);
         drawText({ x + 2, y + 39 }, info, COLOR_INFO, 12);
     }

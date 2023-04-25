@@ -78,12 +78,16 @@
 #define COLOR_PRIMARY { 0x0d, 0x6e, 0xfd, 255 }
 #endif
 
+#ifndef COLOR_INFO_LIGHT // #CCCCCC
+#define COLOR_INFO_LIGHT { 0xCC, 0xCC, 0xCC, 255 }
+#endif
+
 #ifndef COLOR_INFO // #888888
 #define COLOR_INFO { 0x88, 0x88, 0x88, 255 }
 #endif
 
-#ifndef COLOR_INFO2 // #555555
-#define COLOR_INFO2 { 0x55, 0x55, 0x55, 255 }
+#ifndef COLOR_INFO_DARK // #555555
+#define COLOR_INFO_DARK { 0x55, 0x55, 0x55, 255 }
 #endif
 
 #ifndef COLOR_MENU // #AAAAAA
