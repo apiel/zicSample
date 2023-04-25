@@ -39,7 +39,7 @@ protected:
         }
 
         // cutoff cannot be 1.0 (should we ensure this?)
-        feedback = _resonance + _resonance / (1.0 - _cutoff);
+        feedback = _resonance + _resonance / (1.0 - _cutoff); // would it make sense to make a lookup table for `1.0 / (1.0 - _cutoff);` ?
     }
 
     float sample(float inputValue, float _cutoff)
@@ -100,7 +100,7 @@ public:
             mode = FILTER_MODE_HIGHPASS_12;
             frequency = frequency * -1 + 40;
         }
-        cutoff = 2.0 * sin(M_PI * frequency / SAMPLE_RATE);
+        cutoff = 2.0 * sin(M_PI * frequency / SAMPLE_RATE); // lookup table?? js: Array.from(Array(7350).keys()).map(frequency => 2.0 * Math.sin(3.141592653589793238 * frequency / 44100));
 
         // printf("Filter: %d -> %d cutoff %f\n", value, frequency, cutoff);
 

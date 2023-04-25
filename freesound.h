@@ -10,7 +10,8 @@
 #endif
 
 #ifndef FREESOUND_PAGE_SIZE
-#define FREESOUND_PAGE_SIZE 20
+// #define FREESOUND_PAGE_SIZE 20
+#define FREESOUND_PAGE_SIZE 5
 #endif
 
 #ifndef FREESOUND_DATA_SIZE
@@ -55,6 +56,19 @@ static size_t freesoundDataCallback(void* contents, size_t size, size_t nmemb, v
     return realsize;
 }
 
+struct FreesoundItem {
+    int id;
+    char name[256];
+    char tags[256];
+    char type[4];
+    int filesize;
+    float duration;
+    char download[128];
+    char preview_lq_mp3[128];
+    int num_downloads;
+    float avg_rating;
+};
+
 class Freesound {
 protected:
     struct curl_slist* headerlist = NULL;
@@ -62,6 +76,10 @@ protected:
 
     char previousUrl[FREESOUND_SEARCH_URL_SIZE];
     char nextUrl[FREESOUND_SEARCH_URL_SIZE];
+    int count = 0;
+
+    FreesoundItem items[FREESOUND_PAGE_SIZE];
+    int8_t currentItem = -1;
 
     static Freesound* instance;
 
@@ -92,15 +110,30 @@ protected:
         SDL_free(loaded);
     }
 
-    void setChar(char* rest, char * target)
+    char* setChar(char* rest, char* target)
     {
         if (rest[1] == 'n') { // :null
-            strcpy(nextUrl, "");
+            strcpy(target, "");
         } else {
             strtok_r(rest, "\"", &rest);
             char* field = strtok_r(rest, "\"", &rest);
             strcpy(target, field);
         }
+        return rest;
+    }
+
+    char* setInt(char* rest, int* target)
+    {
+        char* field = strtok_r(rest, "\"", &rest) + 1; // +1 to skip :
+        *target = atoi(field);
+        return rest;
+    }
+
+    char* setFloat(char* rest, float* target)
+    {
+        char* field = strtok_r(rest, "\"", &rest) + 1; // +1 to skip :
+        *target = atof(field);
+        return rest;
     }
 
     void parseData()
@@ -110,11 +143,45 @@ protected:
         while ((field = strtok_r(rest, "\"", &rest))) {
             // APP_LOG("field: %s\n", field);
             if (strcmp(field, "next") == 0) {
-                setChar(rest, nextUrl);
+                rest = setChar(rest, nextUrl);
                 APP_LOG("next: '%s'\n", nextUrl);
             } else if (strcmp(field, "previous") == 0) {
-                setChar(rest, previousUrl);
+                rest = setChar(rest, previousUrl);
                 APP_LOG("previous: '%s'\n", previousUrl);
+            } else if (strcmp(field, "count") == 0) {
+                rest = setInt(rest, &count);
+                APP_LOG("count: %d\n", count);
+            } else if (strcmp(field, "id") == 0) {
+                currentItem++;
+                rest = setInt(rest, &items[currentItem].id);
+                APP_LOG("\nid: %d\n", items[currentItem].id);
+            } else if (strcmp(field, "name") == 0) {
+                rest = setChar(rest, items[currentItem].name);
+                APP_LOG("name: '%s'\n", items[currentItem].name);
+            } else if (strcmp(field, "type") == 0) {
+                rest = setChar(rest, items[currentItem].type);
+                APP_LOG("type: '%s'\n", items[currentItem].type);
+            } else if (strcmp(field, "tags") == 0) {
+                strcpy(items[currentItem].tags, strtok_r(rest, "]", &rest) + 2); // +2 to skip :[
+                APP_LOG("tags: '%s'\n", items[currentItem].tags);
+            } else if (strcmp(field, "filesize") == 0) {
+                rest = setInt(rest, &items[currentItem].filesize);
+                APP_LOG("filesize: %d\n", items[currentItem].filesize);
+            } else if (strcmp(field, "duration") == 0) {
+                rest = setFloat(rest, &items[currentItem].duration);
+                APP_LOG("duration: %f\n", items[currentItem].duration);
+            } else if (strcmp(field, "download") == 0) {
+                rest = setChar(rest, items[currentItem].download);
+                APP_LOG("download: '%s'\n", items[currentItem].download);
+            } else if (strcmp(field, "preview-lq-mp3") == 0) {
+                rest = setChar(rest, items[currentItem].preview_lq_mp3);
+                APP_LOG("preview-lq-mp3: '%s'\n", items[currentItem].preview_lq_mp3);
+            } else if (strcmp(field, "num_downloads") == 0) {
+                rest = setInt(rest, &items[currentItem].num_downloads);
+                APP_LOG("num_downloads: %d\n", items[currentItem].num_downloads);
+            } else if (strcmp(field, "avg_rating") == 0) {
+                rest = setFloat(rest, &items[currentItem].avg_rating);
+                APP_LOG("avg_rating: %f\n", items[currentItem].avg_rating);
             }
         }
     }

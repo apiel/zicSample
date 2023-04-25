@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Apr 24 19:38:44 2023
+# Make data base, printed on Tue Apr 25 17:48:45 2023
 
 # Variables
 
@@ -15,8 +15,6 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
-# environment
-NO_AT_BRIDGE = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
@@ -36,9 +34,9 @@ LC_NUMERIC = de_AT.UTF-8
 # environment
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
-VSCODE_CWD = /home/alex/Music
+VSCODE_CWD = /home/alex/Music/zicSample
 # environment
-TERMINATOR_UUID = urn:uuid:125495e0-0c4b-4d5c-ab95-ec3d42c30b25
+TERMINATOR_UUID = urn:uuid:20ade0da-e4a1-457c-a776-b9a0135b8143
 # environment
 LC_ADDRESS = de_AT.UTF-8
 # default
@@ -72,7 +70,7 @@ VSCODE_CODE_CACHE_PATH = /home/alex/.config/Code/CachedData/704ed70d4fd1c6bd6342
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.0MSO31
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.G49T31
 # default
 .LOADED := 
 # default
@@ -89,8 +87,6 @@ GTK_USE_PORTAL = 1
 CURDIR := /home/alex/Music/zic/zicTracker/linuxSDL
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
-# environment
-VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # makefile (from 'makefile', line 31)
@@ -112,7 +108,7 @@ MAKEFILE_LIST := makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 482168
+VSCODE_PID = 384586
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -120,7 +116,7 @@ XDG_SESSION_TYPE = wayland
 # makefile (from 'makefile', line 39)
 LIBRTMIDI = `pkg-config --cflags --libs rtmidi`
 # environment
-SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/3820,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/3820
+SESSION_MANAGER = local/alex-ThinkPad-T490:@/tmp/.ICE-unix/4866,unix/alex-ThinkPad-T490:/tmp/.ICE-unix/4866
 # automatic
 *F = $(notdir $*)
 # environment
@@ -176,7 +172,7 @@ LC_TIME = de_AT.UTF-8
 # environment
 SNAP = /snap/code/126
 # environment
-INVOCATION_ID = 3659b138569d439891511c5bbc7d9291
+INVOCATION_ID = 31817609ce7a4872aec3e177678cf680
 # environment
 SNAP_REVISION = 126
 # environment
@@ -216,7 +212,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := linux
 # environment
-SYSTEMD_EXEC_PID = 3890
+SYSTEMD_EXEC_PID = 4893
 # environment
 DISPLAY = :0
 # environment
@@ -232,11 +228,11 @@ SNAP_DATA = /var/snap/code/126
 # environment
 SNAP_CONTEXT = SwaaAWCM8SvWrzRKuVkqR9SQxBzJM4aTNENG2SlRyWkNO9mupTTK
 # environment
-MANAGERPID = 3394
+MANAGERPID = 4698
 # environment
 LC_MEASUREMENT = de_AT.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 6936
+GIO_LAUNCHED_DESKTOP_FILE_PID = 381230
 # environment
 LC_PAPER = de_AT.UTF-8
 # environment
@@ -248,7 +244,7 @@ GDK_PIXBUF_MODULE_FILE = /home/alex/snap/code/common/.cache/gdk-pixbuf-loaders.c
 # environment
 GIO_MODULE_DIR = /home/alex/snap/code/common/.cache/gio-modules
 # environment
-JOURNAL_STREAM = 8:51514
+JOURNAL_STREAM = 8:61273
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -280,6 +276,9 @@ SNAP_VERSION = 704ed70d
 # default
 SUFFIXES := 
 # environment
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 VSCODE_CLI = 1
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
@@ -288,9 +287,6 @@ VTE_VERSION = 6800
 # environment
 SNAP_COMMON = /var/snap/code/common
 # default
- 
-make: *** No rule to make target 'all'.  Stop.
-
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
 # makefile (from 'makefile', line 9)
 CC = g++ -o zicTracker
@@ -305,7 +301,7 @@ LC_IDENTIFICATION = de_AT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=145/1024=14%, Rehash=0, Collisions=6/175=3%
+# Load=143/1024=14%, Rehash=0, Collisions=5/173=3%
 
 # Pattern-specific Variable Values
 
@@ -500,7 +496,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Mon Apr 24 19:38:44 2023
+# Finished Make data base on Tue Apr 25 17:48:45 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  
