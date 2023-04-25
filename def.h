@@ -82,6 +82,10 @@
 #define COLOR_INFO { 0x88, 0x88, 0x88, 255 }
 #endif
 
+#ifndef COLOR_INFO2 // #555555
+#define COLOR_INFO2 { 0x55, 0x55, 0x55, 255 }
+#endif
+
 #ifndef COLOR_MENU // #AAAAAA
 #define COLOR_MENU { 0xAA, 0xAA, 0xAA, 255 }
 #endif
@@ -108,6 +112,10 @@
 
 #ifndef COLOR_STEP_HEADER // #2c343f
 #define COLOR_STEP_HEADER { 0x2c, 0x34, 0x3f, 255 }
+#endif
+
+#ifndef COLOR_FREESOUND_HEADER // #2c343f
+#define COLOR_FREESOUND_HEADER { 0x2c, 0x34, 0x3f, 255 }
 #endif
 
 #ifndef APP_DEFAULT_FONT_COLOR

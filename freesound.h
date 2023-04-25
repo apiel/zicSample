@@ -2,6 +2,7 @@
 #define _FREESOUND_H_
 
 #include "def.h"
+#include "utils.h"
 
 #include <curl/curl.h>
 
@@ -26,6 +27,7 @@ struct FreesoundItem {
     char name[256];
     char tags[256];
     int filesize;
+    char filesizeStr[16];
     float duration;
     char download[128];
     char preview_lq_mp3[128];
@@ -72,11 +74,6 @@ protected:
     struct curl_slist* headerlist = NULL;
     bool isEnable = false;
 
-    char previousUrl[FREESOUND_SEARCH_URL_SIZE];
-    char nextUrl[FREESOUND_SEARCH_URL_SIZE];
-    int count = 0;
-
-    FreesoundItem items[FREESOUND_PAGE_SIZE];
     int8_t currentItem = -1;
 
     static Freesound* instance;
@@ -152,9 +149,19 @@ protected:
             } else if (strcmp(field, "name") == 0) {
                 rest = setChar(rest, items[currentItem].name);
             } else if (strcmp(field, "tags") == 0) {
-                strcpy(items[currentItem].tags, strtok_r(rest, "]", &rest) + 2); // +2 to skip :[
+                char* tags = strtok_r(rest, "]", &rest) + 2; // +2 to skip :[
+                removeChar(tags, '"');
+                strcpy(items[currentItem].tags, tags);
+                // strcpy(items[currentItem].tags, strtok_r(rest, "]", &rest) + 2); // +2 to skip :[
             } else if (strcmp(field, "filesize") == 0) {
                 rest = setInt(rest, &items[currentItem].filesize);
+                if (items[currentItem].filesize > 1024 * 1024) {
+                    sprintf(items[currentItem].filesizeStr, "%.1fM", items[currentItem].filesize / 1024.0 / 1024.0);
+                } else if (items[currentItem].filesize > 1024) {
+                    sprintf(items[currentItem].filesizeStr, "%.1fK", items[currentItem].filesize / 1024.0);
+                } else {
+                    sprintf(items[currentItem].filesizeStr, "%dB", items[currentItem].filesize);
+                }
             } else if (strcmp(field, "duration") == 0) {
                 rest = setFloat(rest, &items[currentItem].duration);
             } else if (strcmp(field, "download") == 0) {
@@ -170,6 +177,14 @@ protected:
     }
 
 public:
+    char previousUrl[FREESOUND_SEARCH_URL_SIZE];
+    char nextUrl[FREESOUND_SEARCH_URL_SIZE];
+    int count = 0;
+
+    FreesoundItem items[FREESOUND_PAGE_SIZE];
+
+    const char* query = "kick";
+
     static Freesound& get()
     {
         if (!instance) {
@@ -183,10 +198,12 @@ public:
         CURL* curl;
         CURLcode res;
 
+        currentItem = -1;
+
         curl = curl_easy_init();
         if (curl) {
             char url[FREESOUND_SEARCH_URL_SIZE];
-            snprintf(url, FREESOUND_SEARCH_URL_SIZE, FREESOUND_SEARCH_URL, "kick", FREESOUND_PAGE_SIZE);
+            snprintf(url, FREESOUND_SEARCH_URL_SIZE, FREESOUND_SEARCH_URL, query, FREESOUND_PAGE_SIZE);
             curl_easy_setopt(curl, CURLOPT_URL, url);
             /* example.com is redirected, so we tell libcurl to follow redirection */
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
