@@ -6,6 +6,7 @@
 typedef struct {
     UiKeys keys;
     UiJoysticks joysticks;
+    uint8_t view = VIEW_MAIN;
 } Ui;
 
 Ui ui;

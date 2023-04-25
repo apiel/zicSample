@@ -1,12 +1,12 @@
 #include "audioHandler.h"
 #include "data.h"
 #include "def.h"
+#include "joystickModulation.h"
 #include "sdl2.h"
 #include "viewMain.h"
-#include "joystickModulation.h"
 
 #ifdef FREESOUND_ENABLED
-#include "freesound.h"
+#include "viewFreesound.h"
 #endif
 
 AudioHandler& audio = AudioHandler::get();
@@ -21,10 +21,6 @@ void audioCallBack(void* userdata, Uint8* stream, int len)
 int main(int argc, char* args[])
 {
     SDL_Log(">>>>>>> Start Zic Tracker\n");
-
-#ifdef FREESOUND_ENABLED
-    Freesound::get().init();
-#endif
 
     Data::get().load();
 
@@ -69,9 +65,18 @@ int main(int argc, char* args[])
     while (handleEvent()) {
         if (ui.keys.update) {
             ui.keys.update = false;
-            viewMain.handle(ui.keys);
+            switch (ui.view) {
+#ifdef FREESOUND_ENABLED
+            case VIEW_FREESOUND:
+                ViewFreesound::get().handle(ui.keys);
+                break;
+#endif
+            default:
+                viewMain.handle(ui.keys);
+                break;
+            }
         }
-        if (needToRenderProgressBar) {
+        if (needToRenderProgressBar && ui.view == VIEW_MAIN) {
             needToRenderProgressBar = false;
             ProgressBar::get().render(audio.stepCounter);
             draw();

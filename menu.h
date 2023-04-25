@@ -6,13 +6,30 @@
 #include "fs.h"
 #include "grid.h"
 #include "track.h"
+#ifdef FREESOUND_ENABLED
+#include "viewFreesound.h"
+#endif
 
 const char* MENU_ITEMS[] = {
     "Save track",
     "Save track as",
     "Reload track",
     "Delete track",
+#ifdef FREESOUND_ENABLED
+    "Freesound.org",
+#endif
     "Exit",
+};
+
+enum MenuItems {
+    MENU_ITEM_SAVE_TRACK,
+    MENU_ITEM_SAVE_TRACK_AS,
+    MENU_ITEM_RELOAD_TRACK,
+    MENU_ITEM_DELETE_TRACK,
+#ifdef FREESOUND_ENABLED
+    MENU_ITEM_FREESOUND,
+#endif
+    MENU_ITEM_EXIT,
 };
 
 uint8_t MENU_ITEMS_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
@@ -216,21 +233,27 @@ public:
             draw();
         } else if (keys.Action || keys.Edit) {
             switch (selected) {
-            case 0:
+            case MENU_ITEM_SAVE_TRACK:
                 if (strcmp(track.name, "-") != 0) {
                     track.save();
                     break;
                 }
-            case 1:
+            case MENU_ITEM_SAVE_TRACK_AS:
                 isSaveAs = &track;
                 strcpy(saveAsOriginalName, isSaveAs->name);
                 render();
                 draw();
                 return false;
-            case 2:
+            case MENU_ITEM_RELOAD_TRACK:
                 track.load();
                 break;
-            case 4:
+#ifdef FREESOUND_ENABLED
+            case MENU_ITEM_FREESOUND:
+                ui.view = VIEW_FREESOUND;
+                ViewFreesound::get().render();
+                return false;
+#endif
+            case MENU_ITEM_EXIT:
                 SDL_Log("EXIT\n");
                 exit(0);
                 break;

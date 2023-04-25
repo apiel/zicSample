@@ -167,6 +167,12 @@ struct Point {
 };
 
 enum {
+    VIEW_MAIN,
+    VIEW_FREESOUND,
+    VIEW_COUNT,
+};
+
+enum {
     VIEW_NONE,
     VIEW_CHANGED,
     VIEW_STATE_CHANGED,
