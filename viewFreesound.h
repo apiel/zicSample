@@ -25,8 +25,9 @@ protected:
 
     void renderItem(unsigned int pos)
     {
-        unsigned int y = 35 + pos * 75;
-        drawFilledRect({ 5, y }, { SCREEN_W - 10 , 70 }, COLOR_FOREGROUND);
+        unsigned int h = 60;
+        unsigned int y = 35 + pos * (h + 5);
+        drawFilledRect({ 5, y }, { SCREEN_W - 10 , h }, COLOR_FOREGROUND);
         drawText({ 10, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
         drawText({ 10, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
 
