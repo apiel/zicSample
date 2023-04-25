@@ -76,6 +76,11 @@ int main(int argc, char* args[])
                 break;
             }
         }
+        if (ui.needMainViewRender) {
+            ui.needMainViewRender = false;
+            viewMain.render();
+            draw();
+        }
         if (needToRenderProgressBar && ui.view == VIEW_MAIN) {
             needToRenderProgressBar = false;
             ProgressBar::get().render(audio.stepCounter);

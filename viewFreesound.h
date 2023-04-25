@@ -33,6 +33,10 @@ public:
 
     void handle(UiKeys& keys)
     {
+        if (keys.Menu) {
+            ui.view = VIEW_MAIN;
+            ui.needMainViewRender = true;
+        }
     }
 };
 

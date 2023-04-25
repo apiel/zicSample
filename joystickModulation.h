@@ -2,9 +2,6 @@
 #define _JOYSTICK_MODULATION_H_
 
 #include "def.h"
-#include "viewMain.h"
-
-ViewMain& viewMain = ViewMain::get();
 
 unsigned long lastTrackFilterModulation = 0;
 

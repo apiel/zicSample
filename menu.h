@@ -249,6 +249,7 @@ public:
                 break;
 #ifdef FREESOUND_ENABLED
             case MENU_ITEM_FREESOUND:
+                toggle();
                 ui.view = VIEW_FREESOUND;
                 ViewFreesound::get().render();
                 return false;
