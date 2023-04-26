@@ -11,7 +11,6 @@
 #include "tempo.h"
 #include "view.h"
 
-#define CLEAR true
 #define OPTIMIZED true
 
 #define GRID_PATTERN_TOP 69

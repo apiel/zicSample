@@ -142,7 +142,7 @@ protected:
             } else if (strcmp(field, "previous") == 0) {
                 rest = setChar(rest, previousUrl);
             } else if (strcmp(field, "count") == 0) {
-                rest = setInt(rest, &count);
+                rest = setInt(rest, &totalCount);
             } else if (strcmp(field, "id") == 0) {
                 currentItem++;
                 rest = setInt(rest, &items[currentItem].id);
@@ -179,7 +179,7 @@ protected:
 public:
     char previousUrl[FREESOUND_SEARCH_URL_SIZE];
     char nextUrl[FREESOUND_SEARCH_URL_SIZE];
-    int count = 0;
+    int totalCount = 0;
 
     FreesoundItem items[FREESOUND_PAGE_SIZE];
 
@@ -223,6 +223,11 @@ public:
             }
             curl_easy_cleanup(curl);
         }
+    }
+
+    int getCount()
+    {
+        return currentItem + 1;
     }
 
     void init()

@@ -1,35 +1,35 @@
 #ifndef _VIEW_FREESOUND_H
 #define _VIEW_FREESOUND_H
 
-#include "freesound.h"
 #include "draw.h"
+#include "freesound.h"
+#include "grid.h"
 #include "view.h"
 
 class ViewFreesound : public View {
 protected:
     Freesound& data = Freesound::get();
 
+    int8_t cursorPos = 0;
     uint8_t currentPos = 0;
 
     static ViewFreesound* instance;
 
-    ViewFreesound() {
+    ViewFreesound()
+    {
         // FIXME might want to remove it
         data.init();
     }
 
-    // int filesize;
-    // float duration;
-    // int num_downloads;
-    // float avg_rating;
+    unsigned int h = 66;
+    unsigned int marginTop = 5;
 
     void renderItem(unsigned int pos)
     {
         unsigned int marginLeft = 25;
-        unsigned int marginTop = 5;
-        unsigned int h = 66;
+
         unsigned int y = 35 + pos * (h + 5);
-        drawFilledRect({ 5, y }, { SCREEN_W - 10 , h }, COLOR_FOREGROUND);
+        drawFilledRect({ 5, y }, { SCREEN_W - 10, h }, COLOR_FOREGROUND);
         y += marginTop;
         drawText({ 10 + marginLeft, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
         drawText({ 10 + marginLeft, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
@@ -52,6 +52,24 @@ protected:
 
         drawFilledRect({ 7, y + 30 }, { 20, 20 }, COLOR_INFO_DARK);
         drawDownloadButton({ 10, y + 31 }, { 13, 15 }, COLOR_INFO);
+
+        renderSelection();
+    }
+
+    void renderSelection(bool clear = false)
+    {
+        SDL_Color color = COLOR_INFO_LIGHT;
+        if (clear) {
+            color = COLOR_FOREGROUND;
+        }
+        unsigned int pos = cursorPos * 0.5;
+        unsigned int y = marginTop + 35 + pos * (h + 5);
+
+        if (cursorPos % 2 == 0) {
+            drawRect({ 7, y + 2 }, { 20, 20 }, color);
+        } else {
+            drawRect({ 7, y + 30 }, { 20, 20 }, color);
+        }
     }
 
 public:
@@ -67,10 +85,10 @@ public:
     {
         drawClear();
 
-        drawFilledRect({ 5, 5 }, { SCREEN_W - 10 , 25 }, COLOR_FREESOUND_HEADER);
+        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 25 }, COLOR_FREESOUND_HEADER);
         unsigned int x = drawText({ 10, 7 }, data.query, COLOR_WHITE, 18);
         char count[16];
-        sprintf(count, "%d", data.count);
+        sprintf(count, "%d results", data.totalCount);
         drawText({ x + 10, 13 }, count, COLOR_INFO, 12);
 
         for (unsigned int i = 0; i < 4; i++) {
@@ -85,6 +103,28 @@ public:
         if (keys.Menu) {
             ui.view = VIEW_MAIN;
             ui.needMainViewRender = true;
+        } else if (keys.Up) {
+            if (cursorPos > 0) {
+                renderSelection(CLEAR);
+                cursorPos--;
+                renderSelection();
+                draw();
+            } else if (currentPos > 0) {
+                currentPos--;
+                render();
+                draw();
+            }
+        } else if (keys.Down) {
+            if (cursorPos < 7) {
+                renderSelection(CLEAR);
+                cursorPos++;
+                renderSelection();
+                draw();
+            } else if (currentPos + 8 < data.getCount()) {
+                currentPos++;
+                render();
+                draw();
+            }
         }
     }
 };

@@ -168,6 +168,10 @@
 #define range(x, _min, _max) ((x) < (_max) ? ((x) > (_min) ? (x) : (_min)) : (_max))
 #endif
 
+#ifndef CLEAR
+#define CLEAR true
+#endif
+
 struct Size {
     uint32_t w;
     uint32_t h;
