@@ -1,5 +1,6 @@
 # TODO
 
+- make LPF left and HPF right...
 - freesound api
 - standardise layout to be 4 label value per row
   BUT should there even be this top bar edit mode, there is 4 button (A,B,X,Y) giving the possibility to edit 2 values per button (even the main toggle button can have more feature if press long) and could also use double press. For fine tuning could use R1!!
@@ -19,10 +20,6 @@ https://www.surina.net/soundtouch/README.html
 
 Dont know if it can be done live, however we could simply preprocess every sample and allow +12 -12 semitone...
 
-### Download samples
-
-Use freesound api: https://freesound.org/help/developers/#freesound-api
-
 ### synth mode
 
 Should there be synth feature?
@@ -31,10 +28,3 @@ Should there be synth feature?
 - custom synth...?
 
 Should synth be live, or only to generate sample...? (but at least there could be one track that can then be recorded...)
-
-### sdl mixer ?
-
-Alternative would be to use SDL mixer?
-https://wiki.libsdl.org/SDL2_mixer/FrontPage
-https://thenumb.at/cpp-course/sdl2/06/06.html
-https://lazyfoo.net/tutorials/SDL/21_sound_effects_and_music/index.php

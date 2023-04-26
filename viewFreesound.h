@@ -25,14 +25,15 @@ protected:
 
     void renderItem(unsigned int pos)
     {
-        unsigned int h = 60;
+        unsigned int marginLeft = 25;
+        unsigned int h = 66;
         unsigned int y = 35 + pos * (h + 5);
         drawFilledRect({ 5, y }, { SCREEN_W - 10 , h }, COLOR_FOREGROUND);
-        drawText({ 10, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
-        drawText({ 10, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
+        drawText({ 10 + marginLeft, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
+        drawText({ 10 + marginLeft, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
 
         char info[20];
-        unsigned int x = drawText({ 10, y + 39 }, "Size: ", COLOR_INFO_DARK, 12);
+        unsigned int x = drawText({ 10 + marginLeft, y + 39 }, "Size: ", COLOR_INFO_DARK, 12);
         x = drawText({ x + 2, y + 39 }, data.items[currentPos + pos].filesizeStr, COLOR_INFO, 12);
         x = drawText({ x + 10, y + 39 }, "Duration: ", COLOR_INFO_DARK, 12);
         sprintf(info, "%.1fsec", data.items[currentPos + pos].duration);
@@ -43,6 +44,12 @@ protected:
         x = drawText({ x + 10, y + 39 }, "Rating: ", COLOR_INFO_DARK, 12);
         sprintf(info, "%.1f/5", data.items[currentPos + pos].avg_rating);
         drawText({ x + 2, y + 39 }, info, COLOR_INFO, 12);
+
+        drawFilledRect({ 7, y + 2 }, { 20, 20 }, COLOR_INFO_DARK);
+        drawPlayButton({ 10, y + 5 }, { 13, 13 }, COLOR_ON);
+
+        drawFilledRect({ 7, y + 30 }, { 20, 20 }, COLOR_INFO_DARK);
+        drawDownloadButton({ 10, y + 31 }, { 13, 15 }, COLOR_INFO);
     }
 
 public:
