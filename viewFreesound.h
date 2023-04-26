@@ -26,9 +26,11 @@ protected:
     void renderItem(unsigned int pos)
     {
         unsigned int marginLeft = 25;
+        unsigned int marginTop = 5;
         unsigned int h = 66;
         unsigned int y = 35 + pos * (h + 5);
         drawFilledRect({ 5, y }, { SCREEN_W - 10 , h }, COLOR_FOREGROUND);
+        y += marginTop;
         drawText({ 10 + marginLeft, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
         drawText({ 10 + marginLeft, y + 22 }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
 
@@ -46,7 +48,7 @@ protected:
         drawText({ x + 2, y + 39 }, info, COLOR_INFO, 12);
 
         drawFilledRect({ 7, y + 2 }, { 20, 20 }, COLOR_INFO_DARK);
-        drawPlayButton({ 10, y + 5 }, { 13, 13 }, COLOR_ON);
+        drawPlayButton({ 12, y + 7 }, { 10, 10 }, COLOR_ON);
 
         drawFilledRect({ 7, y + 30 }, { 20, 20 }, COLOR_INFO_DARK);
         drawDownloadButton({ 10, y + 31 }, { 13, 15 }, COLOR_INFO);
