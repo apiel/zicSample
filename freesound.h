@@ -69,6 +69,12 @@ static size_t freesoundDataCallback(void* contents, size_t size, size_t nmemb, v
     return realsize;
 }
 
+// static size_t freesoundWriteData(void *ptr, size_t size, size_t nmemb, void *stream)
+// {
+//   size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
+//   return written;
+// }
+
 class Freesound {
 protected:
     struct curl_slist* headerlist = NULL;
@@ -176,6 +182,16 @@ protected:
         }
     }
 
+    CURL* getCurl(char* url)
+    {
+        CURL* curl = curl_easy_init();
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_URL, url);
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
+        }
+        return curl;
+    }
+
 public:
     char previousUrl[FREESOUND_SEARCH_URL_SIZE];
     char nextUrl[FREESOUND_SEARCH_URL_SIZE];
@@ -193,26 +209,35 @@ public:
         return *instance;
     }
 
+    void download(char* url, char* output)
+    {
+        CURL* curl = getCurl(url);
+        if (curl) {
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+            // curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, freesoundWriteData);
+            FILE* fp = fopen(output, "wb");
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+            CURLcode res = curl_easy_perform(curl);
+            if (res != CURLE_OK) {
+                // TODO show an error
+                fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            }
+            curl_easy_cleanup(curl);
+            fclose(fp);
+        }
+    }
+
     void fetch(char* url)
     {
-        CURL* curl;
-        CURLcode res;
-
-        currentItem = -1;
-
-        curl = curl_easy_init();
+        CURL* curl = getCurl(url);
         if (curl) {
-            curl_easy_setopt(curl, CURLOPT_URL, url);
-            /* example.com is redirected, so we tell libcurl to follow redirection */
-            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
-
+            currentItem = -1;
             freesoundDataPtr = freesoundData;
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, freesoundDataCallback);
 
-            /* Perform the request, res will get the return code */
-            res = curl_easy_perform(curl);
-            /* Check for errors */
+            CURLcode res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
+                // TODO show an error
                 fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
             } else {
                 // APP_LOG("Freesound data: %s\n", freesoundData);
