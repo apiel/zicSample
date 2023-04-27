@@ -193,7 +193,7 @@ public:
         return *instance;
     }
 
-    void search()
+    void fetch(char* url)
     {
         CURL* curl;
         CURLcode res;
@@ -202,8 +202,6 @@ public:
 
         curl = curl_easy_init();
         if (curl) {
-            char url[FREESOUND_SEARCH_URL_SIZE];
-            snprintf(url, FREESOUND_SEARCH_URL_SIZE, FREESOUND_SEARCH_URL, query, FREESOUND_PAGE_SIZE);
             curl_easy_setopt(curl, CURLOPT_URL, url);
             /* example.com is redirected, so we tell libcurl to follow redirection */
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
@@ -223,6 +221,13 @@ public:
             }
             curl_easy_cleanup(curl);
         }
+    }
+
+    void search()
+    {
+        char url[FREESOUND_SEARCH_URL_SIZE];
+        snprintf(url, FREESOUND_SEARCH_URL_SIZE, FREESOUND_SEARCH_URL, query, FREESOUND_PAGE_SIZE);
+        fetch(url);
     }
 
     int getCount()

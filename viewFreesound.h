@@ -92,6 +92,22 @@ protected:
         }
     }
 
+    void fetchAndRender(char* url)
+    {
+        if (strlen(url)) {
+            unsigned int y = 5 + 35 + 3 * (h + 5);
+            drawFilledRect({ 5, y }, { SCREEN_W - 10, h }, COLOR_BACKGROUND);
+            drawText({ 10, y + 2 }, "Loading...", COLOR_INFO, 12);
+            draw();
+
+            data.fetch(url);
+            currentPos = 0;
+            grid.row = 0;
+            render();
+            draw();
+        }
+    }
+
 public:
     static ViewFreesound& get()
     {
@@ -144,6 +160,15 @@ public:
                 currentPos++;
                 render();
                 draw();
+            }
+        } else if (keys.Action || keys.Edit) {
+            if (grid.row == 3 && currentPos + 3 == data.getCount()) {
+                // APP_LOG("PrevNext page: r %d p %d c %d\n", grid.row, currentPos, data.getCount());
+                if (grid.col == 0) {
+                    fetchAndRender(data.previousUrl);
+                } else {
+                    fetchAndRender(data.nextUrl);
+                }
             }
         }
     }
