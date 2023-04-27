@@ -104,7 +104,7 @@ void drawPlayButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUN
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     SDL_Point points[4] = {
         { position.x, position.y },
-        { position.x + size.w, position.y + size.h / 2 },
+        { position.x + size.w, position.y + size.h * 0.5 },
         { position.x, position.y + size.h },
         { position.x, position.y }
     };
@@ -140,6 +140,28 @@ void drawDownloadButton(Point position, Size size, SDL_Color color = COLOR_FOREG
         { position.x + size.w, position.y + size.h * 0.8 }
     };
     SDL_RenderDrawLines(renderer, points, 4);
+}
+
+void drawNextButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_Point points[3] = {
+        { position.x, position.y },
+        { position.x + size.w, position.y + size.h * 0.5 },
+        { position.x, position.y + size.h }
+    };
+    SDL_RenderDrawLines(renderer, points, 3);
+}
+
+void drawPreviousButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
+{
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    SDL_Point points[3] = {
+        { position.x + size.w, position.y },
+        { position.x, position.y + size.h * 0.5 },
+        { position.x + size.w, position.y + size.h }
+    };
+    SDL_RenderDrawLines(renderer, points, 3);
 }
 
 #endif

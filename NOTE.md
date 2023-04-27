@@ -10,6 +10,7 @@
 - negative resonance could do something else, maybe make a resoance with envelop?
 - remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
 - copy, paste, select
+- github to save pattern
 
 
 ### pitch shifting

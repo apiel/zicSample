@@ -53,8 +53,28 @@ protected:
         x = drawText({ x + 10, y }, "Rating: ", COLOR_INFO_DARK, 12);
         sprintf(info, "%.1f/5", data.items[currentPos + pos].avg_rating);
         drawText({ x + 2, y }, info, COLOR_INFO, 12);
+    }
 
-        renderSelection(grid.row, grid.col);
+    void renderPreviousNext()
+    {
+        unsigned int y = 5 + 35 + 3 * (h + 5);
+        if (strlen(data.previousUrl)) {
+            drawFilledRect({ 7, y + 2 }, { 20, 20 }, COLOR_INFO_DARK);
+            drawPreviousButton({ 12, y + 6 }, { 10, 10 }, COLOR_INFO);
+        } else {
+            drawFilledRect({ 7, y + 2 }, { 20, 20 }, COLOR_FOREGROUND);
+            drawPreviousButton({ 12, y + 6 }, { 10, 10 }, COLOR_FOREGROUND2);
+        }
+        drawText({ 7, y + 25 }, "Prev", COLOR_INFO_DARK, 10);
+
+        if (strlen(data.nextUrl)) {
+            drawFilledRect({ 35, y + 2 }, { 20, 20 }, COLOR_INFO_DARK);
+            drawNextButton({ 40, y + 6 }, { 10, 10 }, COLOR_INFO);
+        } else {
+            drawFilledRect({ 35, y + 2 }, { 20, 20 }, COLOR_FOREGROUND);
+            drawNextButton({ 40, y + 6 }, { 10, 10 }, COLOR_FOREGROUND2);
+        }
+        drawText({ 35, y + 25 }, "Next", COLOR_INFO_DARK, 10);
     }
 
     void renderSelection(int8_t row, int8_t col, bool clear = false)
@@ -92,8 +112,14 @@ public:
         drawText({ x + 10, 13 }, count, COLOR_INFO, 12);
 
         for (unsigned int i = 0; i < 4; i++) {
-            renderItem(i);
+            if (currentPos + i == (unsigned int)data.getCount()) {
+                renderPreviousNext();
+            } else {
+                renderItem(i);
+            }
         }
+
+        renderSelection(grid.row, grid.col);
 
         draw();
     }
@@ -114,7 +140,7 @@ public:
                     render();
                     draw();
                 }
-            } else if (currentPos + 8 < data.getCount()) {
+            } else if (currentPos + 4 <= data.getCount()) {
                 currentPos++;
                 render();
                 draw();
