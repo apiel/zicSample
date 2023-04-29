@@ -8,6 +8,11 @@ static size_t freesoundOauthHeaderCallback(char* buffer, size_t size, size_t nit
     // APP_LOG("freesoundOauthHeaderCallback: %s\n", buffer);
     char * cookie = strstr(buffer, "Set-Cookie:");
     if (cookie) {
+        cookie += 12; // skip "Set-Cookie: "
+        char* end = strstr(cookie, ";");
+        if (end) {
+            *end = '\0';
+        }
         strcpy((char *)userdata, cookie);
     }
     return nitems * size;
@@ -75,10 +80,15 @@ protected:
             // curl_easy_setopt(curl, CURLOPT_URL, "https://freesound.org/apiv2/login/");
             curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields);
+            curl_easy_setopt(curl, CURLOPT_COOKIE, cookies);
             struct curl_slist* headerlist = NULL;
-            headerlist = curl_slist_append(headerlist, cookies);
             headerlist = curl_slist_append(headerlist, "Origin: https://freesound.org");
             headerlist = curl_slist_append(headerlist, "Host: freesound.org");
+
+            // char cookiesHeader[512];
+            // sprintf(cookiesHeader, "Cookie: %s", cookies);
+            // APP_LOG("++++++ set cookies: %s\n", cookiesHeader);
+            // headerlist = curl_slist_append(headerlist, cookiesHeader);
 
             char referer[512];
             sprintf(referer, "Referer: %s", url);

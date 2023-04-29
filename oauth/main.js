@@ -39,26 +39,26 @@ async function main() {
     data.append('next', next);
     data.append('username', username);
     data.append('password', password);
-    const res2 = await fetch(
-        'https://freesound.org/apiv2/oauth2/authorize/?client_id=aOE7UaYW68l205T8RHuH&response_type=code',
-        {
-            method: 'POST',
-            body: data,
-            // referrer: res.url,
-            // origin: 'https://freesound.org',
-            // coookies: res.headers.get('Set-Cookie'),
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Referer: res.url,
-                // 'Set-Cookie': res.headers.get('Set-Cookie'),
-                // 'Cookie': res.headers.get('Set-Cookie'),
-                Cookie: cookie,
-                Origin: 'https://freesound.org',
-            },
-        }
-    );
+    const res2 = await fetch(res.url, {
+        method: 'POST',
+        body: data,
+        // redirect: 'manual',
+        // referrer: res.url,
+        // origin: 'https://freesound.org',
+        // coookies: res.headers.get('Set-Cookie'),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Referer: res.url,
+            // 'Set-Cookie': res.headers.get('Set-Cookie'),
+            // 'Cookie': res.headers.get('Set-Cookie'),
+            Cookie: cookie,
+            // Origin: 'https://freesound.org',
+            // Host: 'freesound.org',
+        },
+    });
     const text2 = await res2.text();
-    console.log(text2);
+
+    console.log(text2, res2.status, res2.statusText, res2.headers.get('location'));
 }
 
 main();
