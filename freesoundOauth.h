@@ -3,16 +3,44 @@
 
 #include "freesoundDef.h"
 
+static size_t freesoundOauthHeaderCallback(char* buffer, size_t size, size_t nitems, void* userdata)
+{
+    // APP_LOG("freesoundCookieCallback: %s\n", buffer);
+    char * cookie = strstr(buffer, "Set-Cookie:");
+    if (cookie) {
+        // cookie += 12; // strlen("Set-Cookie:")
+        // // char* end = strstr(cookie, ";");
+        // // if (end) {
+        // //     *end = '\0';
+        // // }
+        strcpy((char *)userdata, cookie);
+    }
+    return nitems * size;
+}
+
 class FreesoundOauth {
 protected:
-    char* getInputProp(char* input, const char* prop)
+    char postFields[512];
+
+    void appendCredential()
     {
-        char* propPtr = strstr(input, prop);
-        if (!propPtr) {
+        size_t sz;
+        void* loaded = SDL_LoadFile(FREESOUND_OAUTH_FILE_KEY, &sz);
+        if (!loaded || sz == 0) {
+            APP_LOG("Error: could not load freesound credential from %s\n", FREESOUND_OAUTH_FILE_KEY);
+            return;
+        }
+        strcat(postFields, (char*)loaded);
+        SDL_free(loaded);
+    }
+
+    char* getValue(char* prop)
+    {
+        if (!prop) {
             return NULL;
         }
-        propPtr = strtok(propPtr + strlen(prop), "\"");
-        return propPtr;
+        strtok(prop, "\"");
+        return strtok(NULL, "\"");
     }
 
     void parseForm()
@@ -22,25 +50,54 @@ protected:
         char* input;
         char* rest = freesoundData;
 
+        strcpy(postFields, "");
         while ((input = strstr(rest, "<input"))) {
             input = strtok_r(input, ">", &rest);
-            // APP_LOG("#---- input: %s\n", input);
-            
+            // First find all props before to get value because strtok set \0
             char* name = strstr(input, "name=\"");
             char* value = strstr(input, "value=\"");
-
-            if (name) {
-                name = strtok(name + 6, "\"");
-            }
-            if (value) {
-                value = strtok(value + 7, "\"");
-            }
-
-
-            // char* value = getInputProp(input, "value=\"");
-            // char* name = getInputProp(input, "name=\"");
+            name = getValue(name);
+            value = getValue(value);
             // APP_LOG("# input: %s = %s\n", name, value);
-            APP_LOG("\n");
+            if (name && value) {
+                sprintf(postFields + strlen(postFields), "%s=%s&", name, value);
+            }
+        }
+        appendCredential();
+        APP_LOG("postFields: %s\n", postFields);
+    }
+
+    void sendForm(char* url, char* cookies)
+    {
+        if (url == NULL || postFields[0] == '\0') {
+            return;
+        }
+        APP_LOG("----- sendForm %s\n", url);
+        CURL* curl = curl_easy_init();
+        if (curl) {
+            strcpy(freesoundData, "");
+            curl_easy_setopt(curl, CURLOPT_URL, url);
+            // curl_easy_setopt(curl, CURLOPT_URL, "https://freesound.org/apiv2/login/");
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postFields);
+            // curl_easy_setopt(curl, CURLOPT_COOKIE, cookies);
+            struct curl_slist* headerlist = NULL;
+            headerlist = curl_slist_append(headerlist, cookies);
+            char referer[512];
+            sprintf(referer, "Referer: %s", url);
+            APP_LOG("++++++ set referer: %s\n", referer);
+            headerlist = curl_slist_append(headerlist, referer);
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerlist);
+            CURLcode res = curl_easy_perform(curl);
+            if (res != CURLE_OK) {
+                // TODO show an error
+                fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            } else {
+                APP_LOG("Oauth Freesound data: %s\n", freesoundData);
+
+                // parseForm();
+            }
+            curl_easy_cleanup(curl);
         }
     }
 
@@ -49,25 +106,29 @@ public:
     {
         CURL* curl = curl_easy_init();
         if (curl) {
+            char cookies[512];
+            strcpy(cookies, "");
+            strcpy(freesoundData, "");
             curl_easy_setopt(curl, CURLOPT_URL, "https://freesound.org/apiv2/oauth2/authorize/?client_id=aOE7UaYW68l205T8RHuH&response_type=code");
             curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
             freesoundDataPtr = freesoundData;
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, freesoundDataCallback);
+            curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, freesoundOauthHeaderCallback);
+            curl_easy_setopt(curl,  CURLOPT_HEADERDATA, cookies);
             CURLcode res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
                 // TODO show an error
                 fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
             } else {
-                APP_LOG("Oauth Freesound data: %s\n", freesoundData);
+                // APP_LOG("Oauth Freesound data: %s\n", freesoundData);
 
-                // char* location;
-                // res = curl_easy_getinfo(curl, CURLINFO_REDIRECT_URL, &location);
-                // if ((res == CURLE_OK) && location) {
-                //     APP_LOG("Redirected to: %s\n", location);
-                // } else {
-                //     APP_LOG("No redirect found\n");
-                // }
+                char* effectiveUrl;
+                curl_easy_getinfo(curl, CURLINFO_EFFECTIVE_URL, &effectiveUrl);
+
+                // APP_LOG("Oauth Freesound cookie: %s\n", cookies);
+
                 parseForm();
+                sendForm(effectiveUrl, cookies);
             }
             curl_easy_cleanup(curl);
         }

@@ -10,6 +10,10 @@
 #define FREESOUND_FILE_KEY ".freesound.key"
 #endif
 
+#ifndef FREESOUND_OAUTH_FILE_KEY
+#define FREESOUND_OAUTH_FILE_KEY ".freesound.oauth.key"
+#endif
+
 #ifndef FREESOUND_PAGE_SIZE
 #define FREESOUND_PAGE_SIZE 20
 #endif
