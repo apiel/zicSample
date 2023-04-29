@@ -171,7 +171,7 @@ public:
                 }
             } else if (grid.col == 1) {
                 APP_LOG("Download: %s\n", data.items[currentPos + grid.row].download);
-                data.download(data.items[currentPos + grid.row].download, "samples/0.wav");
+                data.download(data.items[currentPos + grid.row].download, (char *)"samples/0.wav");
                 APP_LOG("Downloaded\n");
             }
         }
