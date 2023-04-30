@@ -29,7 +29,7 @@ public:
             return false;
         }
         if (!audioFile.samples(buf, len)) {
-            APP_LOG("AudioPreview::samples stop\n");
+            // APP_LOG("AudioPreview::samples stop\n");
             stop();
         }
         return isPlaying;

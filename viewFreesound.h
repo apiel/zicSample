@@ -185,6 +185,13 @@ public:
                 // But couldn't get oauth working headless without browser, see freesoundOauth.h
                 // APP_LOG("Download: %s\n", data.items[currentPos + grid.row].download);
                 // data.download(data.items[currentPos + grid.row].download, (char*)"samples/0.wav");
+                char path[512];
+                FreesoundItem& item = data.items[currentPos + grid.row];
+                sprintf(path, "samples/%s", item.name);
+                replaceChar(path, ' ', '_');
+                removeExtension(path);
+                sprintf(path + strlen(path), "_%d.ogg", item.id);
+                copyFile((char*)"samples/__preview.ogg", path);
             }
         }
     }
