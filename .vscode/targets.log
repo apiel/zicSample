@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Apr 30 11:13:23 2023
+# Make data base, printed on Sun Apr 30 22:27:25 2023
 
 # Variables
 
@@ -87,6 +87,8 @@ GTK_USE_PORTAL = 1
 CURDIR := /home/alex/Music/zic/zicTracker/linuxSDL
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # makefile (from 'makefile', line 31)
@@ -289,10 +291,10 @@ SNAP_COMMON = /var/snap/code/common
 CC = g++ -o zicTracker
 # environment
 SNAP_USER_DATA = /home/alex/snap/code/126
-# environment
  
 make: *** No rule to make target 'all'.  Stop.
 
+# environment
 XDG_MENU_PREFIX = gnome-
 # environment
 GDMSESSION = ubuntu
@@ -301,7 +303,7 @@ LC_IDENTIFICATION = de_AT.UTF-8
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # variable set hash-table stats:
-# Load=143/1024=14%, Rehash=0, Collisions=5/173=3%
+# Load=144/1024=14%, Rehash=0, Collisions=6/174=3%
 
 # Pattern-specific Variable Values
 
@@ -496,7 +498,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Sun Apr 30 11:13:23 2023
+# Finished Make data base on Sun Apr 30 22:27:25 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  

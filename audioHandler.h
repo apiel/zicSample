@@ -4,6 +4,7 @@
 #include "audioPreview.h"
 #include "data.h"
 #include "def.h"
+#include "filter.h"
 #include "state.h"
 #include "tempo.h"
 
@@ -24,6 +25,7 @@ protected:
 
 public:
     Tempo& tempo = Tempo::get();
+    Filter filter;
 
     uint8_t stepCounter = 0;
 
@@ -67,6 +69,10 @@ public:
                 }
             }
             delete[] buffer;
+
+            for (int j = 0; j < len; j++) {
+                buf[j] = filter.sample(buf[j]);
+            }
         }
     }
 

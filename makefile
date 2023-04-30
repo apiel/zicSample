@@ -9,7 +9,8 @@ LIDSND=`pkg-config --cflags --libs sndfile`
 SDL2=`sdl2-config --cflags --libs`
 SDL2_TTF=`pkg-config --cflags --libs SDL2_ttf`
 
-CURL=`curl-config --cflags --libs`
+#CURL=`curl-config --cflags --libs`
+CURL=`pkg-config --cflags --libs libcurl`
 
 # FREESOUND_OAUTH=-DFREESOUND_OAUTH_ENABLED
 FREESOUND=$(CURL) -DFREESOUND_ENABLED $(FREESOUND_OAUTH)
