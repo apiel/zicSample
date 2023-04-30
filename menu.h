@@ -149,7 +149,7 @@ public:
                 }
             case MENU_ITEM_SAVE_TRACK_AS:
                 isSaveAs = &track;
-                keyboard.setTarget(isSaveAs->name, APP_TRACK_NAME);
+                keyboard.setTarget(isSaveAs->name, APP_TRACK_NAME).setWidth(w);
                 render();
                 draw();
                 return false;

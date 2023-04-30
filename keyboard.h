@@ -17,10 +17,10 @@ enum {
 
 class Keyboard {
 protected:
+    unsigned int w = 240;
     unsigned int x = 120;
     unsigned int y = 30;
     uint16_t h = SCREEN_H - (y * 2);
-    unsigned int w = SCREEN_W - (x * 2);
 
     Grid grid = Grid(8, 10);
 
@@ -32,7 +32,9 @@ protected:
 
     static Keyboard* instance;
 
-    Keyboard() { }
+    Keyboard() { 
+        setWidth(w);
+    }
 
     void fixGrid()
     {
@@ -98,6 +100,13 @@ public:
         strncpy(originalValue, value, length);
         grid.reset();
 
+        return *this;
+    }
+
+    Keyboard& setWidth(uint16_t width)
+    {
+        w = width;
+        x = SCREEN_W * 0.5 - (w * 0.5);
         return *this;
     }
 
