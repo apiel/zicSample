@@ -1,11 +1,11 @@
 #ifndef _VIEW_FREESOUND_H
 #define _VIEW_FREESOUND_H
 
+#include "audioPreview.h"
 #include "draw.h"
 #include "freesound.h"
 #include "grid.h"
 #include "view.h"
-#include "audioPreview.h"
 
 class ViewFreesound : public View {
 protected:
@@ -13,6 +13,7 @@ protected:
     Freesound& data = Freesound::get();
     Grid grid = Grid(4, 2);
     uint8_t currentPos = 0;
+    uint8_t lastPreviewPlayed = -1; // Set to max value
 
     static ViewFreesound* instance;
 
@@ -172,14 +173,18 @@ public:
                     fetchAndRender(data.nextUrl);
                 }
             } else if (grid.col == 0) {
-                APP_LOG("Download: %s\n", data.items[currentPos + grid.row].preview_hq_ogg);
-                data.download(data.items[currentPos + grid.row].preview_hq_ogg, (char *)"samples/__preview.ogg");
-                audioPreview.play((char *)"samples/__preview.ogg");
-                APP_LOG("Downloaded\n");
+                audioPreview.stop();
+                if (lastPreviewPlayed != currentPos + grid.row) {
+                    lastPreviewPlayed = currentPos + grid.row;
+                    // APP_LOG("Download: %s\n", data.items[lastPreviewPlayed].preview_hq_ogg);
+                    data.download(data.items[lastPreviewPlayed].preview_hq_ogg, (char*)"samples/__preview.ogg");
+                }
+                audioPreview.play((char*)"samples/__preview.ogg");
             } else if (grid.col == 1) {
-                APP_LOG("Download: %s\n", data.items[currentPos + grid.row].download);
-                data.download(data.items[currentPos + grid.row].download, (char *)"samples/0.wav");
-                APP_LOG("Downloaded\n");
+                // Freesound API doesn't allow to download files without Oauth
+                // But couldn't get oauth working headless without browser, see freesoundOauth.h
+                // APP_LOG("Download: %s\n", data.items[currentPos + grid.row].download);
+                // data.download(data.items[currentPos + grid.row].download, (char*)"samples/0.wav");
             }
         }
     }

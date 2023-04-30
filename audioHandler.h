@@ -1,6 +1,7 @@
 #ifndef _AUDIO_HANDLER_H_
 #define _AUDIO_HANDLER_H_
 
+#include "audioPreview.h"
 #include "data.h"
 #include "def.h"
 #include "state.h"
@@ -9,13 +10,15 @@
 class AudioHandler {
 protected:
     Data& data = Data::get();
+    AudioPreview& audioPreview = AudioPreview::get();
 
     float volume = 1.0f;
     float mixDivider = 1.0f / APP_TRACKS;
 
     static AudioHandler* instance;
 
-    AudioHandler() {
+    AudioHandler()
+    {
         setVolume(volume);
     }
 
@@ -47,22 +50,24 @@ public:
             needToRenderProgressBar = true;
         }
 
-        for (int j = 0; j < len; j++) {
-            buf[j] = 0.0f;
-        }
+        if (!audioPreview.samples(buf, len)) {
+            for (int j = 0; j < len; j++) {
+                buf[j] = 0.0f;
+            }
 
-        float* buffer = new float[len];
-        for (uint8_t i = 0; i < APP_TRACKS; i++) {
-            Track& track = data.tracks[i];
-            if (track.active) {
-                track.audioFile.samples(buffer, len);
-                for (int j = 0; j < len; j++) {
-                    // buf[j] += track.filter.sample(buffer[j]) * mixDivider * track.activeStep->velocity * track.volume;
-                    buf[j] += track.sampleModulation(buffer[j], mixDivider);
+            float* buffer = new float[len];
+            for (uint8_t i = 0; i < APP_TRACKS; i++) {
+                Track& track = data.tracks[i];
+                if (track.active) {
+                    track.audioFile.samples(buffer, len);
+                    for (int j = 0; j < len; j++) {
+                        // buf[j] += track.filter.sample(buffer[j]) * mixDivider * track.activeStep->velocity * track.volume;
+                        buf[j] += track.sampleModulation(buffer[j], mixDivider);
+                    }
                 }
             }
+            delete[] buffer;
         }
-        delete[] buffer;
     }
 
     void setVolume(float _volume)

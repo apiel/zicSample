@@ -7,6 +7,7 @@
 class AudioPreview {
 protected:
     AudioFile audioFile;
+    bool isPlaying = false;
 
     static AudioPreview* instance;
 
@@ -22,13 +23,28 @@ public:
         return *instance;
     }
 
-    void samples(float* buf, int len)
+    bool samples(float* buf, int len)
     {
+        if (!isPlaying) {
+            return false;
+        }
+        if (!audioFile.samples(buf, len)) {
+            APP_LOG("AudioPreview::samples stop\n");
+            stop();
+        }
+        return isPlaying;
     }
 
     void play(char* path)
     {
-        audioFile.open(path);
+        audioFile.open(path, SEEK_SET);
+        isPlaying = true;
+    }
+
+    void stop()
+    {
+        audioFile.close();
+        isPlaying = false;
     }
 };
 
