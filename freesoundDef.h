@@ -34,7 +34,8 @@ struct FreesoundItem {
     char filesizeStr[16];
     float duration;
     char download[128];
-    char preview_lq_mp3[128];
+    char preview_lq_ogg[128];
+    char preview_hq_ogg[128];
     int num_downloads;
     float avg_rating;
 };

@@ -11,7 +11,8 @@ SDL2_TTF=`pkg-config --cflags --libs SDL2_ttf`
 
 CURL=`curl-config --cflags --libs`
 
-FREESOUND=$(CURL) -DFREESOUND_ENABLED
+# FREESOUND_OAUTH=-DFREESOUND_OAUTH_ENABLED
+FREESOUND=$(CURL) -DFREESOUND_ENABLED $(FREESOUND_OAUTH)
 
 RG351P=-ldl `pkg-config wayland-client --cflags --libs` -lasound -lpulse -lX11 -lXext -lXdamage -lXfixes -lGL -lX11 -lXi -lXrandr -lXxf86vm -lXinerama -lXcursor -lrt -lm -pthread  -lwayland-egl -lwayland-cursor -lxkbcommon -lXss
 

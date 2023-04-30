@@ -1,4 +1,4 @@
-make -C /home/alex/Music/zic/zicTracker/linuxSDL --dry-run --always-make --keep-going --print-directory
+make -C /home/alex/Music/zic/zicTracker/linuxSDL --dry-run --keep-going --print-directory
 make: Entering directory '/home/alex/Music/zic/zicTracker/linuxSDL'
 cp ../../libpd/libs/libpd.so .
 cp ../../duktape-2.7.0/libduktaped.so.207.20700 ./libduktaped.so.207

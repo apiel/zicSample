@@ -5,9 +5,11 @@
 #include "freesound.h"
 #include "grid.h"
 #include "view.h"
+#include "audioPreview.h"
 
 class ViewFreesound : public View {
 protected:
+    AudioPreview& audioPreview = AudioPreview::get();
     Freesound& data = Freesound::get();
     Grid grid = Grid(4, 2);
     uint8_t currentPos = 0;
@@ -169,6 +171,11 @@ public:
                 } else {
                     fetchAndRender(data.nextUrl);
                 }
+            } else if (grid.col == 0) {
+                APP_LOG("Download: %s\n", data.items[currentPos + grid.row].preview_hq_ogg);
+                data.download(data.items[currentPos + grid.row].preview_hq_ogg, (char *)"samples/__preview.ogg");
+                audioPreview.play((char *)"samples/__preview.ogg");
+                APP_LOG("Downloaded\n");
             } else if (grid.col == 1) {
                 APP_LOG("Download: %s\n", data.items[currentPos + grid.row].download);
                 data.download(data.items[currentPos + grid.row].download, (char *)"samples/0.wav");

@@ -2,11 +2,15 @@
 #define _FREESOUND_H_
 
 #include "freesoundDef.h"
+#if FREESOUND_OAUTH_ENABLED
 #include "freesoundOauth.h"
+#endif
 
 class Freesound {
 protected:
+#if FREESOUND_OAUTH_ENABLED
     FreesoundOauth oauth;
+#endif
     struct curl_slist* headerlist = NULL;
     bool isEnable = false;
 
@@ -102,8 +106,10 @@ protected:
                 rest = setFloat(rest, &items[currentItem].duration);
             } else if (strcmp(field, "download") == 0) {
                 rest = setChar(rest, items[currentItem].download);
-            } else if (strcmp(field, "preview-lq-mp3") == 0) {
-                rest = setChar(rest, items[currentItem].preview_lq_mp3);
+            } else if (strcmp(field, "preview-lq-ogg") == 0) {
+                rest = setChar(rest, items[currentItem].preview_lq_ogg);
+            } else if (strcmp(field, "preview-hq-ogg") == 0) {
+                rest = setChar(rest, items[currentItem].preview_hq_ogg);
             } else if (strcmp(field, "num_downloads") == 0) {
                 rest = setInt(rest, &items[currentItem].num_downloads);
             } else if (strcmp(field, "avg_rating") == 0) {
@@ -194,7 +200,10 @@ public:
     {
         SDL_Log("Freesound init\n");
         loadKey();
+
+#if FREESOUND_OAUTH_ENABLED
         oauth.init();
+#endif
 
         if (isEnable) {
             search();
