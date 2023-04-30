@@ -41,11 +41,14 @@ struct FreesoundItem {
 };
 
 #ifndef FREESOUND_SEARCH_FILTER
-#define FREESOUND_SEARCH_FILTER "type:wav"
+// #define FREESOUND_SEARCH_FILTER "&filter=type:wav"
+// #define FREESOUND_SEARCH_FILTER "&filter=type:(wav OR aiff OR ogg OR flac)"
+// #define FREESOUND_SEARCH_FILTER "&filter=type\\%3A(wav\\%20OR\\%20aiff\\%20OR\\%20ogg\\%20OR\\%20flac)"
+#define FREESOUND_SEARCH_FILTER ""
 #endif
 
 #ifndef FREESOUND_SEARCH_URL
-#define FREESOUND_SEARCH_URL "https://freesound.org/apiv2/search/text/?query=%s&page_size=%d&fields=" FREESOUND_SEARCH_FIELDS "&filter=" FREESOUND_SEARCH_FILTER
+#define FREESOUND_SEARCH_URL "https://freesound.org/apiv2/search/text/?query=%s&page_size=%d&fields=" FREESOUND_SEARCH_FIELDS FREESOUND_SEARCH_FILTER
 #endif
 
 #ifndef FREESOUND_SEARCH_URL_SIZE
