@@ -38,23 +38,24 @@ protected:
         drawFilledRect({ 35, y + 2 }, { 20, 20 }, COLOR_INFO_DARK);
         drawDownloadButton({ 38, y + 3 }, { 13, 15 }, COLOR_INFO);
 
-        drawText({ 65, y + 2 }, data.items[currentPos + pos].name, COLOR_INFO_LIGHT);
+        FreesoundItem& item = data.items[currentPos + pos];
+        drawText({ 65, y + 2 }, item.name, COLOR_INFO_LIGHT);
 
         y += 30;
-        drawText({ 10, y }, data.items[currentPos + pos].tags, COLOR_INFO_DARK, 12);
+        drawText({ 10, y }, item.tags, COLOR_INFO_DARK, 12);
 
         y += 15;
         char info[20];
         unsigned int x = drawText({ 10, y }, "Size: ", COLOR_INFO_DARK, 12);
-        x = drawText({ x + 2, y }, data.items[currentPos + pos].filesizeStr, COLOR_INFO, 12);
+        x = drawText({ x + 2, y }, item.filesizeStr, COLOR_INFO, 12);
         x = drawText({ x + 10, y }, "Duration: ", COLOR_INFO_DARK, 12);
-        sprintf(info, "%.1fsec", data.items[currentPos + pos].duration);
+        sprintf(info, "%.1fsec", item.duration);
         x = drawText({ x + 2, y }, info, COLOR_INFO, 12);
         x = drawText({ x + 10, y }, "Downloads: ", COLOR_INFO_DARK, 12);
-        sprintf(info, "%d", data.items[currentPos + pos].num_downloads);
+        sprintf(info, "%d", item.num_downloads);
         x = drawText({ x + 2, y }, info, COLOR_INFO, 12);
         x = drawText({ x + 10, y }, "Rating: ", COLOR_INFO_DARK, 12);
-        sprintf(info, "%.1f/5", data.items[currentPos + pos].avg_rating);
+        sprintf(info, "%.1f/5", item.avg_rating);
         drawText({ x + 2, y }, info, COLOR_INFO, 12);
     }
 
