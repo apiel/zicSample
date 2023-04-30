@@ -164,41 +164,41 @@ void drawPreviousButton(Point position, Size size, SDL_Color color = COLOR_FOREG
     SDL_RenderDrawLines(renderer, points, 3);
 }
 
-void drawExitButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
-{
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+// void drawExitButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
+// {
+//     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
-    SDL_Point points2[2] = {
-        { position.x, position.y },
-        { position.x + size.w, position.y + size.h }
-    };
-    SDL_RenderDrawLines(renderer, points2, 2);
+//     SDL_Point points2[2] = {
+//         { position.x, position.y },
+//         { position.x + size.w, position.y + size.h }
+//     };
+//     SDL_RenderDrawLines(renderer, points2, 2);
 
-    SDL_Point points3[2] = {
-        { position.x + size.w, position.y },
-        { position.x, position.y + size.h }
-    };
-    SDL_RenderDrawLines(renderer, points3, 2);
-}
+//     SDL_Point points3[2] = {
+//         { position.x + size.w, position.y },
+//         { position.x, position.y + size.h }
+//     };
+//     SDL_RenderDrawLines(renderer, points3, 2);
+// }
 
-void drawSearchButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
-{
-    float radius = 0.65;
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-    SDL_Point points[5] = {
-        { position.x, position.y },
-        { position.x + size.w * radius, position.y },
-        { position.x + size.w * radius, position.y + size.h * radius },
-        { position.x, position.y + size.h * radius },
-        { position.x, position.y }
-    };
-    SDL_RenderDrawLines(renderer, points, 5);
+// void drawSearchButton(Point position, Size size, SDL_Color color = COLOR_FOREGROUND)
+// {
+//     float radius = 0.65;
+//     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+//     SDL_Point points[5] = {
+//         { position.x, position.y },
+//         { position.x + size.w * radius, position.y },
+//         { position.x + size.w * radius, position.y + size.h * radius },
+//         { position.x, position.y + size.h * radius },
+//         { position.x, position.y }
+//     };
+//     SDL_RenderDrawLines(renderer, points, 5);
 
-    SDL_Point points2[2] = {
-        { position.x + size.w * radius, position.y + size.h * radius },
-        { position.x + size.w, position.y + size.h }
-    };
-    SDL_RenderDrawLines(renderer, points2, 2);
-}
+//     SDL_Point points2[2] = {
+//         { position.x + size.w * radius, position.y + size.h * radius },
+//         { position.x + size.w, position.y + size.h }
+//     };
+//     SDL_RenderDrawLines(renderer, points2, 2);
+// }
 
 #endif
