@@ -14,6 +14,7 @@
 
 ### Freesound
 
+- show loading data...
 - improve UI: info on play/stop, download
 - allow hi quality download (need oauth or direct grant)
 - save file as

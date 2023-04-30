@@ -6,6 +6,7 @@
 #include "freesound.h"
 #include "grid.h"
 #include "view.h"
+#include "fs.h"
 
 class ViewFreesound : public View {
 protected:
@@ -19,7 +20,7 @@ protected:
 
     ViewFreesound()
     {
-        // FIXME might want to remove it
+        // Load empty search on init
         data.init();
     }
 

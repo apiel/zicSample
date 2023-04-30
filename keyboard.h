@@ -9,6 +9,12 @@
 #define KEYBOARD_VALUE_MAX 256
 #endif
 
+enum {
+    KEYBOARD_DRAW,
+    KEYBOARD_SAVED,
+    KEYBOARD_CANCELED,
+};
+
 class Keyboard {
 protected:
     unsigned int x = 120;
@@ -20,8 +26,9 @@ protected:
 
     uint8_t selected = 0;
 
-    char value[KEYBOARD_VALUE_MAX];
+    char* value = (char*)"undefined";
     char originalValue[KEYBOARD_VALUE_MAX];
+    uint8_t length = 0;
 
     static Keyboard* instance;
 
@@ -76,8 +83,6 @@ protected:
     }
 
 public:
-    bool isVisible = false;
-
     static Keyboard& get()
     {
         if (!instance) {
@@ -86,17 +91,30 @@ public:
         return *instance;
     }
 
+    Keyboard& setTarget(char* target, uint8_t len)
+    {
+        length = range(len, 1, KEYBOARD_VALUE_MAX);
+        value = target;
+        strncpy(originalValue, value, length);
+        grid.reset();
+
+        return *this;
+    }
+
+    void restore()
+    {
+        strncpy(value, originalValue, length);
+    }
+
     void render()
     {
         drawFilledRect({ x, y }, { w, h }, COLOR_FOREGROUND);
         drawRect({ x, y }, { w, h }, COLOR_INFO);
 
-        // char name[APP_TRACK_NAME + 1];
-        // memset(name, 0, sizeof(name));
-        // strncpy(name, isSaveAs->name, sizeof(name) - 1);
-
         drawFilledRect({ x + 1, y + 1 }, { w - 2, 25 }, COLOR_FOREGROUND2);
-        drawText({ x + 20, y + 5 }, value, COLOR_MENU);
+        if (strlen(value) > 0) {
+            drawText({ x + 20, y + 5 }, value, COLOR_MENU);
+        }
 
         // if (fileExists(isSaveAs->getFilePath())) {
         //     drawText({ x + 180, y + 8 }, "overwrite", COLOR_INFO, 11);
@@ -116,18 +134,7 @@ public:
         renderSelection();
     }
 
-    bool toggle()
-    {
-        isVisible = !isVisible;
-        // if (isSaveAs) {
-        //     strcpy(isSaveAs->name, saveAsOriginalName);
-        // }
-        // isSaveAs = NULL;
-
-        return isVisible;
-    }
-
-    bool handle(UiKeys& keys)
+    uint8_t handle(UiKeys& keys)
     {
         if (grid.update(keys) == VIEW_CHANGED) {
             fixGrid();
@@ -142,21 +149,10 @@ public:
                 render();
                 draw();
             } else if (grid.col == 0) {
-                // isSaveAs->save();
-                // isSaveAs = NULL;
-                // render();
-                // draw();
-
-                // Save do something
-                return true;
+                return KEYBOARD_SAVED;
             } else if (grid.col == 1) {
-                // strcpy(isSaveAs->name, saveAsOriginalName);
-                // isSaveAs = NULL;
-                // render();
-                // draw();
-
-                // Cancel do something
-                return false;
+                restore();
+                return KEYBOARD_CANCELED;
             } else {
                 value[strlen(value) - 1] = '\0';
                 render();
@@ -167,7 +163,7 @@ public:
             render();
             draw();
         }
-        return false;
+        return KEYBOARD_DRAW;
     }
 };
 

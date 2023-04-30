@@ -46,6 +46,14 @@ public:
         }
     }
 
+    void reset()
+    {
+        lastRow = 0;
+        lastCol = 0;
+        row = 0;
+        col = 0;
+    }
+
     bool is(int8_t row, int8_t col)
     {
         return this->row == row && this->col == col;

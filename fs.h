@@ -84,4 +84,22 @@ static int fileCompare(const void *p, const void *q)
     return cmp;
 }
 
+void copyFile(char* src, char* dst)
+{
+    FILE* srcFile = fopen(src, "rb");
+    FILE* dstFile = fopen(dst, "wb");
+    if (srcFile == NULL || dstFile == NULL) {
+        return;
+    }
+
+    char buf[1024];
+    size_t size;
+    while ((size = fread(buf, 1, sizeof(buf), srcFile)) > 0) {
+        fwrite(buf, 1, size, dstFile);
+    }
+
+    fclose(srcFile);
+    fclose(dstFile);
+}
+
 #endif
