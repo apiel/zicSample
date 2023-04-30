@@ -54,6 +54,15 @@ protected:
 
     Menu() { }
 
+    bool renderSaveAsOverwrite()
+    {
+        if (fileExists(isSaveAs->getFilePath())) {
+            drawText({ x + 180, y + 8 }, "overwrite", COLOR_INFO, 11);
+            return true;
+        }
+        return false;
+    }
+
 public:
     bool isVisible = false;
 
@@ -72,9 +81,7 @@ public:
 
         if (isSaveAs) {
             keyboard.render();
-            if (fileExists(isSaveAs->getFilePath())) {
-                drawText({ x + 180, y + 8 }, "overwrite", COLOR_INFO, 11);
-            }
+            renderSaveAsOverwrite();
             return;
         }
 
@@ -105,6 +112,10 @@ public:
                 isSaveAs = NULL;
                 render();
                 draw();
+            } else if (res == KEYBOARD_DRAW) {
+                if (renderSaveAsOverwrite()) {
+                    draw();
+                }
             } else if (res == KEYBOARD_SAVED && strlen(isSaveAs->name) > 0 && strlen(isSaveAs->name) < APP_TRACK_NAME
                 && strcmp(track.name, "-") != 0 && strcmp(track.name, ".") != 0 && strcmp(track.name, "..") != 0) {
                 isSaveAs->save();
