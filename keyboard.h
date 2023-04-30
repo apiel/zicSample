@@ -116,10 +116,6 @@ public:
             drawText({ x + 20, y + 5 }, value, COLOR_MENU);
         }
 
-        // if (fileExists(isSaveAs->getFilePath())) {
-        //     drawText({ x + 180, y + 8 }, "overwrite", COLOR_INFO, 11);
-        // }
-
         for (uint8_t i = 0; i < 7; i++) {
             for (uint8_t j = 0; j < 10; j++) {
                 char c[2];
@@ -142,12 +138,14 @@ public:
             draw();
         } else if (keys.Action || keys.Edit) {
             if (grid.row < 7) {
-                char c[2];
-                c[0] = alphanum[(grid.row * 10) + grid.col];
-                c[1] = '\0';
-                strcat(value, c);
-                render();
-                draw();
+                if (strlen(value) < length) {
+                    char c[2];
+                    c[0] = alphanum[(grid.row * 10) + grid.col];
+                    c[1] = '\0';
+                    strcat(value, c);
+                    render();
+                    draw();
+                }
             } else if (grid.col == 0) {
                 return KEYBOARD_SAVED;
             } else if (grid.col == 1) {
