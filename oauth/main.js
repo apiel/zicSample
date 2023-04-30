@@ -1,9 +1,31 @@
+const baseHeader = {
+    // 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    // 'Accept-Encoding': 'gzip, deflate, br',
+    // 'Accept-Language': 'en-US,en;q=0.9',
+    // 'Connection': 'keep-alive',
+    // 'Host': 'freesound.org',
+    // 'Sec-Fetch-Dest': 'document',
+    // 'Sec-Fetch-Mode': 'navigate',
+    // 'Sec-Fetch-Site': 'none',
+    // 'Sec-Fetch-User': '?1',
+    // 'Upgrade-Insecure-Requests': '1',
+    // 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+    // 'sec-ch-ua': '"Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"',
+    // 'sec-ch-ua-mobile': '?0',
+    // 'sec-ch-ua-platform': '"Linux"',
+};
+
 async function main() {
     const username = process.argv[2];
     const password = process.argv[3];
 
     const res = await fetch(
-        'https://freesound.org/apiv2/oauth2/authorize/?client_id=aOE7UaYW68l205T8RHuH&response_type=code'
+        'https://freesound.org/apiv2/oauth2/authorize/?client_id=aOE7UaYW68l205T8RHuH&response_type=code',
+        {
+            headers: {
+                ...baseHeader,
+            }
+        }
     );
     const text = await res.text();
 
@@ -37,9 +59,10 @@ async function main() {
     const data = new URLSearchParams();
     data.append('csrfmiddlewaretoken', csrf);
     data.append('next', next);
+    // data.append('next', '/apiv2/oauth2/authorize/?client_id=aOE7UaYW68l205T8RHuH&response_type=code');
     data.append('username', username);
     data.append('password', password);
-    const res2 = await fetch(res.url, {
+    const postParams = {
         method: 'POST',
         body: data,
         // redirect: 'manual',
@@ -47,6 +70,7 @@ async function main() {
         // origin: 'https://freesound.org',
         // coookies: res.headers.get('Set-Cookie'),
         headers: {
+            ...baseHeader,
             'Content-Type': 'application/x-www-form-urlencoded',
             Referer: res.url,
             // 'Set-Cookie': res.headers.get('Set-Cookie'),
@@ -55,10 +79,21 @@ async function main() {
             // Origin: 'https://freesound.org',
             // Host: 'freesound.org',
         },
-    });
+    };
+    const [postUrl] = res.url.split('?');
+    const res2 = await fetch(postUrl, postParams);
+    // const res2 = await fetch(res.url, postParams);
     const text2 = await res2.text();
 
-    console.log(text2, res2.status, res2.statusText, res2.headers.get('location'));
+    console.log({
+        postUrl,
+        postParams,
+        body: text2.match(/<body[^>]*>([\w|\W]*)<\/body>/im)?.[0],
+        status: res2.status,
+        statusText: res2.statusText,
+        loc: res2.headers.get('Location'),
+        url: res2.url,
+    });
 }
 
 main();
