@@ -1,11 +1,12 @@
 # TODO
 
+- use jostick to apply master fitler, and track filter and also use L1 R1... to apply grid effect
 - standardise layout to be 4 label value per row
   BUT should there even be this top bar edit mode, there is 4 button (A,B,X,Y) giving the possibility to edit 2 values per button (even the main toggle button can have more feature if press long) and could also use double press. For fine tuning could use R1!!
-- use jostick to apply master fitler, and track filter and also use L1 R1... to apply grid effect
 - RG351P direction button repeat
 - FIXME fix sample file selection: right now when pressing the edit button sample get loaded even if not changing sample. However, would be just better to open a modal to select file!
 
+- LFO for filter (and maybe more)
 - negative resonance could do something else, maybe make a resoance with envelop?
 - remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
 - copy, paste, select
@@ -36,3 +37,8 @@ Should there be synth feature?
 - custom synth...?
 
 Should synth be live, or only to generate sample...? (but at least there could be one track that can then be recorded...)
+
+If custom synth, simply use wavetable, then there would still be an (2?) LFO to morph over the wavetable (the same as filter LFO).
+Finally, there would be a wavetable generator view, to create wavetable into file to reuse in the sequencer. The generator would combine 2 wavetables and 2 LFO, one LFO would be the master LFO to define the 64 morph steps of the new wavetable...
+
+Drum synth engine to generate samples...
