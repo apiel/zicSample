@@ -126,7 +126,16 @@ public:
         drawClear();
 
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 25 }, COLOR_FREESOUND_HEADER);
-        unsigned int x = drawText({ 10, 7 }, data.query, COLOR_WHITE, 18);
+
+        SDL_Color color = COLOR_INFO_DARK;
+        color.a = 0x90;
+        drawFilledRect({ 7, 7 }, { 20, 20 }, color);
+        drawExitButton({ 12, 12 }, { 10, 10 }, COLOR_INFO);
+
+        drawFilledRect({ 35, 7 }, { 20, 20 }, color);
+        drawSearchButton({ 40, 12 }, { 10, 10 }, COLOR_INFO);
+
+        unsigned int x = drawText({ 65, 7 }, data.query, COLOR_WHITE, 18);
         char count[16];
         sprintf(count, "%d results", data.totalCount);
         drawText({ x + 10, 13 }, count, COLOR_INFO, 12);
