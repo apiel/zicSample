@@ -89,17 +89,18 @@ public:
         // Frequency should be under 7350Hz else cutoff is = 1 and then no sound
         // We dont want to have LPF/HPF under 50Hz
 
-        value = range(val, -7250, 7300);
+        value = range(val, -7250, 7250);
         int16_t frequency = value;
         if (value == 0) {
             mode = FILTER_MODE_OFF;
         } else if (value > 0) {
-            mode = FILTER_MODE_LOWPASS_12;
-            frequency = 7350 - frequency;
-        } else {
             mode = FILTER_MODE_HIGHPASS_12;
-            frequency = frequency * -1 + 40;
+            frequency = frequency + 50;
+        } else {
+            mode = FILTER_MODE_LOWPASS_12;
+            frequency = 7350 - (frequency * -1 + 40);
         }
+
         cutoff = 2.0 * sin(M_PI * frequency / SAMPLE_RATE); // lookup table?? js: Array.from(Array(7350).keys()).map(frequency => 2.0 * Math.sin(3.141592653589793238 * frequency / 44100));
 
         // printf("Filter: %d -> %d cutoff %f\n", value, frequency, cutoff);
@@ -120,10 +121,10 @@ public:
     float getPctValue()
     {
         if (mode == FILTER_MODE_LOWPASS_12) {
-            return 100 * (float)value / 7300.0;
+            return 100 * (float)value / -7250.0;
         }
         if (mode == FILTER_MODE_HIGHPASS_12) {
-            return 100 * (float)value / -7250.0;
+            return 100 * (float)value / 7250.0;
         }
         return 0.0f;
     }

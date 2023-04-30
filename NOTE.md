@@ -1,6 +1,5 @@
 # TODO
 
-- make LPF left and HPF right...
 - standardise layout to be 4 label value per row
   BUT should there even be this top bar edit mode, there is 4 button (A,B,X,Y) giving the possibility to edit 2 values per button (even the main toggle button can have more feature if press long) and could also use double press. For fine tuning could use R1!!
 - use jostick to apply master fitler, and track filter and also use L1 R1... to apply grid effect
@@ -11,6 +10,7 @@
 - remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
 - copy, paste, select
 - github to save pattern
+- FIXME fix filter click when switching quickly between value, next to 0% HPF
 
 ### Freesound
 
