@@ -135,7 +135,7 @@ public:
 
     FreesoundItem items[FREESOUND_PAGE_SIZE];
 
-    const char* query = "kick";
+    const char* query = "";
 
     static Freesound& get()
     {
