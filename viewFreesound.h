@@ -224,6 +224,11 @@ public:
                 sprintf(path + strlen(path), "_%d.ogg", item.id);
                 copyFile((char*)"samples/__preview.ogg", path);
             }
+        } else if (keys.Edit3 || keys.Edit2) {
+            APP_LOG("openKeyboard Search\n");
+            openKeyboard();
+            render();
+            draw();
         }
     }
 };

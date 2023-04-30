@@ -7,7 +7,7 @@ make all -C /home/alex/Music/zic/zicTracker/linuxSDL --print-data-base --no-buil
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Apr 30 22:27:25 2023
+# Make data base, printed on Sun Apr 30 22:50:05 2023
 
 # Variables
 
@@ -288,12 +288,12 @@ SNAP_COMMON = /var/snap/code/common
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
 # makefile (from 'makefile', line 9)
-CC = g++ -o zicTracker
-# environment
-SNAP_USER_DATA = /home/alex/snap/code/126
  
 make: *** No rule to make target 'all'.  Stop.
 
+CC = g++ -o zicTracker
+# environment
+SNAP_USER_DATA = /home/alex/snap/code/126
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
@@ -498,7 +498,7 @@ rg351Next:
 # strcache performance: lookups = 71 / hit rate = 39%
 # hash-table stats:
 # Load=43/8192=1%, Rehash=0, Collisions=0/71=0%
-# Finished Make data base on Sun Apr 30 22:27:25 2023
+# Finished Make data base on Sun Apr 30 22:50:05 2023
 
 # make: Leaving directory '/home/alex/Music/zic/zicTracker/linuxSDL'
  
