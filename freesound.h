@@ -158,6 +158,7 @@ public:
             // curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, freesoundWriteData);
             FILE* fp = fopen(output, "wb");
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0); // Disable SSL verify to avoid "SSL peer certificate or SSH remote key was not OK"
             CURLcode res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
                 // TODO show an error
