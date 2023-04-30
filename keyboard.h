@@ -9,6 +9,10 @@
 #define KEYBOARD_VALUE_MAX 256
 #endif
 
+#ifndef KEYBOARD_MIN_WIDTH
+#define KEYBOARD_MIN_WIDTH 240
+#endif
+
 enum {
     KEYBOARD_DRAW,
     KEYBOARD_SAVED,
@@ -21,6 +25,7 @@ protected:
     unsigned int x = 120;
     unsigned int y = 30;
     uint16_t h = SCREEN_H - (y * 2);
+    unsigned int margin = (w - KEYBOARD_MIN_WIDTH) * 0.5;
 
     Grid grid = Grid(8, 10);
 
@@ -29,6 +34,8 @@ protected:
     char* value = (char*)"undefined";
     char originalValue[KEYBOARD_VALUE_MAX];
     uint8_t length = 0;
+
+    const char * doneButtonText = "Done";
 
     static Keyboard* instance;
 
@@ -68,13 +75,13 @@ protected:
         unsigned int _y = y + 30 + (row * 25);
         if (row < 7) {
             unsigned int _x = x + 20 + (col * 20);
-            drawRect({ _x - 3, _y - 3 }, { 18, 23 }, color);
+            drawRect({ margin + _x - 3, _y - 3 }, { 18, 23 }, color);
         } else if (col == 0) {
-            drawRect({ x + 18, _y - 3 }, { 42, 23 }, color);
+            drawRect({ margin + x + 18, _y - 3 }, { 45, 23 }, color);
         } else if (col == 1) {
-            drawRect({ x + 65, _y - 3 }, { 60, 23 }, color);
+            drawRect({ margin + x + 65, _y - 3 }, { 60, 23 }, color);
         } else {
-            drawRect({ x + 126, _y - 3 }, { 90, 23 }, color);
+            drawRect({ margin + x + 126, _y - 3 }, { 90, 23 }, color);
         }
     }
 
@@ -105,8 +112,15 @@ public:
 
     Keyboard& setWidth(uint16_t width)
     {
-        w = width;
+        w = range(width, KEYBOARD_MIN_WIDTH, SCREEN_W - 10);
         x = SCREEN_W * 0.5 - (w * 0.5);
+        margin = (w - KEYBOARD_MIN_WIDTH) * 0.5;
+        return *this;
+    }
+
+    Keyboard& setDoneButtonText(const char* text)
+    {
+        doneButtonText = text;
         return *this;
     }
 
@@ -130,11 +144,12 @@ public:
                 char c[2];
                 c[0] = alphanum[(i * 10) + j];
                 c[1] = '\0';
-                drawText({ x + 20 + (j * 20), y + 30 + (i * 25) }, c, COLOR_INFO);
+                drawText({ margin + x + 20 + (j * 20), y + 30 + (i * 25) }, c, COLOR_INFO);
             }
         }
 
-        drawText({ x + 20, y + 30 + (7 * 25) }, "Save   Cancel   Backspace", COLOR_INFO);
+        unsigned int x2 = drawText({ margin + x + 20, y + 30 + (7 * 25) }, doneButtonText, COLOR_INFO);
+        drawText({ x2 + 10, y + 30 + (7 * 25) }, "Cancel   Backspace", COLOR_INFO);
 
         renderSelection();
     }

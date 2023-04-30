@@ -4,9 +4,10 @@
 #include "audioPreview.h"
 #include "draw.h"
 #include "freesound.h"
-#include "grid.h"
-#include "view.h"
 #include "fs.h"
+#include "grid.h"
+#include "keyboard.h"
+#include "view.h"
 
 class ViewFreesound : public View {
 protected:
@@ -16,16 +17,26 @@ protected:
     uint8_t currentPos = 0;
     uint8_t lastPreviewPlayed = -1; // Set to max value
 
+    Keyboard& keyboard = Keyboard::get();
+    bool showKeyboard = true;
+
     static ViewFreesound* instance;
 
     ViewFreesound()
     {
         // Load empty search on init
         data.init();
+        openKeyboard();
     }
 
     unsigned int h = 66;
     unsigned int marginTop = 5;
+
+    void openKeyboard()
+    {
+        showKeyboard = true;
+        keyboard.setTarget(data.query, FREESOUND_QUERY_SIZE).setWidth(SCREEN_W - 30).setDoneButtonText("Done");
+    }
 
     void renderItem(unsigned int pos)
     {
@@ -143,11 +154,28 @@ public:
 
         renderSelection(grid.row, grid.col);
 
+        if (showKeyboard) {
+            keyboard.render();
+        }
         draw();
     }
 
     void handle(UiKeys& keys)
     {
+        if (showKeyboard) {
+            uint8_t res = keyboard.handle(keys);
+            if (res == KEYBOARD_CANCELED) {
+                showKeyboard = false;
+                render();
+                draw();
+            } else if (res == KEYBOARD_SAVED) {
+                showKeyboard = false;
+                data.search();
+                render();
+                draw();
+            }
+            return;
+        }
         if (keys.Menu) {
             ui.view = VIEW_MAIN;
             ui.needMainViewRender = true;

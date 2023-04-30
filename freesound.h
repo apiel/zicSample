@@ -6,6 +6,10 @@
 #include "freesoundOauth.h"
 #endif
 
+#ifndef FREESOUND_QUERY_SIZE
+#define FREESOUND_QUERY_SIZE 100
+#endif
+
 class Freesound {
 protected:
 #if FREESOUND_OAUTH_ENABLED
@@ -20,6 +24,7 @@ protected:
 
     Freesound()
     {
+        strcpy(query, "");
     }
 
     void loadKey()
@@ -135,7 +140,7 @@ public:
 
     FreesoundItem items[FREESOUND_PAGE_SIZE];
 
-    const char* query = "";
+    char query[FREESOUND_QUERY_SIZE];
 
     static Freesound& get()
     {
