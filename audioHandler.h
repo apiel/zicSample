@@ -72,7 +72,8 @@ public:
             float valueY2 = getAXisValue(UI_PAD_Y2);
             // filter.set(7250 * valueY2 * valueX2);
             // filter.set(7000 * valueY2 * fabs(valueX2));
-            filter.set(7000 * valueY2 * ((valueX2 + 1) * 0.5f));
+            // filter.set(7000 * valueY2 * ((valueX2 + 1) * 0.5f));
+            filter.set(7000 * ( valueY2 * 0.5f + valueY2 * (1 - fabs(valueX2)) * 0.5f ));
         }
 
         if (!audioPreview.samples(buf, len)) {
