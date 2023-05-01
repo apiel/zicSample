@@ -220,6 +220,8 @@ protected:
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
         drawLabelValue({ 10, 10 }, "Vol:", (int)(audio.getVolume() * 100), "%", isVolume(), 20);
         renderBPM();
+
+        drawLabelValue({ 100, 5 }, "Res:", (int)(audio.filter.resonance * 100), "%", isResonance());
     }
 
     void renderMasterVolume(bool selected = false)
@@ -251,6 +253,7 @@ protected:
         } else if (isStepCondition()) {
             handleStepCondition(keys.getOneDirection());
         } else if (isBpm()) {
+            // FIXME
             audio.tempo.set(audio.tempo.getBpm() + keys.getDirection());
             renderBPM(CLEAR);
         } else if (isCutoff()) {
@@ -349,7 +352,8 @@ protected:
     void handleMainEdit2(UiKeys& keys)
     {
         if (grid.row == APP_TRACKS) {
-            return;
+            audio.filter.setResonance(audio.filter.resonance + keys.getDirection(0.01));
+            renderHeaderMaster();
         } else if (grid.col == 0) {
             if (keys.Right) {
                 handelResonance(0.01);

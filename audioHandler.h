@@ -17,13 +17,15 @@ protected:
     float mixDivider = 1.0f / APP_TRACKS;
 
     unsigned long lastAxisUpdate = 0;
+    float lastX2 = 0.0f;
+    float lastY2 = 0.0f;
 
     static AudioHandler* instance;
 
     AudioHandler()
     {
         setVolume(volume);
-        filter.setResonance(0.90f);
+        filter.setResonance(0.80f);
     }
 
     float getAXisValue(int axis)
@@ -70,10 +72,14 @@ public:
 
             float valueX2 = getAXisValue(UI_PAD_X2);
             float valueY2 = getAXisValue(UI_PAD_Y2);
-            // filter.set(7250 * valueY2 * valueX2);
-            // filter.set(7000 * valueY2 * fabs(valueX2));
-            // filter.set(7000 * valueY2 * ((valueX2 + 1) * 0.5f));
-            filter.set(7000 * ( valueY2 * 0.5f + valueY2 * (1 - fabs(valueX2)) * 0.5f ));
+            if (valueX2 != lastX2 || valueY2 != lastY2) {
+                lastX2 = valueX2;
+                lastY2 = valueY2;
+                // filter.set(7250 * valueY2 * valueX2);
+                // filter.set(7000 * valueY2 * fabs(valueX2));
+                // filter.set(7000 * valueY2 * ((valueX2 + 1) * 0.5f));
+                filter.set(7000 * (valueY2 * 0.5f + valueY2 * (1 - fabs(valueX2)) * 0.5f));
+            }
         }
 
         if (!audioPreview.samples(buf, len)) {
