@@ -7,6 +7,7 @@ typedef struct {
     UiKeys keys;
     uint8_t view = VIEW_MAIN;
     bool needMainViewRender = false;
+    SDL_Joystick* joystick = NULL;
 } Ui;
 
 Ui ui;

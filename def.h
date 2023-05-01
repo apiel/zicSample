@@ -206,6 +206,13 @@ enum {
     UI_KEY_COUNT
 };
 
+enum {
+    UI_PAD_X1,
+    UI_PAD_Y1,
+    UI_PAD_X2,
+    UI_PAD_Y2,
+};
+
 class UiKeys {
 public:
     bool update = false;

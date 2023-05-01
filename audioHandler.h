@@ -16,11 +16,20 @@ protected:
     float volume = 1.0f;
     float mixDivider = 1.0f / APP_TRACKS;
 
+    unsigned long lastAxisUpdate = 0;
+
     static AudioHandler* instance;
 
     AudioHandler()
     {
         setVolume(volume);
+        filter.setResonance(0.90f);
+    }
+
+    float getAXisValue(int axis)
+    {
+        // Round because else we never get 0.0f values...
+        return roundf(SDL_JoystickGetAxis(ui.joystick, axis) * 0.00305175f) * 0.01f; // 0.00305175f = 1 / 32768.0f * 100.0f
     }
 
 public:
@@ -39,7 +48,8 @@ public:
 
     void samples(float* buf, int len)
     {
-        if (tempo.next(SDL_GetTicks()))
+        unsigned long now = SDL_GetTicks();
+        if (tempo.next(now))
         // if (tempo.next(SDL_GetTicks64()))
         // if (tempo.next())
         {
@@ -50,6 +60,19 @@ public:
                 }
             }
             needToRenderProgressBar = true;
+        }
+
+        if (now - lastAxisUpdate > 50) {
+            lastAxisUpdate = now;
+            // float valueX1 = getAXisValue(UI_PAD_X1);
+            // float valueY1 = getAXisValue(UI_PAD_Y1);
+            // filter.setResonance(0.95f * valueY1 * valueX1);
+
+            float valueX2 = getAXisValue(UI_PAD_X2);
+            float valueY2 = getAXisValue(UI_PAD_Y2);
+            // filter.set(7250 * valueY2 * valueX2);
+            // filter.set(7000 * valueY2 * fabs(valueX2));
+            filter.set(7000 * valueY2 * ((valueX2 + 1) * 0.5f));
         }
 
         if (!audioPreview.samples(buf, len)) {

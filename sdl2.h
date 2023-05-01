@@ -149,6 +149,10 @@ void initGameController()
         SDL_JoystickOpen(i);
         SDL_Joystick* joystick = SDL_JoystickOpen(i);
         SDL_Log("Joystick %d: %s\n", i, SDL_JoystickName(joystick));
+        if (strcmp(SDL_JoystickName(joystick), "OpenSimHardware OSH PB Controller") == 0) {
+            SDL_Log("Keep joystick pointer for joypad...\n");
+            ui.joystick = joystick;
+        }
         if (SDL_IsGameController(i)) {
             SDL_GameControllerOpen(i);
             SDL_GameController* controller = SDL_GameControllerOpen(i);
