@@ -206,21 +206,6 @@ enum {
     UI_KEY_COUNT
 };
 
-class UiJoysticks {
-public:
-    bool update = false;
-
-    float X1 = 0.0; // Joystick left
-    float Y1 = 0.0; // Joystick left
-    float X2 = 0.0; // Joystick right
-    float Y2 = 0.0; // Joystick right
-
-    bool X1Changed = false;
-    bool Y1Changed = false;
-    bool X2Changed = false;
-    bool Y2Changed = false;
-};
-
 class UiKeys {
 public:
     bool update = false;

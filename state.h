@@ -5,7 +5,6 @@
 
 typedef struct {
     UiKeys keys;
-    UiJoysticks joysticks;
     uint8_t view = VIEW_MAIN;
     bool needMainViewRender = false;
 } Ui;

@@ -1,7 +1,6 @@
 #include "audioHandler.h"
 #include "data.h"
 #include "def.h"
-#include "joystickModulation.h"
 #include "sdl2.h"
 #include "viewMain.h"
 
@@ -86,7 +85,6 @@ int main(int argc, char* args[])
             ProgressBar::get().render(audio.stepCounter);
             draw();
         }
-        joystickModulation(ui.joysticks);
         SDL_Delay(10);
     }
 

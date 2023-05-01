@@ -141,37 +141,6 @@ bool handleJoyButton(SDL_JoyButtonEvent* event)
     return true;
 }
 
-bool handleAxisEvent(SDL_JoyAxisEvent* event)
-{
-    // SDL_Log("handleAxisEvent axis %d value %d type %d which %d pad1 %d pad2 %d\n",
-    //     event->axis, event->value, event->type, event->which, event->padding1, event->padding2);
-
-    // float value = roundf(event->value / 32768.0f * 100.0f) * 0.01f; // roundf(val * 100) / 100
-    float value = roundf(event->value * 0.00305175f) * 0.01f;
-    switch (event->axis) {
-    case 0: // left/right (left joystick)
-        ui.joysticks.X1 = value;
-        ui.joysticks.X1Changed = true;
-        break;
-    case 1: // up/down (left joystick)
-        ui.joysticks.Y1 = value;
-        ui.joysticks.Y1Changed = true;
-        break;
-    case 2: // left/right (right joystick)
-        ui.joysticks.X2 = value;
-        ui.joysticks.X2Changed = true;
-        break;
-    case 3: // up/down (right joystick)
-        ui.joysticks.Y2 = value;
-        ui.joysticks.Y2Changed = true;
-        break;
-    default:
-        break;
-    }
-
-    return true;
-}
-
 void initGameController()
 {
     int num = SDL_NumJoysticks();
@@ -207,8 +176,9 @@ bool handleEvent()
         case SDL_KEYUP:
         case SDL_KEYDOWN:
             return handleKeyboard(&event.key);
-        case SDL_JOYAXISMOTION:
-            return handleAxisEvent(&event.jaxis);
+        // This is too slow...
+        // case SDL_JOYAXISMOTION:
+        //     return handleAxisEvent(&event.jaxis);
         case SDL_JOYBUTTONDOWN:
         case SDL_JOYBUTTONUP:
             return handleJoyButton(&event.jbutton);

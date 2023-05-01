@@ -19,10 +19,17 @@ RG351P=-ldl `pkg-config wayland-client --cflags --libs` -lasound -lpulse -lX11 -
 
 BUILD=-Wall zicSample.cpp -fopenmp -Wno-narrowing $(SDL2) $(SDL2_TTF) $(LIDSND) $(FREESOUND)
 
+RG351_IP=192.168.1.105
+
 linux: build run
 
 rg351:
 	make rg351MountChroot rg351Next
+
+rg351Scp:
+	make rg351Next
+	sshpass -p "ark" scp zicSampleRG351 ark@$(RG351_IP):/home/ark/zicSample/zicSampleRG351
+	sshpass -p "ark" ssh ark@$(RG351_IP) tail -f /home/ark/zicSample/zic.log
 
 rg351Next:
 	sudo chroot /mnt/data/arm64_2/ /bin/bash -c "cd /home/alex/zicSample && make rg351Chrooted"
