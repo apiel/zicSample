@@ -10,6 +10,7 @@
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
+#include "drawHeaderButtonValue.h"
 
 #define OPTIMIZED true
 
@@ -26,6 +27,8 @@ protected:
     AudioHandler& audio = AudioHandler::get();
     Menu& menu = Menu::get();
     PatternSelector& patternSelector = PatternSelector::get();
+
+    HeaderButtonValue headerButtonValue = HeaderButtonValue();
 
     uint16_t rowY[APP_TRACKS + 1] = {
         GRID_PATTERN_TOP,
@@ -401,6 +404,8 @@ public:
 
         renderHeader();
         renderRows();
+
+        headerButtonValue.draw();
 
         draw();
     }

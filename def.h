@@ -126,6 +126,54 @@
 #define APP_DEFAULT_FONT_COLOR COLOR_WHITE
 #endif
 
+#ifndef COLOR_BTN_X // #03139e
+#define COLOR_BTN_X { 0x03, 0x13, 0x9e, 255 }
+#endif
+
+#ifndef COLOR_BTN_Y // #03a115
+#define COLOR_BTN_Y { 0x03, 0xa1, 0x15, 255 }
+#endif
+
+#ifndef COLOR_BTN_A // #ab0400
+#define COLOR_BTN_A { 0xab, 0x04, 0x00, 255 }
+#endif
+
+#ifndef COLOR_BTN_B // #edbf02
+#define COLOR_BTN_B { 0xed, 0xbf, 0x02, 255 }
+#endif
+
+// #ifndef COLOR_BTN_X_DARK // #000c64
+// #define COLOR_BTN_X_DARK { 0x00, 0x0c, 0x64, 255 }
+// #endif
+
+// #ifndef COLOR_BTN_Y_DARK // #005a0b
+// #define COLOR_BTN_Y_DARK { 0x00, 0x5a, 0x0b, 255 }
+// #endif
+
+// #ifndef COLOR_BTN_A_DARK // #5a0000
+// #define COLOR_BTN_A_DARK { 0x5a, 0x00, 0x00, 255 }
+// #endif
+
+// #ifndef COLOR_BTN_B_DARK // #ab8900
+// #define COLOR_BTN_B_DARK { 0xab, 0x89, 0x00, 255 }
+// #endif
+
+#ifndef COLOR_BTN_X_ALPHA // #03139e
+#define COLOR_BTN_X_ALPHA { 0x03, 0x13, 0x9e, 10 }
+#endif
+
+#ifndef COLOR_BTN_Y_ALPHA // #03a115
+#define COLOR_BTN_Y_ALPHA { 0x03, 0xa1, 0x15, 10 }
+#endif
+
+#ifndef COLOR_BTN_A_ALPHA // #ab0400
+#define COLOR_BTN_A_ALPHA { 0xab, 0x04, 0x00, 10 }
+#endif
+
+#ifndef COLOR_BTN_B_ALPHA // #edbf02
+#define COLOR_BTN_B_ALPHA { 0xed, 0xbf, 0x02, 10 }
+#endif
+
 // clang-format on
 
 #ifndef APP_MAX_VOLUME
