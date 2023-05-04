@@ -405,6 +405,10 @@ public:
         renderHeader();
         renderRows();
 
+        headerButtonValue.btnY.label1 = "Volume";
+        headerButtonValue.btnY.label2 = "Distortion";
+        headerButtonValue.btnX.label1 = "Sample";
+        headerButtonValue.btnX.label2 = "Fx";
         headerButtonValue.draw();
 
         draw();
