@@ -15,6 +15,75 @@
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
 
+class ViewMainHeaderTrack {
+protected:
+    HeaderButtonValue headerButtonValue = HeaderButtonValue();
+
+public:
+    void renderY(Track& track)
+    {
+        headerButtonValue.btnY.label1 = "Volume";
+        char volume[4];
+        sprintf(volume, "%d", (int)(track.volume * 100));
+        headerButtonValue.btnY.value1 = volume;
+        headerButtonValue.btnY.unit1 = "%";
+
+        headerButtonValue.btnY.label2 = "Distortion";
+        char distortion[4];
+        sprintf(distortion, "%d", (int)(track.distortion.drive * 100));
+        headerButtonValue.btnY.value2 = distortion;
+        headerButtonValue.btnY.unit2 = "%";
+
+        headerButtonValue.drawY();
+    }
+
+    void renderX(Track& track)
+    {
+        headerButtonValue.btnX.label1 = "Sample";
+        headerButtonValue.btnX.value1 = track.audioFileName;
+
+        headerButtonValue.drawX();
+    }
+
+    void renderA(Track& track)
+    {
+        headerButtonValue.btnA.label1 = track.filter.getName();
+        char filter[6];
+        sprintf(filter, "%.1f", track.filter.getPctValue());
+        headerButtonValue.btnA.value1 = filter;
+        headerButtonValue.btnA.unit1 = "%";
+
+        headerButtonValue.btnA.label2 = "Resonance";
+        char resonance[4];
+        sprintf(resonance, "%d", (int)(track.filter.resonance * 100));
+        headerButtonValue.btnA.value2 = resonance;
+        headerButtonValue.btnA.unit2 = "%";
+
+        headerButtonValue.drawA();
+    }
+
+    void renderB(Track& track)
+    {
+        headerButtonValue.btnB.label1 = "Status";
+        headerButtonValue.btnB.value1 = track.active ? "Playing" : "Stopped";
+
+        // headerButtonValue.btnB.label2 = "Velocity";
+        // headerButtonValue.btnB.value2 = "100";
+
+        headerButtonValue.drawB();
+    }
+
+    void render(Track& track)
+    {
+        drawText({ 10, 10 }, track.name, COLOR_INFO);
+
+        renderY(track);
+        renderX(track);
+        renderA(track);
+        renderB(track);
+    }
+};
+
 class ViewMain : public View {
 protected:
     Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1);
@@ -25,7 +94,7 @@ protected:
     Menu& menu = Menu::get();
     PatternSelector& patternSelector = PatternSelector::get();
 
-    HeaderButtonValue headerButtonValue = HeaderButtonValue();
+    ViewMainHeaderTrack mainHeaderTrack = ViewMainHeaderTrack();
 
     uint16_t rowY[APP_TRACKS + 1] = {
         GRID_PATTERN_TOP,
@@ -152,80 +221,24 @@ protected:
 
     Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
 
-    void renderHeaderTrackY()
-    {
-        Track& track = getTrack();
-        headerButtonValue.btnY.label1 = "Volume";
-        char volume[4];
-        sprintf(volume, "%d", (int)(track.volume * 100));
-        headerButtonValue.btnY.value1 = volume;
-        headerButtonValue.btnY.unit1 = "%";
-
-        headerButtonValue.btnY.label2 = "Distortion";
-        char distortion[4];
-        sprintf(distortion, "%d", (int)(track.distortion.drive * 100));
-        headerButtonValue.btnY.value2 = distortion;
-        headerButtonValue.btnY.unit2 = "%";
-
-        headerButtonValue.drawY();
-    }
-
-    void renderHeaderTrackX()
-    {
-        Track& track = getTrack();
-        headerButtonValue.btnX.label1 = "Sample";
-        headerButtonValue.btnX.value1 = track.audioFileName;
-
-        headerButtonValue.drawX();
-    }
-
-    void renderHeaderTrackA()
-    {
-        Track& track = getTrack();
-        headerButtonValue.btnA.label1 = track.filter.getName();
-        char filter[6];
-        sprintf(filter, "%.1f", track.filter.getPctValue());
-        headerButtonValue.btnA.value1 = filter;
-        headerButtonValue.btnA.unit1 = "%";
-
-        headerButtonValue.btnA.label2 = "Resonance";
-        char resonance[4];
-        sprintf(resonance, "%d", (int)(track.filter.resonance * 100));
-        headerButtonValue.btnA.value2 = resonance;
-        headerButtonValue.btnA.unit2 = "%";
-
-        headerButtonValue.drawA();
-    }
-
-    void renderHeaderTrackB()
-    {
-        Track& track = getTrack();
-        headerButtonValue.btnB.label1 = "Status";
-        headerButtonValue.btnB.value1 = track.active ? "ON" : "OFF";
-
-        // headerButtonValue.btnB.label2 = "Velocity";
-        // headerButtonValue.btnB.value2 = "100";
-
-        headerButtonValue.drawB();
-    }
-
-    void renderHeaderTrack()
-    {
-        renderHeaderTrackY();
-        renderHeaderTrackX();
-        renderHeaderTrackA();
-        renderHeaderTrackB();
-    }
-
     void renderHeaderStep()
     {
+        Track& track = getTrack();
+        drawText({ 10, 10 }, track.name, COLOR_INFO);
+    }
+
+    void renderHeaderMaster()
+    {
+        drawText({ 10, 10 }, "Master", COLOR_INFO);
     }
 
     void renderHeader()
     {
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
-        if (grid.col == 0) {
-            renderHeaderTrack();
+        if (grid.row == APP_TRACKS) {
+            renderHeaderMaster();
+        } else if (grid.col == 0) {
+            mainHeaderTrack.render(getTrack());
         } else {
             renderHeaderStep();
         }
@@ -303,27 +316,6 @@ public:
             return;
         }
 
-        if (grid.update(keys) == VIEW_CHANGED) {
-            renderSelection();
-            if (grid.row == APP_TRACKS) {
-                // renderHeaderMaster();
-            } else {
-                if (grid.rowChanged()) {
-                    if (grid.lastRow == APP_TRACKS) { // If last row was 0, fully re-render
-                        renderHeader();
-                    } else {
-                        // renderHeaderPattern(CLEAR);
-                        // renderHeaderStep();
-                    }
-                }
-                if (grid.colChanged()) {
-                    // renderHeaderStep();
-                }
-            }
-            draw();
-            return;
-        }
-
         if (keys.btnB) {
             if (grid.row == APP_TRACKS) {
                 // Could start to play pause
@@ -345,6 +337,13 @@ public:
                 draw();
                 return;
             }
+        }
+
+        if (grid.update(keys) == VIEW_CHANGED) {
+            renderSelection();
+            renderHeader();
+            draw();
+            return;
         }
     }
 };
