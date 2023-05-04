@@ -10,69 +10,65 @@ protected:
     const uint32_t width = (SCREEN_W - 97) * 0.25;
     const uint32_t height = 60;
     const uint32_t halfHeight = height * 0.5 - 1;
-    const uint32_t Yx = 92;
-    const uint32_t Yy = 5;
-    const uint32_t Xx = Yx + width + 2;
-    const uint32_t Xy = Yy;
-    const uint32_t Bx = Xx;
-    const uint32_t By = Yy + halfHeight + 2;
-    const uint32_t Ax = 2 + Xx + width * 2;
-    const uint32_t Ay = Yy;
+    const Point posX = { 92, 5 };
+    const Point posY = { posX.x + width + 2, posX.y };
+    const Point posB = { posY.x, posX.y + halfHeight + 2 };
+    const Point posA = { 2 + posY.x + width * 2, posX.y };
 
-    void drawTriangle(uint32_t x, uint32_t y, SDL_Color color, const char *letter)
+    void drawTriangle(Point position, SDL_Color color, const char* letter)
     {
         uint32_t size = 15;
         const std::vector<SDL_Vertex> verts = {
             {
-                SDL_FPoint { x - size, y },
+                SDL_FPoint { position.x - size, position.y },
                 color,
                 SDL_FPoint { 0 },
             },
             {
-                SDL_FPoint { x, y },
+                SDL_FPoint { position.x, position.y },
                 color,
                 SDL_FPoint { 0 },
             },
             {
-                SDL_FPoint { x, y + size },
+                SDL_FPoint { position.x, position.y + size },
                 color,
                 SDL_FPoint { 0 },
             },
         };
         SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
 
-        drawText({ x - (uint32_t)(size * 0.5), y }, letter, COLOR_WHITE, 8);
+        drawText({ position.x - (uint32_t)(size * 0.5), position.y }, letter, COLOR_WHITE, 8);
     }
 
 public:
     void drawY()
     {
-        drawFilledRect({ Yx, Yy }, { width, height }, COLOR_FOREGROUND2);
-        drawTriangle(Yx + width, Yy, COLOR_BTN_Y, "Y");
+        drawFilledRect(posX, { width, height }, COLOR_FOREGROUND2);
+        drawTriangle({posX.x + width, posX.y }, COLOR_BTN_Y, "Y");
     }
 
     void drawX()
     {
-        drawFilledRect({ Xx, Xy }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
-        drawTriangle(Xx + width * 2, Xy, COLOR_BTN_X, "X");
+        drawFilledRect(posY, { width * 2, halfHeight }, COLOR_FOREGROUND2);
+        drawTriangle({ posY.x + width * 2, posY.y }, COLOR_BTN_X, "X");
     }
 
     void drawB()
     {
-        drawFilledRect({ Bx, By }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
-        drawTriangle(Bx + width * 2, By, COLOR_BTN_B, "B");
+        drawFilledRect(posB, { width * 2, halfHeight }, COLOR_FOREGROUND2);
+        drawTriangle({ posB.x + width * 2, posB.y }, COLOR_BTN_B, "B");
     }
 
     void drawA()
     {
-        drawFilledRect({ Ax, Ay }, { width, height }, COLOR_FOREGROUND2);
-        drawTriangle(Ax + width, Ay, COLOR_BTN_A, "A");
+        drawFilledRect(posA, { width, height }, COLOR_FOREGROUND2);
+        drawTriangle({ posA.x + width, posA.y }, COLOR_BTN_A, "A");
     }
 
     void draw()
     {
         // FIXME remove this
-        drawFilledRect({ Yx, Yy }, { width * 4, height }, COLOR_BACKGROUND);
+        drawFilledRect(posX, { width * 4, height }, COLOR_BACKGROUND);
 
         drawY();
         drawX();
