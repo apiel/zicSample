@@ -408,7 +408,9 @@ public:
         headerButtonValue.btnY.label1 = "Volume";
         headerButtonValue.btnY.label2 = "Distortion";
         headerButtonValue.btnX.label1 = "Sample";
-        headerButtonValue.btnX.label2 = "Fx";
+        headerButtonValue.btnA.label1 = "LFP";
+        headerButtonValue.btnA.label2 = "Resonance";
+        headerButtonValue.btnB.label1 = "Status";
         headerButtonValue.draw();
 
         draw();

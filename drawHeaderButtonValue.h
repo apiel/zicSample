@@ -63,7 +63,7 @@ protected:
                 // btnB.position.y because y = btnY.position.y + sizeHorizontal.h + 2
                 drawText({ btn.position.x + 5, btnB.position.y }, btn.label2, COLOR_LABEL, 10);
             } else {
-                drawText({ btn.position.x + 5, btn.position.y + 10 }, btn.label2, COLOR_LABEL, 10);
+                drawText({ btn.position.x + (uint32_t)(btn.size.w * 0.5), btn.position.y }, btn.label2, COLOR_LABEL, 10);
             }
         }
     }
