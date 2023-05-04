@@ -94,12 +94,12 @@ public:
 
     void drawY()
     {
-        drawBtn(btnX);
+        drawBtn(btnY);
     }
 
     void drawX()
     {
-        drawBtn(btnY);
+        drawBtn(btnX);
     }
 
     void drawB()

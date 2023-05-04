@@ -4,22 +4,19 @@
 #include "audioHandler.h"
 #include "data.h"
 #include "draw.h"
+#include "drawHeaderButtonValue.h"
 #include "grid.h"
 #include "menu.h"
 #include "patternSelector.h"
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
-#include "drawHeaderButtonValue.h"
-
-#define OPTIMIZED true
 
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
 
 class ViewMain : public View {
 protected:
-    bool headerEditMode = false;
     Grid grid = Grid(APP_TRACKS + 1, APP_TRACK_STEPS + 1);
     Grid gridEdit = Grid(3, 5);
     ProgressBar& progressBar = ProgressBar::get();
@@ -155,17 +152,83 @@ protected:
 
     Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
 
-    void renderHeader(bool optimized = false)
+    void renderHeaderTrackY()
     {
-        if (!optimized) {
-            drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        Track& track = getTrack();
+        headerButtonValue.btnY.label1 = "Volume";
+        char volume[4];
+        sprintf(volume, "%d", (int)(track.volume * 100));
+        headerButtonValue.btnY.value1 = volume;
+        headerButtonValue.btnY.unit1 = "%";
+
+        headerButtonValue.btnY.label2 = "Distortion";
+        char distortion[4];
+        sprintf(distortion, "%d", (int)(track.distortion.drive * 100));
+        headerButtonValue.btnY.value2 = distortion;
+        headerButtonValue.btnY.unit2 = "%";
+
+        headerButtonValue.drawY();
+    }
+
+    void renderHeaderTrackX()
+    {
+        Track& track = getTrack();
+        headerButtonValue.btnX.label1 = "Sample";
+        headerButtonValue.btnX.value1 = track.audioFileName;
+
+        headerButtonValue.drawX();
+    }
+
+    void renderHeaderTrackA()
+    {
+        Track& track = getTrack();
+        headerButtonValue.btnA.label1 = track.filter.getName();
+        char filter[6];
+        sprintf(filter, "%.1f", track.filter.getPctValue());
+        headerButtonValue.btnA.value1 = filter;
+        headerButtonValue.btnA.unit1 = "%";
+
+        headerButtonValue.btnA.label2 = "Resonance";
+        char resonance[4];
+        sprintf(resonance, "%d", (int)(track.filter.resonance * 100));
+        headerButtonValue.btnA.value2 = resonance;
+        headerButtonValue.btnA.unit2 = "%";
+
+        headerButtonValue.drawA();
+    }
+
+    void renderHeaderTrackB()
+    {
+        Track& track = getTrack();
+        headerButtonValue.btnB.label1 = "Status";
+        headerButtonValue.btnB.value1 = track.active ? "ON" : "OFF";
+
+        // headerButtonValue.btnB.label2 = "Velocity";
+        // headerButtonValue.btnB.value2 = "100";
+
+        headerButtonValue.drawB();
+    }
+
+    void renderHeaderTrack()
+    {
+        renderHeaderTrackY();
+        renderHeaderTrackX();
+        renderHeaderTrackA();
+        renderHeaderTrackB();
+    }
+
+    void renderHeaderStep()
+    {
+    }
+
+    void renderHeader()
+    {
+        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        if (grid.col == 0) {
+            renderHeaderTrack();
+        } else {
+            renderHeaderStep();
         }
-        // if (!optimized || gridEdit.lastRow == 0 || gridEdit.lastRow == 1 || gridEdit.row == 0 || gridEdit.row == 1) {
-        //     renderHeaderPattern(optimized);
-        // }
-        // if (!optimized || gridEdit.lastRow == 2 || gridEdit.row == 2) {
-        //     renderHeaderStep();
-        // }
     }
 
     void renderRows(bool clear = false)
@@ -199,50 +262,6 @@ public:
         renderHeader();
         renderRows();
 
-
-        // unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
-        // x = drawLabelValue({ x + 5, 5 }, track.filter.getName(), track.filter.getPctValue(), "%", isCutoff());
-        // x = drawLabelValue({ x + 5, 5 }, "Res:", (int)(track.filter.resonance * 100), "%", isResonance());
-        // drawSelectableText(isSample(), { x + 5, 5 }, track.audioFileName, COLOR_INFO, 14);
-        // x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
-        // x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isReverb());
-        // x = drawLabelValue({ x + 5, 22 }, "Distortion:", (int)(track.distortion.drive * 100), "%", isDistortion());
-
-        Track& track = getTrack();
-        headerButtonValue.btnY.label1 = "Volume";
-        char volume[4];
-        sprintf(volume, "%d", (int)(track.volume * 100));
-        headerButtonValue.btnY.value1 = volume;
-        headerButtonValue.btnY.unit1 = "%";
-
-        headerButtonValue.btnY.label2 = "Distortion";
-        char distortion[4];
-        sprintf(distortion, "%d", (int)(track.distortion.drive * 100));
-        headerButtonValue.btnY.value2 = distortion;
-        headerButtonValue.btnY.unit2 = "%";
-        
-        headerButtonValue.btnX.label1 = "Sample";
-        headerButtonValue.btnX.value1 = track.audioFileName;
-
-        headerButtonValue.btnA.label1 = track.filter.getName();
-        char filter[6];
-        sprintf(filter, "%.1f", track.filter.getPctValue());
-        headerButtonValue.btnA.value1 = filter;
-        headerButtonValue.btnA.unit1 = "%";
-
-        headerButtonValue.btnA.label2 = "Resonance";
-        char resonance[4];
-        sprintf(resonance, "%d", (int)(track.filter.resonance * 100));
-        headerButtonValue.btnA.value2 = resonance;
-        headerButtonValue.btnA.unit2 = "%";
-
-        headerButtonValue.btnB.label1 = "Status";
-        headerButtonValue.btnB.value1 = track.active ? "ON" : "OFF";
-
-        // headerButtonValue.btnB.label2 = "Velocity";
-        // headerButtonValue.btnB.value2 = "100";
-        headerButtonValue.draw();
-
         draw();
     }
 
@@ -275,11 +294,7 @@ public:
         }
 
         if (keys.btnA) {
-            // if (headerEditMode) {
-            //     handleHeader(keys);
-            // } else {
             //     handleMain(keys);
-            // }
             return;
         }
 
@@ -288,13 +303,7 @@ public:
             return;
         }
 
-        if (headerEditMode) {
-            if (gridEdit.update(keys) == VIEW_CHANGED) {
-                fixGridEdit();
-                renderHeader(OPTIMIZED);
-                draw();
-            }
-        } else if (grid.update(keys) == VIEW_CHANGED) {
+        if (grid.update(keys) == VIEW_CHANGED) {
             renderSelection();
             if (grid.row == APP_TRACKS) {
                 // renderHeaderMaster();
@@ -315,14 +324,7 @@ public:
             return;
         }
 
-        if (keys.Mode) {
-            headerEditMode = !headerEditMode;
-            fixGridEdit();
-            renderSelection();
-            renderHeader(OPTIMIZED);
-            draw();
-            return;
-        } else if (keys.btnB) {
+        if (keys.btnB) {
             if (grid.row == APP_TRACKS) {
                 // Could start to play pause
                 // audio.tempo.toggle();
