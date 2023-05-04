@@ -3,6 +3,8 @@
 
 #include "draw.h"
 
+#include <vector>
+
 class HeaderButtonValue {
 protected:
     const uint32_t width = (SCREEN_W - 97) * 0.25;
@@ -17,25 +19,45 @@ protected:
     const uint32_t Ax = 2 + Xx + width * 2;
     const uint32_t Ay = Yy;
 
+    void drawTriangle(uint32_t x, uint32_t y, SDL_Color color, const char *letter)
+    {
+        uint32_t size = 15;
+        const std::vector<SDL_Vertex> verts = {
+            {
+                SDL_FPoint { x - size, y },
+                color,
+                SDL_FPoint { 0 },
+            },
+            {
+                SDL_FPoint { x, y },
+                color,
+                SDL_FPoint { 0 },
+            },
+            {
+                SDL_FPoint { x, y + size },
+                color,
+                SDL_FPoint { 0 },
+            },
+        };
+        SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
+
+        drawText({ x - (uint32_t)(size * 0.5), y }, letter, COLOR_WHITE, 8);
+    }
+
 public:
     void draw()
     {
         drawFilledRect({ Yx, Yy }, { width * 4, height }, COLOR_BACKGROUND);
-
-        // drawFilledRect({ Yx, Yy }, { width, height }, COLOR_BTN_Y_ALPHA);
-        // drawFilledRect({ Xx, Xy }, { width * 2, halfHeight }, COLOR_BTN_X_ALPHA);
-        // drawFilledRect({ Bx, By }, { width * 2, halfHeight }, COLOR_BTN_B_ALPHA);
-        // drawFilledRect({ Ax, Ay }, { width, height }, COLOR_BTN_A_ALPHA);
 
         drawFilledRect({ Yx, Yy }, { width, height }, COLOR_FOREGROUND2);
         drawFilledRect({ Xx, Xy }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
         drawFilledRect({ Bx, By }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
         drawFilledRect({ Ax, Ay }, { width, height }, COLOR_FOREGROUND2);
 
-        // drawRect({ Yx, Yy }, { width, height }, COLOR_BTN_Y);
-        // drawRect({ Xx, Xy }, { width * 2, halfHeight }, COLOR_BTN_X);
-        // drawRect({ Bx, By }, { width * 2, halfHeight }, COLOR_BTN_B);
-        // drawRect({ Ax, Ay }, { width, height }, COLOR_BTN_A);
+        drawTriangle(Yx + width, Yy, COLOR_BTN_Y, "Y");
+        drawTriangle(Xx + width * 2, Xy, COLOR_BTN_X, "X");
+        drawTriangle(Bx + width * 2, By, COLOR_BTN_B, "B");
+        drawTriangle(Ax + width, Ay, COLOR_BTN_A, "A");
     }
 };
 
