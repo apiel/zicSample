@@ -14,14 +14,13 @@ protected:
         const Size size;
     };
 
-    const uint32_t width = (SCREEN_W - 97) * 0.25;
-    const uint32_t height = 60;
-    const uint32_t halfHeight = height * 0.5 - 1;
+    const Size sizeVertical = { (SCREEN_W - 97) * 0.25, 60 };
+    const Size sizeHorizontal = { sizeVertical.w * 2, sizeVertical.h * 0.5 - 1 };
 
-    Btn btnX = { COLOR_BTN_X, "X", { 92, 5 }, { width, height } };
-    Btn btnY = { COLOR_BTN_Y, "Y", { btnX.position.x + width + 2, btnX.position.y }, { width * 2, halfHeight } };
-    Btn btnB = { COLOR_BTN_B, "B", { btnY.position.x, btnX.position.y + halfHeight + 2 }, { width * 2, halfHeight } };
-    Btn btnA = { COLOR_BTN_A, "A", { 2 + btnY.position.x + width * 2, btnX.position.y }, { width, height } };
+    Btn btnX = { COLOR_BTN_X, "X", { 92, 5 }, sizeVertical };
+    Btn btnY = { COLOR_BTN_Y, "Y", { btnX.position.x + sizeVertical.w + 2, btnX.position.y }, sizeHorizontal };
+    Btn btnB = { COLOR_BTN_B, "B", { btnY.position.x, btnX.position.y + sizeHorizontal.h + 2 }, sizeHorizontal };
+    Btn btnA = { COLOR_BTN_A, "A", { 2 + btnY.position.x + sizeHorizontal.w, btnX.position.y }, sizeVertical };
 
     void drawTriangle(Point position, Btn& btn)
     {
@@ -78,7 +77,7 @@ public:
     void draw()
     {
         // FIXME remove this
-        drawFilledRect(btnX.position, { width * 4, height }, COLOR_BACKGROUND);
+        drawFilledRect(btnX.position, { sizeVertical.w * 4, sizeVertical.h }, COLOR_BACKGROUND);
 
         drawY();
         drawX();
