@@ -7,68 +7,78 @@
 
 class HeaderButtonValue {
 protected:
+    struct Btn {
+        SDL_Color color;
+        const char* letter;
+        const Point position;
+        const Size size;
+    };
+
     const uint32_t width = (SCREEN_W - 97) * 0.25;
     const uint32_t height = 60;
     const uint32_t halfHeight = height * 0.5 - 1;
-    const Point posX = { 92, 5 };
-    const Point posY = { posX.x + width + 2, posX.y };
-    const Point posB = { posY.x, posX.y + halfHeight + 2 };
-    const Point posA = { 2 + posY.x + width * 2, posX.y };
 
-    void drawTriangle(Point position, SDL_Color color, const char* letter)
+    Btn btnX = { COLOR_BTN_X, "X", { 92, 5 }, { width, height } };
+    Btn btnY = { COLOR_BTN_Y, "Y", { btnX.position.x + width + 2, btnX.position.y }, { width * 2, halfHeight } };
+    Btn btnB = { COLOR_BTN_B, "B", { btnY.position.x, btnX.position.y + halfHeight + 2 }, { width * 2, halfHeight } };
+    Btn btnA = { COLOR_BTN_A, "A", { 2 + btnY.position.x + width * 2, btnX.position.y }, { width, height } };
+
+    void drawTriangle(Point position, Btn& btn)
     {
         uint32_t size = 15;
         const std::vector<SDL_Vertex> verts = {
             {
                 SDL_FPoint { position.x - size, position.y },
-                color,
+                btn.color,
                 SDL_FPoint { 0 },
             },
             {
                 SDL_FPoint { position.x, position.y },
-                color,
+                btn.color,
                 SDL_FPoint { 0 },
             },
             {
                 SDL_FPoint { position.x, position.y + size },
-                color,
+                btn.color,
                 SDL_FPoint { 0 },
             },
         };
         SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
 
-        drawText({ position.x - (uint32_t)(size * 0.5), position.y }, letter, COLOR_WHITE, 8);
+        drawText({ position.x - (uint32_t)(size * 0.5), position.y }, btn.letter, COLOR_WHITE, 8);
+    }
+
+    void drawBtn(Btn& btn)
+    {
+        drawFilledRect(btn.position, btn.size, COLOR_FOREGROUND2);
+        drawTriangle({ btn.position.x + btn.size.w, btn.position.y }, btn);
     }
 
 public:
     void drawY()
     {
-        drawFilledRect(posX, { width, height }, COLOR_FOREGROUND2);
-        drawTriangle({posX.x + width, posX.y }, COLOR_BTN_Y, "Y");
+        drawBtn(btnX);
     }
 
     void drawX()
     {
-        drawFilledRect(posY, { width * 2, halfHeight }, COLOR_FOREGROUND2);
-        drawTriangle({ posY.x + width * 2, posY.y }, COLOR_BTN_X, "X");
+        drawBtn(btnY);
     }
 
     void drawB()
     {
-        drawFilledRect(posB, { width * 2, halfHeight }, COLOR_FOREGROUND2);
-        drawTriangle({ posB.x + width * 2, posB.y }, COLOR_BTN_B, "B");
+        drawBtn(btnB);
     }
 
     void drawA()
     {
-        drawFilledRect(posA, { width, height }, COLOR_FOREGROUND2);
-        drawTriangle({ posA.x + width, posA.y }, COLOR_BTN_A, "A");
+        drawBtn(btnA);
     }
 
     void draw()
     {
         // FIXME remove this
-        drawFilledRect(posX, { width * 4, height }, COLOR_BACKGROUND);
+        drawFilledRect(btnX.position, { width * 4, height }, COLOR_BACKGROUND);
 
         drawY();
         drawX();
