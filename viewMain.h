@@ -405,10 +405,11 @@ public:
         renderHeader();
         renderRows();
 
+        Track& track = getTrack();
         headerButtonValue.btnY.label1 = "Volume";
         headerButtonValue.btnY.label2 = "Distortion";
         headerButtonValue.btnX.label1 = "Sample";
-        headerButtonValue.btnA.label1 = "LFP";
+        headerButtonValue.btnA.label1 = track.filter.getName();
         headerButtonValue.btnA.label2 = "Resonance";
         headerButtonValue.btnB.label1 = "Status";
         headerButtonValue.draw();
