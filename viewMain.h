@@ -405,13 +405,48 @@ public:
         renderHeader();
         renderRows();
 
+
+        // unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
+        // x = drawLabelValue({ x + 5, 5 }, track.filter.getName(), track.filter.getPctValue(), "%", isCutoff());
+        // x = drawLabelValue({ x + 5, 5 }, "Res:", (int)(track.filter.resonance * 100), "%", isResonance());
+        // drawSelectableText(isSample(), { x + 5, 5 }, track.audioFileName, COLOR_INFO, 14);
+        // x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
+        // x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isReverb());
+        // x = drawLabelValue({ x + 5, 22 }, "Distortion:", (int)(track.distortion.drive * 100), "%", isDistortion());
+
         Track& track = getTrack();
         headerButtonValue.btnY.label1 = "Volume";
+        char volume[4];
+        sprintf(volume, "%d", (int)(track.volume * 100));
+        headerButtonValue.btnY.value1 = volume;
+        headerButtonValue.btnY.unit1 = "%";
+
         headerButtonValue.btnY.label2 = "Distortion";
+        char distortion[4];
+        sprintf(distortion, "%d", (int)(track.distortion.drive * 100));
+        headerButtonValue.btnY.value2 = distortion;
+        headerButtonValue.btnY.unit2 = "%";
+        
         headerButtonValue.btnX.label1 = "Sample";
+        headerButtonValue.btnX.value1 = track.audioFileName;
+
         headerButtonValue.btnA.label1 = track.filter.getName();
+        char filter[6];
+        sprintf(filter, "%.1f", track.filter.getPctValue());
+        headerButtonValue.btnA.value1 = filter;
+        headerButtonValue.btnA.unit1 = "%";
+
         headerButtonValue.btnA.label2 = "Resonance";
+        char resonance[4];
+        sprintf(resonance, "%d", (int)(track.filter.resonance * 100));
+        headerButtonValue.btnA.value2 = resonance;
+        headerButtonValue.btnA.unit2 = "%";
+
         headerButtonValue.btnB.label1 = "Status";
+        headerButtonValue.btnB.value1 = track.active ? "ON" : "OFF";
+
+        // headerButtonValue.btnB.label2 = "Velocity";
+        // headerButtonValue.btnB.value2 = "100";
         headerButtonValue.draw();
 
         draw();
