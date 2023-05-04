@@ -140,7 +140,7 @@ public:
             }
             render();
             draw();
-        } else if (keys.Action || keys.Edit) {
+        } else if (keys.btnB || keys.btnA) {
             switch (selected) {
             case MENU_ITEM_SAVE_TRACK:
                 if (strcmp(track.name, "-") != 0) {

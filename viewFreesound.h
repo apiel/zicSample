@@ -95,10 +95,7 @@ protected:
 
     void renderSelection(int8_t row, int8_t col, bool clear = false)
     {
-        SDL_Color color = COLOR_INFO_LIGHT;
-        if (clear) {
-            color = COLOR_FOREGROUND;
-        }
+        SDL_Color color = clear ? SDL_Color COLOR_FOREGROUND : SDL_Color COLOR_INFO_LIGHT;
         unsigned int y = marginTop + 35 + row * (h + 5);
 
         if (col == 0) {
@@ -195,7 +192,7 @@ public:
                 render();
                 draw();
             }
-        } else if (keys.Action || keys.Edit) {
+        } else if (keys.btnB || keys.btnA) {
             if (grid.row == 3 && currentPos + 3 == data.getCount()) {
                 // APP_LOG("PrevNext page: r %d p %d c %d\n", grid.row, currentPos, data.getCount());
                 if (grid.col == 0) {
@@ -224,7 +221,7 @@ public:
                 sprintf(path + strlen(path), "_%d.ogg", item.id);
                 copyFile((char*)"samples/__preview.ogg", path);
             }
-        } else if (keys.Edit3 || keys.Edit2) {
+        } else if (keys.btnX || keys.btnY) {
             APP_LOG("openKeyboard Search\n");
             openKeyboard();
             render();

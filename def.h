@@ -237,12 +237,12 @@ public:
     bool Down = false;
     bool Right = false;
     bool Left = false;
-    bool Edit = false;
-    bool Edit2 = false;
-    bool Edit3 = false;
+    bool btnA = false;
+    bool btnY = false;
+    bool btnX = false;
     bool Mode = false;
     bool Menu = false;
-    bool Action = false;
+    bool btnB = false;
     bool R1 = false;
     bool R2 = false;
     bool L1 = false;

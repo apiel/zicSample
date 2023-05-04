@@ -26,13 +26,13 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
         ui.keys.Right = isPressed;
         break;
     case SDL_SCANCODE_S:
-        ui.keys.Edit = isPressed;
+        ui.keys.btnA = isPressed;
         break;
     case SDL_SCANCODE_Z: // Y on German keyboard
-        ui.keys.Edit2 = isPressed;
+        ui.keys.btnY = isPressed;
         break;
     case SDL_SCANCODE_A:
-        ui.keys.Action = isPressed;
+        ui.keys.btnB = isPressed;
         break;
     case SDL_SCANCODE_Q:
         ui.keys.Mode = isPressed;
@@ -91,17 +91,17 @@ bool handleJoyButton(SDL_JoyButtonEvent* event)
 
     switch (event->button) {
     case 0: // A
-        ui.keys.Edit = isPressed;
+        ui.keys.btnA = isPressed;
         break;
     case 1: // B
-        ui.keys.Action = isPressed;
+        ui.keys.btnB = isPressed;
         break;
     case 2: // X
         SDL_Log("handleJoyButton btn X state %d\n", isPressed);
-        ui.keys.Edit3 = isPressed;
+        ui.keys.btnX = isPressed;
         break;
     case 3: // Y
-        ui.keys.Edit2 = isPressed;
+        ui.keys.btnY = isPressed;
         break;
     case 5: // R1 ?
         SDL_Log("handleJoyButton btn R1 state %d\n", isPressed);

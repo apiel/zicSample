@@ -139,6 +139,94 @@ protected:
         renderSelection();
     }
 
+    bool isName() { return headerEditMode && (gridEdit.is(0, 0) || gridEdit.is(1, 0)); }
+    bool isVolume() { return headerEditMode && gridEdit.is(0, 1); }
+    bool isCutoff() { return headerEditMode && gridEdit.is(0, 2); }
+    bool isResonance() { return headerEditMode && gridEdit.is(0, 3); }
+    bool isSample() { return headerEditMode && gridEdit.is(0, 4); }
+    bool isDelay() { return headerEditMode && gridEdit.is(1, 1); }
+    bool isReverb() { return headerEditMode && gridEdit.is(1, 2); }
+    bool isDistortion() { return headerEditMode && gridEdit.is(1, 3); }
+    bool isBpm() { return headerEditMode && gridEdit.is(2, 0); }
+    bool isStepStatus() { return headerEditMode && gridEdit.is(2, 1); }
+    bool isStepVelocity() { return headerEditMode && gridEdit.is(2, 2); }
+    bool isStepCondition() { return headerEditMode && gridEdit.is(2, 3); }
+
+    Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
+
+    void renderHeaderPattern(bool clear = false)
+    {
+        if (clear) {
+            drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 40 });
+        }
+
+        Track& track = getTrack();
+        drawText({ 10, 10 }, track.name, COLOR_INFO);
+        if (isName()) {
+            drawRect({ 5, 5 }, { 85, 30 }, COLOR_INFO);
+        }
+
+        unsigned int x = drawLabelValue({ 100, 5 }, "Volume:", (int)(track.volume * 100), "%", isVolume());
+        x = drawLabelValue({ x + 5, 5 }, track.filter.getName(), track.filter.getPctValue(), "%", isCutoff());
+        x = drawLabelValue({ x + 5, 5 }, "Res:", (int)(track.filter.resonance * 100), "%", isResonance());
+        drawSelectableText(isSample(), { x + 5, 5 }, track.audioFileName, COLOR_INFO, 14);
+
+        x = drawLabelValue({ 100, 22 }, "Delay:", 0, "%", isDelay());
+        x = drawLabelValue({ x + 5, 22 }, "Reverb:", 0, "%", isReverb());
+        x = drawLabelValue({ x + 5, 22 }, "Distortion:", (int)(track.distortion.drive * 100), "%", isDistortion());
+    }
+
+    void renderHeaderStep()
+    {
+        drawFilledRect({ 92, 45 }, { SCREEN_W - 97, 20 }, COLOR_STEP_HEADER);
+        if (grid.col != 0) {
+            Step& step = getTrack().steps[grid.col - 1];
+            unsigned int x = step.enabled ? drawText({ 100, 47 }, "ON  ", COLOR_STEP, 16, APP_FONT_BOLD)
+                                          : drawText({ 100, 47 }, "OFF", COLOR_INFO);
+            if (isStepStatus()) {
+                drawRect({ 98, 46 }, { 36, 18 }, COLOR_INFO);
+            }
+            x = drawLabelValue({ x + 5, 47 }, "Velocity:", (int)(step.velocity * 100), "%", isStepVelocity());
+            drawLabelValue({ x + 5, 47 }, "Condition:", STEP_CONDITIONS[step.condition], NULL, isStepCondition());
+        }
+    }
+
+    void renderBPM(bool clear = false)
+    {
+        if (clear) {
+            drawFilledRect({ 5, 40 }, { 85, 25 }, COLOR_FOREGROUND);
+        }
+        char bpm[4];
+        sprintf(bpm, "%d", audio.tempo.getBpm());
+        unsigned int x = drawText({ 10, 40 }, bpm, COLOR_INFO, 22, APP_FONT_BOLD);
+        drawText({ x + 5, 45 }, "BPM", COLOR_LABEL, 10);
+        if (headerEditMode && gridEdit.is(2, 0)) {
+            drawRect({ 5, 40 }, { 85, 25 }, COLOR_INFO);
+        }
+    }
+
+    void renderHeader(bool optimized = false)
+    {
+        if (!optimized) {
+            drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        }
+        if (!optimized || gridEdit.lastRow == 0 || gridEdit.lastRow == 1 || gridEdit.row == 0 || gridEdit.row == 1) {
+            renderHeaderPattern(optimized);
+        }
+        if (!optimized || gridEdit.lastRow == 2 || gridEdit.row == 2) {
+            renderHeaderStep();
+        }
+    }
+
+    void renderHeaderMaster()
+    {
+        drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        drawLabelValue({ 10, 10 }, "Vol:", (int)(audio.getVolume() * 100), "%", isVolume(), 20);
+        renderBPM();
+
+        drawLabelValue({ 100, 5 }, "Res:", (int)(audio.filter.resonance * 100), "%", isResonance());
+    }
+
     void renderMasterVolume(bool selected = false)
     {
         drawFilledRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_BACKGROUND);
@@ -153,19 +241,137 @@ protected:
         }
     }
 
-    Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
-
-    void renderHeader(bool optimized = false)
+    void handleHeader(UiKeys& keys)
     {
-        if (!optimized) {
-            drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
+        if (isVolume()) {
+            handleVolume(keys.getDirection(0.01));
+        } else if (isStepStatus()) {
+            Track& track = getTrack();
+            Step& step = track.steps[grid.col - 1];
+            step.enabled = !step.enabled;
+            renderHeaderStep();
+            renderStep(track, grid.col - 1, grid.row);
+        } else if (isStepVelocity()) {
+            handleStepVelocity(keys.getDirection());
+        } else if (isStepCondition()) {
+            handleStepCondition(keys.getOneDirection());
+        } else if (isBpm()) {
+            // FIXME
+            audio.tempo.set(audio.tempo.getBpm() + keys.getDirection());
+            renderBPM(CLEAR);
+        } else if (isCutoff()) {
+            handleCutoff(keys.getDirection(10, 50));
+        } else if (isResonance()) {
+            handelResonance(keys.getDirection(0.01));
+        } else if (isDistortion()) {
+            Track& track = getTrack();
+            track.distortion.set(track.distortion.drive + keys.getDirection(0.01));
+            renderHeaderPattern(CLEAR);
+        } else if (isName()) {
+            patternSelector.show(&getTrack());
+        } else if (isSample()) {
+            Track& track = getTrack();
+            track.setNextAudioFileName(keys.getOneDirection());
+            renderHeaderPattern(CLEAR);
+        } else {
+            return;
         }
-        // if (!optimized || gridEdit.lastRow == 0 || gridEdit.lastRow == 1 || gridEdit.row == 0 || gridEdit.row == 1) {
-        //     renderHeaderPattern(optimized);
-        // }
-        // if (!optimized || gridEdit.lastRow == 2 || gridEdit.row == 2) {
-        //     renderHeaderStep();
-        // }
+        draw();
+    }
+
+    void handelResonance(float direction)
+    {
+        Track& track = getTrack();
+        track.filter.setResonance(track.filter.resonance + direction);
+        renderHeaderPattern(CLEAR);
+    }
+
+    void handleCutoff(int16_t direction)
+    {
+        Track& track = getTrack();
+        track.filter.set(track.filter.value + direction);
+        renderHeaderPattern(CLEAR);
+    }
+
+    void handleVolume(float direction)
+    {
+        Track& track = getTrack();
+        track.setVolume(track.volume + direction);
+        renderHeaderPattern(CLEAR);
+    }
+
+    void handleStepVelocity(int8_t direction)
+    {
+        Track& track = getTrack();
+        Step& step = track.steps[grid.col - 1];
+        step.setVelocity(step.velocity + direction * 0.01);
+        renderHeaderStep();
+        renderStep(track, grid.col - 1, grid.row);
+    }
+
+    void handleStepCondition(int8_t direction)
+    {
+        Track& track = getTrack();
+        Step& step = track.steps[grid.col - 1];
+        step.setCondition(step.condition + direction);
+        renderHeaderStep();
+        renderStep(track, grid.col - 1, grid.row);
+    }
+
+    void handleMain(UiKeys& keys)
+    {
+        if (grid.row == APP_TRACKS) {
+            audio.setVolume(audio.getVolume() + keys.getDirection(0.05, 0.1));
+            renderMasterVolume(true);
+            renderHeaderMaster();
+        } else if (grid.col == 0) {
+            if (keys.Right) {
+                handleVolume(0.05);
+                renderTrackName(getTrack(), grid.row);
+            } else if (keys.Left) {
+                handleVolume(-0.05);
+                renderTrackName(getTrack(), grid.row);
+            } else if (keys.Up) {
+                handleCutoff(50);
+            } else if (keys.Down) {
+                handleCutoff(-50);
+            }
+            return;
+        } else {
+            if (keys.Right) {
+                handleStepCondition(1);
+            } else if (keys.Left) {
+                handleStepCondition(-1);
+            } else if (keys.Up) {
+                handleStepVelocity(5);
+            } else if (keys.Down) {
+                handleStepVelocity(-5);
+            }
+            return;
+        }
+        draw();
+    }
+
+    void handleMainbtnY(UiKeys& keys)
+    {
+        if (grid.row == APP_TRACKS) {
+            audio.filter.setResonance(audio.filter.resonance + keys.getDirection(0.01));
+            renderHeaderMaster();
+        } else if (grid.col == 0) {
+            if (keys.Right) {
+                handelResonance(0.01);
+            } else if (keys.Left) {
+                handelResonance(-0.01);
+            } else if (keys.Up) {
+                handleCutoff(50);
+            } else if (keys.Down) {
+                handleCutoff(-50);
+            }
+            return;
+        } else {
+            return;
+        }
+        draw();
     }
 
     void renderRows(bool clear = false)
@@ -275,16 +481,16 @@ public:
         }
 
         if (keys.btnA) {
-            // if (headerEditMode) {
-            //     handleHeader(keys);
-            // } else {
-            //     handleMain(keys);
-            // }
+            if (headerEditMode) {
+                handleHeader(keys);
+            } else {
+                handleMain(keys);
+            }
             return;
         }
 
         if (keys.btnY) {
-            // handleMainbtnY(keys);
+            handleMainbtnY(keys);
             return;
         }
 
@@ -297,18 +503,18 @@ public:
         } else if (grid.update(keys) == VIEW_CHANGED) {
             renderSelection();
             if (grid.row == APP_TRACKS) {
-                // renderHeaderMaster();
+                renderHeaderMaster();
             } else {
                 if (grid.rowChanged()) {
                     if (grid.lastRow == APP_TRACKS) { // If last row was 0, fully re-render
                         renderHeader();
                     } else {
-                        // renderHeaderPattern(CLEAR);
-                        // renderHeaderStep();
+                        renderHeaderPattern(CLEAR);
+                        renderHeaderStep();
                     }
                 }
                 if (grid.colChanged()) {
-                    // renderHeaderStep();
+                    renderHeaderStep();
                 }
             }
             draw();
@@ -338,7 +544,7 @@ public:
             } else {
                 uint8_t step = grid.col - 1;
                 track.steps[step].toggle();
-                // renderHeaderStep();
+                renderHeaderStep();
                 renderStep(track, step, grid.row);
                 draw();
                 return;

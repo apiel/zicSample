@@ -160,7 +160,7 @@ public:
             fixGrid();
             renderSelection();
             draw();
-        } else if (keys.Action || keys.Edit) {
+        } else if (keys.btnB || keys.btnA) {
             if (grid.row < 7) {
                 if (strlen(value) < length) {
                     char c[2];
@@ -180,7 +180,7 @@ public:
                 render();
                 draw();
             }
-        } else if (keys.Edit2) {
+        } else if (keys.btnY) {
             value[strlen(value) - 1] = '\0';
             render();
             draw();
