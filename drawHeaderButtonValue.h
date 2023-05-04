@@ -45,19 +45,39 @@ protected:
     }
 
 public:
+    void drawY()
+    {
+        drawFilledRect({ Yx, Yy }, { width, height }, COLOR_FOREGROUND2);
+        drawTriangle(Yx + width, Yy, COLOR_BTN_Y, "Y");
+    }
+
+    void drawX()
+    {
+        drawFilledRect({ Xx, Xy }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
+        drawTriangle(Xx + width * 2, Xy, COLOR_BTN_X, "X");
+    }
+
+    void drawB()
+    {
+        drawFilledRect({ Bx, By }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
+        drawTriangle(Bx + width * 2, By, COLOR_BTN_B, "B");
+    }
+
+    void drawA()
+    {
+        drawFilledRect({ Ax, Ay }, { width, height }, COLOR_FOREGROUND2);
+        drawTriangle(Ax + width, Ay, COLOR_BTN_A, "A");
+    }
+
     void draw()
     {
+        // FIXME remove this
         drawFilledRect({ Yx, Yy }, { width * 4, height }, COLOR_BACKGROUND);
 
-        drawFilledRect({ Yx, Yy }, { width, height }, COLOR_FOREGROUND2);
-        drawFilledRect({ Xx, Xy }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
-        drawFilledRect({ Bx, By }, { width * 2, halfHeight }, COLOR_FOREGROUND2);
-        drawFilledRect({ Ax, Ay }, { width, height }, COLOR_FOREGROUND2);
-
-        drawTriangle(Yx + width, Yy, COLOR_BTN_Y, "Y");
-        drawTriangle(Xx + width * 2, Xy, COLOR_BTN_X, "X");
-        drawTriangle(Bx + width * 2, By, COLOR_BTN_B, "B");
-        drawTriangle(Ax + width, Ay, COLOR_BTN_A, "A");
+        drawY();
+        drawX();
+        drawB();
+        drawA();
     }
 };
 
