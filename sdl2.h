@@ -10,7 +10,7 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
 
     ui.keys.update = true;
 
-    // SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
+    SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
     // SDL_Log("handleKeyboard %d\n", event->repeat);
     switch (event->keysym.scancode) {
     case SDL_SCANCODE_UP:
@@ -35,7 +35,11 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
         ui.keys.btnB = isPressed;
         break;
     case SDL_SCANCODE_Q:
-        ui.keys.Mode = isPressed;
+        ui.keys.btnX = isPressed;
+        break;
+    case SDL_SCANCODE_LSHIFT:
+    case SDL_SCANCODE_RSHIFT:
+        ui.keys.R1 = isPressed;
         break;
     case SDL_SCANCODE_SPACE:
         ui.keys.Menu = isPressed;

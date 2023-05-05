@@ -101,11 +101,36 @@ public:
             draw();
             return true;
         } else if (keys.btnA) {
-            return true;
+            if (keys.isVertical()) {
+                track.filter.set(track.filter.value + keys.getVertical(10, 50));
+                renderA(track);
+                draw();
+                return true;
+            } else if (keys.isHorizontal()) {
+                track.filter.setResonance(track.filter.resonance + keys.getHorizontal(0.01, 0.05));
+                renderA(track);
+                draw();
+                return true;
+            }
         } else if (keys.btnX) {
+            printf("keys.btnX\n");
+            track.setNextAudioFileName(keys.getOneDirection());
+            renderX(track);
+            draw();
             return true;
         } else if (keys.btnY) {
-            return true;
+            if (keys.isVertical()) {
+                track.setVolume(track.volume + keys.getVertical(0.05, 0.01));
+                renderY(track);
+                renderName(track, y);
+                draw();
+                return true;
+            } else if (keys.isHorizontal()) {
+                track.distortion.set(track.distortion.drive + keys.getHorizontal(0.01, 0.05));
+                renderY(track);
+                draw();
+                return true;
+            }
         }
         return false;
     }

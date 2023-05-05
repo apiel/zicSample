@@ -250,6 +250,52 @@ public:
     bool joystickRight = false;
     bool joystickLeft = false;
 
+    bool isVertical()
+    {
+        return Up || Down;
+    }
+
+    bool isHorizontal()
+    {
+        return Left || Right;
+    }
+
+    float getVertical(float step = 1.0f)
+    {
+        return getVertical(step, step);
+    }
+
+    float getVertical(float step, float stepR1)
+    {
+        if (R1) {
+            step = stepR1;
+        }
+        if (Up) {
+            return step;
+        } else if (Down) {
+            return -step;
+        }
+        return 0.0f;
+    }
+
+    float getHorizontal(float step = 1.0f)
+    {
+        return getHorizontal(step, step);
+    }
+
+    float getHorizontal(float step, float stepR1)
+    {
+        if (R1) {
+            step = stepR1;
+        }
+        if (Left) {
+            return -step;
+        } else if (Right) {
+            return step;
+        }
+        return 0.0f;
+    }
+
     float getDirection(float stepA, float stepB)
     {
         if (Right) {
