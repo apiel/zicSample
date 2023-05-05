@@ -10,8 +10,8 @@
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
-#include "viewMainTrack.h"
 #include "viewMainStep.h"
+#include "viewMainTrack.h"
 
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
@@ -247,18 +247,24 @@ public:
         Track& track = getTrack();
         if (isMasterRow()) {
         } else if (isTrackCol()) {
-            if (mainTrack.handle(keys, track, rowY[ grid.row])) {
+            if (mainTrack.handle(keys, track, rowY[grid.row])) {
                 return;
             }
         } else {
-            if (keys.btnB) {
-                uint8_t step = grid.col - 1;
-                track.steps[step].toggle();
-                // renderHeaderStep();
-                renderStep(track, step, grid.row);
+            uint8_t stepIndex = grid.col - 1;
+            Step& step = track.steps[stepIndex];
+            if (mainStep.handle(keys, track, step)) {
+                renderStep(track, stepIndex, grid.row);
                 draw();
                 return;
             }
+            // if (keys.btnB) {
+            //     uint8_t step = grid.col - 1;
+            //     track.steps[step].toggle();
+            //     // renderHeaderStep();
+
+            //     return;
+            // }
         }
 
         if (grid.update(keys) == VIEW_CHANGED) {
