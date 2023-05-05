@@ -11,6 +11,7 @@
 #include "tempo.h"
 #include "view.h"
 #include "viewMainTrack.h"
+#include "viewMainStep.h"
 
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
@@ -26,6 +27,7 @@ protected:
     PatternSelector& patternSelector = PatternSelector::get();
 
     ViewMainTrack mainTrack = ViewMainTrack();
+    ViewMainStep mainStep = ViewMainStep();
 
     uint16_t rowY[APP_TRACKS + 1] = {
         GRID_PATTERN_TOP,
@@ -153,11 +155,11 @@ protected:
 
     Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
 
-    void renderHeaderStep()
-    {
-        Track& track = getTrack();
-        drawText({ 10, 10 }, track.name, COLOR_INFO);
-    }
+    // void renderHeaderStep()
+    // {
+    //     Track& track = getTrack();
+    //     drawText({ 10, 10 }, track.name, COLOR_INFO);
+    // }
 
     void renderHeaderMaster()
     {
@@ -175,7 +177,8 @@ protected:
         } else if (isTrackCol()) {
             mainTrack.render(getTrack());
         } else {
-            renderHeaderStep();
+            // renderHeaderStep();
+            mainStep.render(getTrack(), grid.col - 1);
         }
     }
 
