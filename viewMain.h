@@ -242,12 +242,11 @@ public:
         }
 
         Track& track = getTrack();
-        if (isTrackCol()) {
+        if (isMasterRow()) {
+        } else if (isTrackCol()) {
             if (mainTrack.handle(keys, track, rowY[ grid.row])) {
-                draw();
                 return;
             }
-        } else if (isMasterRow()) {
         } else {
             if (keys.btnB) {
                 uint8_t step = grid.col - 1;

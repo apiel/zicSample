@@ -98,6 +98,13 @@ public:
             track.toggle();
             renderB(track);
             renderName(track, y);
+            draw();
+            return true;
+        } else if (keys.btnA) {
+            return true;
+        } else if (keys.btnX) {
+            return true;
+        } else if (keys.btnY) {
             return true;
         }
         return false;
