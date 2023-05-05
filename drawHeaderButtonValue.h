@@ -50,7 +50,7 @@ protected:
 
     void drawBtn(Btn& btn)
     {
-        drawFilledRect(btn.position, btn.size, COLOR_FOREGROUND2);
+        drawFilledRect(btn.position, btn.size, bgColor);
         drawTriangle({ btn.position.x + btn.size.w, btn.position.y }, btn);
 
         if (btn.label1 != NULL) {
@@ -87,10 +87,16 @@ protected:
     }
 
 public:
+    SDL_Color bgColor;
+
     Btn btnY = { COLOR_BTN_Y, "Y", { 92, 5 }, sizeVertical };
     Btn btnX = { COLOR_BTN_X, "X", { btnY.position.x + sizeVertical.w + 2, btnY.position.y }, sizeHorizontal };
     Btn btnB = { COLOR_BTN_B, "B", { btnX.position.x, btnY.position.y + sizeHorizontal.h + 2 }, sizeHorizontal };
     Btn btnA = { COLOR_BTN_A, "A", { 2 + btnX.position.x + sizeHorizontal.w, btnY.position.y }, sizeVertical };
+
+    HeaderButtonValue(SDL_Color _bgColor = COLOR_FOREGROUND2): bgColor(_bgColor)
+    {
+    }
 
     void drawY()
     {

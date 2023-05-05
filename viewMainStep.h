@@ -7,6 +7,7 @@
 
 class ViewMainStep {
 protected:
+    // HeaderButtonValue headerButtonValue = HeaderButtonValue(COLOR_STEP_HEADER);
     HeaderButtonValue headerButtonValue = HeaderButtonValue();
 
 public:
