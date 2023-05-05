@@ -1,11 +1,11 @@
-#ifndef _VIEW_MAIN_HEADER_TRACK_H
-#define _VIEW_MAIN_HEADER_TRACK_H
+#ifndef _VIEW_MAIN_TRACK_H
+#define _VIEW_MAIN_TRACK_H
 
 #include "data.h"
 #include "draw.h"
 #include "drawHeaderButtonValue.h"
 
-class ViewMainHeaderTrack {
+class ViewMainTrack {
 protected:
     HeaderButtonValue headerButtonValue = HeaderButtonValue();
 
@@ -73,11 +73,31 @@ public:
         renderB(track);
     }
 
-    bool handle(UiKeys& keys, Track& track)
+    void renderName(Track& track, unsigned int y)
+    {
+        drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
+
+        SDL_Color trackColor = COLOR_FOREGROUND2;
+        SDL_Color trackText = COLOR_INFO;
+        if (track.active) {
+            trackColor = COLOR_ON;
+            trackText = COLOR_WHITE;
+        }
+        trackColor.a = 50;
+        drawFilledRect({ 5, y }, { 84, 12 }, trackColor);
+        trackColor.a = 200;
+        unsigned int width = 84.0 * track.volume;
+        drawFilledRect({ 5, y }, { width, 12 }, trackColor);
+
+        drawText({ 8, y }, track.name, trackText, 10);
+    }
+
+    bool handle(UiKeys& keys, Track& track, unsigned int y)
     {
         if (keys.btnB) {
             track.toggle();
             renderB(track);
+            renderName(track, y);
             return true;
         }
         return false;

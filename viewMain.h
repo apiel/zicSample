@@ -10,7 +10,7 @@
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
-#include "viewMainHeaderTrack.h"
+#include "viewMainTrack.h"
 
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
@@ -25,7 +25,7 @@ protected:
     Menu& menu = Menu::get();
     PatternSelector& patternSelector = PatternSelector::get();
 
-    ViewMainHeaderTrack mainHeaderTrack = ViewMainHeaderTrack();
+    ViewMainTrack mainTrack = ViewMainTrack();
 
     uint16_t rowY[APP_TRACKS + 1] = {
         GRID_PATTERN_TOP,
@@ -89,23 +89,24 @@ protected:
 
     void renderTrackName(Track& track, unsigned int row)
     {
-        unsigned int y = rowY[row];
+        mainTrack.renderName(track, rowY[row]);
+        // unsigned int y = rowY[row];
 
-        drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
+        // drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
 
-        SDL_Color trackColor = COLOR_FOREGROUND2;
-        SDL_Color trackText = COLOR_INFO;
-        if (track.active) {
-            trackColor = COLOR_ON;
-            trackText = COLOR_WHITE;
-        }
-        trackColor.a = 50;
-        drawFilledRect({ 5, y }, { 84, 12 }, trackColor);
-        trackColor.a = 200;
-        unsigned int width = 84.0 * track.volume;
-        drawFilledRect({ 5, y }, { width, 12 }, trackColor);
+        // SDL_Color trackColor = COLOR_FOREGROUND2;
+        // SDL_Color trackText = COLOR_INFO;
+        // if (track.active) {
+        //     trackColor = COLOR_ON;
+        //     trackText = COLOR_WHITE;
+        // }
+        // trackColor.a = 50;
+        // drawFilledRect({ 5, y }, { 84, 12 }, trackColor);
+        // trackColor.a = 200;
+        // unsigned int width = 84.0 * track.volume;
+        // drawFilledRect({ 5, y }, { width, 12 }, trackColor);
 
-        drawText({ 8, y }, track.name, trackText, 10);
+        // drawText({ 8, y }, track.name, trackText, 10);
     }
 
     void renderStep(Track& track, unsigned int step, unsigned int row)
@@ -128,7 +129,7 @@ protected:
     void renderRow(unsigned int row)
     {
         Track& track = getTrack(row);
-        renderTrackName(track, row);
+        mainTrack.renderName(track, rowY[row]);
 
         for (unsigned int step = 0; step < APP_TRACK_STEPS; step++) {
             renderStep(track, step, row);
@@ -172,7 +173,7 @@ protected:
         if (isMasterRow()) {
             renderHeaderMaster();
         } else if (isTrackCol()) {
-            mainHeaderTrack.render(getTrack());
+            mainTrack.render(getTrack());
         } else {
             renderHeaderStep();
         }
@@ -242,8 +243,7 @@ public:
 
         Track& track = getTrack();
         if (isTrackCol()) {
-            if (mainHeaderTrack.handle(keys, track)) {
-                renderTrackName(track, grid.row);
+            if (mainTrack.handle(keys, track, rowY[ grid.row])) {
                 draw();
                 return;
             }
