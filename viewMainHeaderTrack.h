@@ -72,6 +72,16 @@ public:
         renderA(track);
         renderB(track);
     }
+
+    bool handle(UiKeys& keys, Track& track)
+    {
+        if (keys.btnB) {
+            track.toggle();
+            renderB(track);
+            return true;
+        }
+        return false;
+    }
 };
 
 #endif

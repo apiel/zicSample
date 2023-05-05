@@ -163,12 +163,15 @@ protected:
         drawText({ 10, 10 }, "Master", COLOR_INFO);
     }
 
+    bool isMasterRow() { return grid.row == APP_TRACKS; }
+    bool isTrackCol() { return grid.col == 0; }
+
     void renderHeader()
     {
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
-        if (grid.row == APP_TRACKS) {
+        if (isMasterRow()) {
             renderHeaderMaster();
-        } else if (grid.col == 0) {
+        } else if (isTrackCol()) {
             mainHeaderTrack.render(getTrack());
         } else {
             renderHeaderStep();
@@ -237,30 +240,16 @@ public:
             return;
         }
 
-        if (keys.btnA) {
-            //     handleMain(keys);
-            return;
-        }
-
-        if (keys.btnY) {
-            // handleMainbtnY(keys);
-            return;
-        }
-
-        if (keys.btnB) {
-            if (grid.row == APP_TRACKS) {
-                // Could start to play pause
-                // audio.tempo.toggle();
-                // draw();
-                return;
-            }
-            Track& track = getTrack();
-            if (grid.col == 0) {
-                track.toggle();
+        Track& track = getTrack();
+        if (isTrackCol()) {
+            if (mainHeaderTrack.handle(keys, track)) {
                 renderTrackName(track, grid.row);
                 draw();
                 return;
-            } else {
+            }
+        } else if (isMasterRow()) {
+        } else {
+            if (keys.btnB) {
                 uint8_t step = grid.col - 1;
                 track.steps[step].toggle();
                 // renderHeaderStep();
