@@ -23,35 +23,38 @@ protected:
     const Size sizeVertical = { (SCREEN_W - 97) * 0.25, 60 };
     const Size sizeHorizontal = { sizeVertical.w * 2, sizeVertical.h * 0.5 - 1 };
 
-    void drawTriangle(Point position, Btn& btn)
+    void drawBadge(Point position, Btn& btn)
     {
-        uint32_t size = 15;
-        const std::vector<SDL_Vertex> verts = {
-            {
-                SDL_FPoint { position.x - size, position.y },
-                btn.color,
-                SDL_FPoint { 0 },
-            },
-            {
-                SDL_FPoint { position.x, position.y },
-                btn.color,
-                SDL_FPoint { 0 },
-            },
-            {
-                SDL_FPoint { position.x, position.y + size },
-                btn.color,
-                SDL_FPoint { 0 },
-            },
-        };
-        SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
+        // uint32_t size = 15;
+        // const std::vector<SDL_Vertex> verts = {
+        //     {
+        //         SDL_FPoint { position.x - size, position.y },
+        //         btn.color,
+        //         SDL_FPoint { 0 },
+        //     },
+        //     {
+        //         SDL_FPoint { position.x, position.y },
+        //         btn.color,
+        //         SDL_FPoint { 0 },
+        //     },
+        //     {
+        //         SDL_FPoint { position.x, position.y + size },
+        //         btn.color,
+        //         SDL_FPoint { 0 },
+        //     },
+        // };
+        // SDL_RenderGeometry(renderer, nullptr, verts.data(), verts.size(), nullptr, 0);
+        // drawText({ position.x - (uint32_t)(size * 0.5), position.y }, btn.letter, COLOR_WHITE, 8);
 
-        drawText({ position.x - (uint32_t)(size * 0.5), position.y }, btn.letter, COLOR_WHITE, 8);
+        uint32_t size = 10;
+        drawFilledRect({ position.x - size, position.y }, { size, size }, btn.color);
+        drawText({ position.x - (uint32_t)(size * 0.8), position.y }, btn.letter, COLOR_WHITE, 8);
     }
 
     void drawBtn(Btn& btn)
     {
         drawFilledRect(btn.position, btn.size, bgColor);
-        drawTriangle({ btn.position.x + btn.size.w, btn.position.y }, btn);
+        drawBadge({ btn.position.x + btn.size.w, btn.position.y }, btn);
 
         if (btn.label1 != NULL) {
             drawText({ btn.position.x + 5, btn.position.y - 1 }, btn.label1, COLOR_LABEL, 10);
