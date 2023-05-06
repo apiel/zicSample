@@ -91,28 +91,6 @@ protected:
         renderSelection(grid.row, grid.col);
     }
 
-    void renderTrackName(Track& track, unsigned int row)
-    {
-        mainTrack.renderName(track, rowY[row]);
-        // unsigned int y = rowY[row];
-
-        // drawFilledRect({ 5, y }, { 84, 12 }, COLOR_FOREGROUND);
-
-        // SDL_Color trackColor = COLOR_FOREGROUND2;
-        // SDL_Color trackText = COLOR_INFO;
-        // if (track.active) {
-        //     trackColor = COLOR_ON;
-        //     trackText = COLOR_WHITE;
-        // }
-        // trackColor.a = 50;
-        // drawFilledRect({ 5, y }, { 84, 12 }, trackColor);
-        // trackColor.a = 200;
-        // unsigned int width = 84.0 * track.volume;
-        // drawFilledRect({ 5, y }, { width, 12 }, trackColor);
-
-        // drawText({ 8, y }, track.name, trackText, 10);
-    }
-
     void renderStep(Track& track, unsigned int step, unsigned int row)
     {
         unsigned int y = rowY[row];
