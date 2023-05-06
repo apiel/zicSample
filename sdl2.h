@@ -82,6 +82,8 @@ bool handleControllerButton(SDL_ControllerButtonEvent* event)
         break;
     }
 
+    ui.keys.controllerDirectional = ui.keys.Up || ui.keys.Down || ui.keys.Left || ui.keys.Right;
+
     return true;
 }
 

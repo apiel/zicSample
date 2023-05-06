@@ -61,8 +61,10 @@ int main(int argc, char* args[])
     SDL_Delay(100);
     draw();
 
+    unsigned long lastUpdate = SDL_GetTicks();
     while (handleEvent()) {
-        if (ui.keys.update) {
+        unsigned long now = SDL_GetTicks();
+        if (ui.keys.update || (ui.keys.controllerDirectional && now - lastUpdate > 150)) {
             ui.keys.update = false;
             switch (ui.view) {
 #ifdef FREESOUND_ENABLED
@@ -74,6 +76,7 @@ int main(int argc, char* args[])
                 viewMain.handle(ui.keys);
                 break;
             }
+            lastUpdate = now;
         }
         if (ui.needMainViewRender) {
             ui.needMainViewRender = false;

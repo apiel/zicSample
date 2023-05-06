@@ -232,6 +232,7 @@ enum {
 class UiKeys {
 public:
     bool update = false;
+    bool controllerDirectional = false;
 
     bool Up = false;
     bool Down = false;

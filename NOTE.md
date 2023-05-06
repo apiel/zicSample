@@ -1,7 +1,7 @@
 # TODO
 
-- RG351P direction button repeat
 - FIXME fix sample file selection: right now when pressing the edit button sample get loaded even if not changing sample. However, would be just better to open a modal to select file!
+- save all params to file...
 
 - sample pitch
 - LFO for filter, resonance, amplitude, and ?
@@ -11,6 +11,7 @@
 - copy, paste, select
 - github to save pattern
 - FIXME fix filter click when switching quickly between value, next to 0% HPF
+- RG351P controller direction button repeat, incrementing slowly
 
 ### Freesound
 
