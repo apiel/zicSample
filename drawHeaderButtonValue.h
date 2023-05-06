@@ -25,6 +25,7 @@ protected:
 
     void drawBadge(Point position, Btn& btn)
     {
+        // Not working with SDL2.10...
         // uint32_t size = 15;
         // const std::vector<SDL_Vertex> verts = {
         //     {

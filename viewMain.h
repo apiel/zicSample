@@ -12,6 +12,7 @@
 #include "view.h"
 #include "viewMainStep.h"
 #include "viewMainTrack.h"
+#include "viewMainMaster.h"
 
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
@@ -28,6 +29,7 @@ protected:
 
     ViewMainTrack mainTrack = ViewMainTrack();
     ViewMainStep mainStep = ViewMainStep();
+    ViewMainMaster mainMaster = ViewMainMaster();
 
     uint16_t rowY[APP_TRACKS + 1] = {
         GRID_PATTERN_TOP,
@@ -155,17 +157,6 @@ protected:
 
     Track& getTrack(int8_t gridRow) { return data.tracks[gridRow]; }
 
-    // void renderHeaderStep()
-    // {
-    //     Track& track = getTrack();
-    //     drawText({ 10, 10 }, track.name, COLOR_INFO);
-    // }
-
-    void renderHeaderMaster()
-    {
-        drawText({ 10, 10 }, "Master", COLOR_INFO);
-    }
-
     bool isMasterRow() { return grid.row == APP_TRACKS; }
     bool isTrackCol() { return grid.col == 0; }
 
@@ -173,11 +164,10 @@ protected:
     {
         drawFilledRect({ 5, 5 }, { SCREEN_W - 10, 60 });
         if (isMasterRow()) {
-            renderHeaderMaster();
+            mainMaster.render();
         } else if (isTrackCol()) {
             mainTrack.render(getTrack());
         } else {
-            // renderHeaderStep();
             mainStep.render(getTrack(), grid.col - 1);
         }
     }
@@ -246,6 +236,9 @@ public:
 
         Track& track = getTrack();
         if (isMasterRow()) {
+            if (mainMaster.handle(keys)) {
+                return;
+            }
         } else if (isTrackCol()) {
             if (mainTrack.handle(keys, track, rowY[grid.row])) {
                 return;
@@ -258,13 +251,6 @@ public:
                 draw();
                 return;
             }
-            // if (keys.btnB) {
-            //     uint8_t step = grid.col - 1;
-            //     track.steps[step].toggle();
-            //     // renderHeaderStep();
-
-            //     return;
-            // }
         }
 
         if (grid.update(keys) == VIEW_CHANGED) {
