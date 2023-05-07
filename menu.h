@@ -7,6 +7,7 @@
 #include "grid.h"
 #include "keyboard.h"
 #include "track.h"
+#include "patternSelector.h"
 #ifdef FREESOUND_ENABLED
 #include "viewFreesound.h"
 #endif
@@ -14,6 +15,7 @@
 const char* MENU_ITEMS[] = {
     "Save track",
     "Save track as",
+    "Select track",
     "Reload track",
     "Delete track",
 #ifdef FREESOUND_ENABLED
@@ -25,6 +27,7 @@ const char* MENU_ITEMS[] = {
 enum MenuItems {
     MENU_ITEM_SAVE_TRACK,
     MENU_ITEM_SAVE_TRACK_AS,
+    MENU_ITEM_SELECT_TRACK,
     MENU_ITEM_RELOAD_TRACK,
     MENU_ITEM_DELETE_TRACK,
 #ifdef FREESOUND_ENABLED
@@ -38,6 +41,7 @@ uint8_t MENU_ITEMS_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 class Menu {
 protected:
     Keyboard& keyboard = Keyboard::get();
+    PatternSelector& patternSelector = PatternSelector::get();
 
     unsigned int x = 120;
     unsigned int y = 30;
@@ -104,7 +108,7 @@ public:
         return isVisible;
     }
 
-    bool handle(UiKeys& keys, Track& track)
+    void handle(UiKeys& keys, Track& track)
     {
         if (isSaveAs) {
             uint8_t res = keyboard.handle(keys);
@@ -122,9 +126,8 @@ public:
                 isSaveAs = NULL;
                 render();
                 draw();
-                return true;
             }
-            return false;
+            return;
         }
         if (keys.Up) {
             selected--;
@@ -152,16 +155,19 @@ public:
                 keyboard.setTarget(isSaveAs->name, APP_TRACK_NAME).setWidth(w).setDoneButtonText("Save");
                 render();
                 draw();
-                return false;
+                return; // Not need toggle
+            case MENU_ITEM_SELECT_TRACK:
+                patternSelector.show(&track);
+                draw();
+                break;
             case MENU_ITEM_RELOAD_TRACK:
                 track.load();
                 break;
 #ifdef FREESOUND_ENABLED
             case MENU_ITEM_FREESOUND:
-                toggle();
                 ui.view = VIEW_FREESOUND;
                 ViewFreesound::get().render();
-                return false;
+                break;
 #endif
             case MENU_ITEM_EXIT:
                 SDL_Log("EXIT\n");
@@ -169,9 +175,7 @@ public:
                 break;
             }
             toggle();
-            return true;
         }
-        return false;
     }
 };
 

@@ -120,7 +120,7 @@ public:
 
     bool handle(UiKeys& keys)
     {
-        if (keys.btnA) {
+        if (keys.btnA || keys.Menu) {
             track = NULL;
             return true;
         }

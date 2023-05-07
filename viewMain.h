@@ -205,10 +205,7 @@ public:
         }
 
         if (menu.isVisible) {
-            if (menu.handle(keys, getTrack())) {
-                render();
-                draw();
-            }
+            menu.handle(keys, getTrack());
             return;
         }
 
