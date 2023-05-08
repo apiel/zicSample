@@ -2,10 +2,13 @@
 #define _DATA_H_
 
 #include "def.h"
+#include "tempo.h"
 #include "track.h"
 
 class Data {
-private:
+protected:
+    Tempo& tempo = Tempo::get();
+
     Data() { }
 
 public:
@@ -40,10 +43,23 @@ public:
         SDL_free(loaded);
     }
 
-    // Track& getTrack(uint8_t index)
-    // {
-    //     return tracks[index % APP_TRACKS];
-    // }
+    void save()
+    {
+        FILE* file = fopen(APP_DATA_MAIN, "w");
+        if (!file) {
+            APP_LOG("Error: could not open file %s\n", APP_DATA_MAIN);
+            return;
+        }
+        APP_LOG("Save data...\n");
+        for (uint8_t i = 0; i < APP_TRACKS; i++) {
+            fprintf(file, "%s\n", tracks[i].name);
+        }
+
+        // volume  bpm resonance
+        fprintf(file, "\n%f %d %f\n", 1.0f, tempo.getBpm(), 0.0f);
+
+        fclose(file);
+    }
 };
 
 Data* Data::instance = NULL;

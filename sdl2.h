@@ -10,7 +10,7 @@ bool handleKeyboard(SDL_KeyboardEvent* event)
 
     ui.keys.update = true;
 
-    SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
+    // SDL_Log("handleKeyboard %d\n", event->keysym.scancode);
     // SDL_Log("handleKeyboard %d\n", event->repeat);
     switch (event->keysym.scancode) {
     case SDL_SCANCODE_UP:
