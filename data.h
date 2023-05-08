@@ -2,9 +2,9 @@
 #define _DATA_H_
 
 #include "def.h"
+#include "master.h"
 #include "tempo.h"
 #include "track.h"
-#include "master.h"
 
 class Data {
 protected:
@@ -41,6 +41,11 @@ public:
         for (uint8_t i = 0; (line = strtok_r(rest, "\n", &rest)) && i < APP_TRACKS; i++) {
             tracks[i].setName(line).load();
         }
+
+        // APP_LOG("line: %s\n", line);
+        master.setVolume(atof(strtok(line, " ")));
+        tempo.set(atoi(strtok(NULL, " ")));
+        master.filter.setResonance(atof(strtok(NULL, " ")));
 
         SDL_free(loaded);
     }

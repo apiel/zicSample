@@ -1,5 +1,7 @@
 # TODO
 
+- FIXME volume does not refresh when change
+- FIXME if press wrong button it should not navigate...
 - save all params to file...
 - on save drwaw  message
 
