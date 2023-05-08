@@ -10,9 +10,9 @@
 #include "progressBar.h"
 #include "tempo.h"
 #include "view.h"
+#include "viewMainMaster.h"
 #include "viewMainStep.h"
 #include "viewMainTrack.h"
-#include "viewMainMaster.h"
 
 #define GRID_PATTERN_TOP 69
 #define GRID_PATTERN_ROW_H 15
@@ -205,7 +205,10 @@ public:
         }
 
         if (menu.isVisible) {
-            menu.handle(keys, getTrack());
+            if (menu.handle(keys, getTrack())) { // if return true, need to re-render parent
+                render();
+                draw();
+            }
             return;
         }
 

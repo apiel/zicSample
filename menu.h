@@ -1,18 +1,20 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
+#include "data.h"
 #include "def.h"
 #include "draw.h"
 #include "fs.h"
 #include "grid.h"
 #include "keyboard.h"
-#include "track.h"
 #include "patternSelector.h"
+#include "track.h"
 #ifdef FREESOUND_ENABLED
 #include "viewFreesound.h"
 #endif
 
 const char* MENU_ITEMS[] = {
+    "Save",
     "Save track",
     "Save track as",
     "Select track",
@@ -25,6 +27,7 @@ const char* MENU_ITEMS[] = {
 };
 
 enum MenuItems {
+    MENU_ITEM_SAVE,
     MENU_ITEM_SAVE_TRACK,
     MENU_ITEM_SAVE_TRACK_AS,
     MENU_ITEM_SELECT_TRACK,
@@ -40,6 +43,7 @@ uint8_t MENU_ITEMS_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 
 class Menu {
 protected:
+    Data& data = Data::get();
     Keyboard& keyboard = Keyboard::get();
     PatternSelector& patternSelector = PatternSelector::get();
 
@@ -108,7 +112,7 @@ public:
         return isVisible;
     }
 
-    void handle(UiKeys& keys, Track& track)
+    bool handle(UiKeys& keys, Track& track)
     {
         if (isSaveAs) {
             uint8_t res = keyboard.handle(keys);
@@ -127,9 +131,7 @@ public:
                 render();
                 draw();
             }
-            return;
-        }
-        if (keys.Up) {
+        } else if (keys.Up) {
             selected--;
             if (selected < 0) {
                 selected = MENU_ITEMS_COUNT - 1;
@@ -145,6 +147,9 @@ public:
             draw();
         } else if (keys.btnB || keys.btnA) {
             switch (selected) {
+            case MENU_ITEM_SAVE:
+                data.saveAll();
+                break;
             case MENU_ITEM_SAVE_TRACK:
                 if (strcmp(track.name, "-") != 0) {
                     track.save();
@@ -155,7 +160,7 @@ public:
                 keyboard.setTarget(isSaveAs->name, APP_TRACK_NAME).setWidth(w).setDoneButtonText("Save");
                 render();
                 draw();
-                return; // Not need toggle
+                return false; // No need toggle
             case MENU_ITEM_SELECT_TRACK:
                 patternSelector.show(&track);
                 draw();
@@ -167,7 +172,8 @@ public:
             case MENU_ITEM_FREESOUND:
                 ui.view = VIEW_FREESOUND;
                 ViewFreesound::get().render();
-                break;
+                toggle();
+                return false; // no need to render parents
 #endif
             case MENU_ITEM_EXIT:
                 SDL_Log("EXIT\n");
@@ -175,7 +181,9 @@ public:
                 break;
             }
             toggle();
+            return true; // need to render parent
         }
+        return false;
     }
 };
 

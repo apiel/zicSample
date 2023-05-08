@@ -1,6 +1,7 @@
 # TODO
 
 - save all params to file...
+- on save drwaw  message
 
 - sample pitch
 - github to save pattern

@@ -50,7 +50,7 @@ public:
             APP_LOG("Error: could not open file %s\n", APP_DATA_MAIN);
             return;
         }
-        APP_LOG("Save data...\n");
+        APP_LOG("Save master data...\n");
         for (uint8_t i = 0; i < APP_TRACKS; i++) {
             fprintf(file, "%s\n", tracks[i].name);
         }
@@ -59,6 +59,15 @@ public:
         fprintf(file, "\n%f %d %f\n", 1.0f, tempo.getBpm(), 0.0f);
 
         fclose(file);
+    }
+
+    void saveAll()
+    {
+        APP_LOG("Save all data...\n");
+        for (uint8_t i = 0; i < APP_TRACKS; i++) {
+            tracks[i].save();
+        }
+        save();
     }
 };
 
