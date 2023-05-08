@@ -3,12 +3,14 @@
 
 #include "data.h"
 #include "draw.h"
-#include "audioHandler.h"
+#include "master.h"
+#include "tempo.h"
 #include "drawHeaderButtonValue.h"
 
 class ViewMainMaster {
 protected:
-    AudioHandler& audio = AudioHandler::get();
+    Master& master = Master::get();
+    Tempo& tempo = Tempo::get();
     HeaderButtonValue headerButtonValue = HeaderButtonValue();
 
 public:
@@ -16,7 +18,7 @@ public:
     {
         headerButtonValue.btnY.label1 = "Volume";
         char volume[4];
-        sprintf(volume, "%d", (int)(audio.getVolume() * 100));
+        sprintf(volume, "%d", (int)(master.getVolume() * 100));
         headerButtonValue.btnY.value1 = volume;
         headerButtonValue.btnY.unit1 = "%";
         headerButtonValue.drawY();
@@ -26,7 +28,7 @@ public:
     {
         headerButtonValue.btnX.label1 = "BPM";
         char bpm[4];
-        sprintf(bpm, "%d", audio.tempo.getBpm());
+        sprintf(bpm, "%d", tempo.getBpm());
         headerButtonValue.btnX.value1 = bpm;
         headerButtonValue.drawX();
     }
@@ -35,7 +37,7 @@ public:
     {
         headerButtonValue.btnA.label2 = "Resonance";
         char resonance[4];
-        sprintf(resonance, "%d", (int)(audio.filter.resonance * 100));
+        sprintf(resonance, "%d", (int)(master.filter.resonance * 100));
         headerButtonValue.btnA.value2 = resonance;
         headerButtonValue.drawA();
     }
@@ -60,21 +62,21 @@ public:
         if (keys.btnB) {
         } else if (keys.btnA) {
             if (keys.isHorizontal()) {
-                audio.filter.setResonance(audio.filter.resonance + keys.getHorizontal(0.01, 0.05));
+                master.filter.setResonance(master.filter.resonance + keys.getHorizontal(0.01, 0.05));
                 renderA();
                 draw();
                 return true;
             }
         } else if (keys.btnX) {
             if (keys.isVertical()) {
-                audio.tempo.set(audio.tempo.getBpm() + keys.getVertical(5, 1));
+                tempo.set(tempo.getBpm() + keys.getVertical(5, 1));
                 renderX();
                 draw();
                 return true;
             }
         } else if (keys.btnY) {
             if (keys.isVertical()) {
-                audio.setVolume(audio.getVolume() + keys.getVertical(0.05, 0.01));
+                master.setVolume(master.getVolume() + keys.getVertical(0.05, 0.01));
                 renderY();
                 draw();
                 return true;

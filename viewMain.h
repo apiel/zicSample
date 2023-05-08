@@ -1,7 +1,6 @@
 #ifndef _VIEW_MAIN_H
 #define _VIEW_MAIN_H
 
-#include "audioHandler.h"
 #include "data.h"
 #include "draw.h"
 #include "grid.h"
@@ -23,7 +22,7 @@ protected:
     Grid gridEdit = Grid(3, 5);
     ProgressBar& progressBar = ProgressBar::get();
     Data& data = Data::get();
-    AudioHandler& audio = AudioHandler::get();
+    Master& master = Master::get();
     Menu& menu = Menu::get();
     PatternSelector& patternSelector = PatternSelector::get();
 
@@ -126,7 +125,7 @@ protected:
         color.a = 100;
         drawFilledRect({ 5, progressBar.y }, { 84, progressBar.h }, color);
         color.a = 200;
-        unsigned int width = 84.0 * audio.getVolume() / APP_MAX_VOLUME;
+        unsigned int width = 84.0 * master.getVolume() / APP_MAX_VOLUME;
         drawFilledRect({ 5, progressBar.y }, { width, progressBar.h }, color);
         if (selected) {
             drawRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_WHITE);

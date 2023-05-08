@@ -4,7 +4,7 @@
 #include "audioPreview.h"
 #include "data.h"
 #include "def.h"
-#include "filter.h"
+#include "master.h"
 #include "state.h"
 #include "tempo.h"
 
@@ -12,9 +12,7 @@ class AudioHandler {
 protected:
     Data& data = Data::get();
     AudioPreview& audioPreview = AudioPreview::get();
-
-    float volume = 1.0f;
-    float mixDivider = 1.0f / APP_TRACKS;
+    Master& master = Master::get();
 
     unsigned long lastAxisUpdate = 0;
     float lastX2 = 0.0f;
@@ -22,11 +20,7 @@ protected:
 
     static AudioHandler* instance;
 
-    AudioHandler()
-    {
-        setVolume(volume);
-        filter.setResonance(0.80f);
-    }
+    AudioHandler() { }
 
     float getAXisValue(int axis)
     {
@@ -36,7 +30,6 @@ protected:
 
 public:
     Tempo& tempo = Tempo::get();
-    Filter filter;
 
     uint8_t stepCounter = 0;
 
@@ -78,7 +71,7 @@ public:
                 // filter.set(7250 * valueY2 * valueX2);
                 // filter.set(7000 * valueY2 * fabs(valueX2));
                 // filter.set(7000 * valueY2 * ((valueX2 + 1) * 0.5f));
-                filter.set(7000 * (valueY2 * 0.5f + valueY2 * (1 - fabs(valueX2)) * 0.5f));
+                master.filter.set(7000 * (valueY2 * 0.5f + valueY2 * (1 - fabs(valueX2)) * 0.5f));
             }
         }
 
@@ -94,27 +87,16 @@ public:
                     track.audioFile.samples(buffer, len);
                     for (int j = 0; j < len; j++) {
                         // buf[j] += track.filter.sample(buffer[j]) * mixDivider * track.activeStep->velocity * track.volume;
-                        buf[j] += track.sampleModulation(buffer[j], mixDivider);
+                        buf[j] += track.sampleModulation(buffer[j], master.mixDivider);
                     }
                 }
             }
             delete[] buffer;
 
             for (int j = 0; j < len; j++) {
-                buf[j] = filter.sample(buf[j]);
+                buf[j] = master.filter.sample(buf[j]);
             }
         }
-    }
-
-    void setVolume(float _volume)
-    {
-        volume = range(_volume, 0.0, APP_MAX_VOLUME);
-        mixDivider = 1.0f / APP_TRACKS * volume;
-    }
-
-    float getVolume()
-    {
-        return volume;
     }
 };
 
