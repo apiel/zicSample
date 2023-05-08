@@ -4,10 +4,12 @@
 #include "def.h"
 #include "tempo.h"
 #include "track.h"
+#include "master.h"
 
 class Data {
 protected:
     Tempo& tempo = Tempo::get();
+    Master& master = Master::get();
 
     Data() { }
 
@@ -56,7 +58,7 @@ public:
         }
 
         // volume  bpm resonance
-        fprintf(file, "\n%f %d %f\n", 1.0f, tempo.getBpm(), 0.0f);
+        fprintf(file, "\n%f %d %f\n", master.getVolume(), tempo.getBpm(), master.filter.resonance);
 
         fclose(file);
     }
