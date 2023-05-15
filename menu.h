@@ -8,6 +8,7 @@
 #include "grid.h"
 #include "keyboard.h"
 #include "patternSelector.h"
+#include "popupMessage.h"
 #include "track.h"
 #ifdef FREESOUND_ENABLED
 #include "viewFreesound.h"
@@ -46,6 +47,7 @@ protected:
     Data& data = Data::get();
     Keyboard& keyboard = Keyboard::get();
     PatternSelector& patternSelector = PatternSelector::get();
+    PopupMessage& popupMessage = PopupMessage::get();
 
     unsigned int x = 120;
     unsigned int y = 30;
@@ -149,6 +151,7 @@ public:
             switch (selected) {
             case MENU_ITEM_SAVE:
                 data.saveAll();
+                popupMessage.show("Saved.");
                 break;
             case MENU_ITEM_SAVE_TRACK:
                 if (strcmp(track.name, "-") != 0) {

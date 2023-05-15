@@ -3,6 +3,7 @@
 #include "def.h"
 #include "sdl2.h"
 #include "viewMain.h"
+#include "popupMessage.h"
 
 #ifdef FREESOUND_ENABLED
 #include "viewFreesound.h"
@@ -61,6 +62,7 @@ int main(int argc, char* args[])
     SDL_Delay(100);
     draw();
 
+    PopupMessage& popupMessage = PopupMessage::get();
     unsigned long lastUpdate = SDL_GetTicks();
     while (handleEvent()) {
         unsigned long now = SDL_GetTicks();
@@ -88,6 +90,7 @@ int main(int argc, char* args[])
             ProgressBar::get().render(audio.stepCounter);
             draw();
         }
+        popupMessage.handleRendering(now);
         SDL_Delay(10);
     }
 
