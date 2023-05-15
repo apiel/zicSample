@@ -59,7 +59,6 @@ public:
         renderB();
     }
 
-// TODO TODO
     void renderMasterVolume(bool selected = false)
     {
         drawFilledRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_BACKGROUND);

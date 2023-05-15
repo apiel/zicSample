@@ -77,7 +77,9 @@ public:
                 return true;
             }
         } else if (keys.btnX) {
+            return true;
         } else if (keys.btnY) {
+            return true;
         }
         return false;
     }
