@@ -3,13 +3,18 @@
 
 #include "def.h"
 #include "draw.h"
+#include "state.h"
 
 class PopupMessage {
 protected:
     bool shown = false;
+    SDL_Texture * snapshot;
 
     static PopupMessage* instance;
-    PopupMessage() { }
+    PopupMessage() { 
+        // SDL_PixelFormatEnum
+        // snapshot = SDL_CreateTexture(renderer, format, SDL_TEXTUREACCESS_STATIC, w, h);
+    }
 
 public:
     const unsigned int h = 25;
