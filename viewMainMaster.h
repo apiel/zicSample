@@ -3,15 +3,17 @@
 
 #include "data.h"
 #include "draw.h"
+#include "drawHeaderButtonValue.h"
 #include "master.h"
 #include "tempo.h"
-#include "drawHeaderButtonValue.h"
+#include "progressBar.h"
 
 class ViewMainMaster {
 protected:
     Master& master = Master::get();
     Tempo& tempo = Tempo::get();
     HeaderButtonValue headerButtonValue = HeaderButtonValue();
+    ProgressBar& progressBar = ProgressBar::get();
 
 public:
     void renderY()
@@ -57,14 +59,32 @@ public:
         renderB();
     }
 
+// TODO TODO
+    void renderMasterVolume(bool selected = false)
+    {
+        drawFilledRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_BACKGROUND);
+        SDL_Color color = COLOR_ON;
+        color.a = 100;
+        drawFilledRect({ 5, progressBar.y }, { 84, progressBar.h }, color);
+        color.a = 200;
+        unsigned int width = 84.0 * master.getVolume() / APP_MAX_VOLUME;
+        drawFilledRect({ 5, progressBar.y }, { width, progressBar.h }, color);
+        if (selected) {
+            drawRect({ 4, progressBar.y - 1 }, { 86, progressBar.h + 2 }, COLOR_WHITE);
+        }
+    }
+
     bool handle(UiKeys& keys)
     {
         if (keys.btnB) {
+            return true;
         } else if (keys.btnA) {
             if (keys.isHorizontal()) {
                 master.filter.setResonance(master.filter.resonance + keys.getHorizontal(0.01, 0.05));
                 renderA();
                 draw();
+                return true;
+            } else if (keys.isVertical()) {
                 return true;
             }
         } else if (keys.btnX) {
@@ -73,12 +93,17 @@ public:
                 renderX();
                 draw();
                 return true;
+            } else if (keys.isHorizontal()) {
+                return true;
             }
         } else if (keys.btnY) {
             if (keys.isVertical()) {
                 master.setVolume(master.getVolume() + keys.getVertical(0.05, 0.01));
                 renderY();
+                renderMasterVolume();
                 draw();
+                return true;
+            } else if (keys.isHorizontal()) {
                 return true;
             }
         }
