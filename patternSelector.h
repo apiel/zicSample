@@ -120,18 +120,18 @@ public:
 
     bool handle(UiKeys& keys)
     {
-        if (keys.Edit) {
+        if (keys.btnA || keys.Menu) {
             track = NULL;
             return true;
         }
-        if (keys.Action) {
+        if (keys.btnB) {
             uint16_t index = grid.row * grid.cols + grid.col;
             if (index < count) {
                 strcpy(track->name, getName(index));
                 track->load();
                 return true;
             }
-        } else if (keys.Edit2) {
+        } else if (keys.btnY) {
             uint16_t index = grid.row * grid.cols + grid.col;
             if (index < count) {
                 strcpy(track->name, getName(index));

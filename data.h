@@ -2,10 +2,15 @@
 #define _DATA_H_
 
 #include "def.h"
+#include "master.h"
+#include "tempo.h"
 #include "track.h"
 
 class Data {
-private:
+protected:
+    Tempo& tempo = Tempo::get();
+    Master& master = Master::get();
+
     Data() { }
 
 public:
@@ -37,13 +42,40 @@ public:
             tracks[i].setName(line).load();
         }
 
+        // APP_LOG("line: %s\n", line);
+        master.setVolume(atof(strtok(line, " ")));
+        tempo.set(atoi(strtok(NULL, " ")));
+        master.filter.setResonance(atof(strtok(NULL, " ")));
+
         SDL_free(loaded);
     }
 
-    // Track& getTrack(uint8_t index)
-    // {
-    //     return tracks[index % APP_TRACKS];
-    // }
+    void save()
+    {
+        FILE* file = fopen(APP_DATA_MAIN, "w");
+        if (!file) {
+            APP_LOG("Error: could not open file %s\n", APP_DATA_MAIN);
+            return;
+        }
+        APP_LOG("Save master data...\n");
+        for (uint8_t i = 0; i < APP_TRACKS; i++) {
+            fprintf(file, "%s\n", tracks[i].name);
+        }
+
+        // volume  bpm resonance
+        fprintf(file, "\n%f %d %f\n", master.getVolume(), tempo.getBpm(), master.filter.resonance);
+
+        fclose(file);
+    }
+
+    void saveAll()
+    {
+        APP_LOG("Save all data...\n");
+        for (uint8_t i = 0; i < APP_TRACKS; i++) {
+            tracks[i].save();
+        }
+        save();
+    }
 };
 
 Data* Data::instance = NULL;

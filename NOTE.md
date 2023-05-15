@@ -1,18 +1,18 @@
 # TODO
 
-- standardise layout to be 4 label value per row
-  BUT should there even be this top bar edit mode, there is 4 button (A,B,X,Y) giving the possibility to edit 2 values per button (even the main toggle button can have more feature if press long) and could also use double press. For fine tuning could use R1!!
-- RG351P direction button repeat
-- FIXME fix sample file selection: right now when pressing the edit button sample get loaded even if not changing sample. However, would be just better to open a modal to select file!
+- on save draw  message
 
-- LFO for filter (and maybe more)
 - sample pitch
+- github to save pattern
+- select sample R1 should switch to the next letter
+- open a modal to select file playing sample ?
+- LFO for filter, resonance, amplitude, and ?
 - grid/scatter effect
 - negative resonance could do something else, maybe make a resoance with envelop?
-- remove delay, reverbe, distortion and use instead send fx1, fx2 (and maybe use supercollider or libpd to apply fx)
-- copy, paste, select
-- github to save pattern
+- master effect delay, reverb?, distortion?
+- copy, paste, select?
 - FIXME fix filter click when switching quickly between value, next to 0% HPF
+- RG351P controller direction button repeat, incrementing slowly
 
 ### Freesound
 

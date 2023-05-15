@@ -1,19 +1,24 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
+#include "data.h"
 #include "def.h"
 #include "draw.h"
 #include "fs.h"
 #include "grid.h"
 #include "keyboard.h"
+#include "patternSelector.h"
+#include "popupMessage.h"
 #include "track.h"
 #ifdef FREESOUND_ENABLED
 #include "viewFreesound.h"
 #endif
 
 const char* MENU_ITEMS[] = {
+    "Save",
     "Save track",
     "Save track as",
+    "Select track",
     "Reload track",
     "Delete track",
 #ifdef FREESOUND_ENABLED
@@ -23,8 +28,10 @@ const char* MENU_ITEMS[] = {
 };
 
 enum MenuItems {
+    MENU_ITEM_SAVE,
     MENU_ITEM_SAVE_TRACK,
     MENU_ITEM_SAVE_TRACK_AS,
+    MENU_ITEM_SELECT_TRACK,
     MENU_ITEM_RELOAD_TRACK,
     MENU_ITEM_DELETE_TRACK,
 #ifdef FREESOUND_ENABLED
@@ -37,7 +44,10 @@ uint8_t MENU_ITEMS_COUNT = sizeof(MENU_ITEMS) / sizeof(MENU_ITEMS[0]);
 
 class Menu {
 protected:
+    Data& data = Data::get();
     Keyboard& keyboard = Keyboard::get();
+    PatternSelector& patternSelector = PatternSelector::get();
+    PopupMessage& popupMessage = PopupMessage::get();
 
     unsigned int x = 120;
     unsigned int y = 30;
@@ -122,11 +132,8 @@ public:
                 isSaveAs = NULL;
                 render();
                 draw();
-                return true;
             }
-            return false;
-        }
-        if (keys.Up) {
+        } else if (keys.Up) {
             selected--;
             if (selected < 0) {
                 selected = MENU_ITEMS_COUNT - 1;
@@ -140,8 +147,12 @@ public:
             }
             render();
             draw();
-        } else if (keys.Action || keys.Edit) {
+        } else if (keys.btnB || keys.btnA) {
             switch (selected) {
+            case MENU_ITEM_SAVE:
+                data.saveAll();
+                popupMessage.show("Saved.");
+                break;
             case MENU_ITEM_SAVE_TRACK:
                 if (strcmp(track.name, "-") != 0) {
                     track.save();
@@ -152,16 +163,20 @@ public:
                 keyboard.setTarget(isSaveAs->name, APP_TRACK_NAME).setWidth(w).setDoneButtonText("Save");
                 render();
                 draw();
-                return false;
+                return false; // No need toggle
+            case MENU_ITEM_SELECT_TRACK:
+                patternSelector.show(&track);
+                draw();
+                break;
             case MENU_ITEM_RELOAD_TRACK:
                 track.load();
                 break;
 #ifdef FREESOUND_ENABLED
             case MENU_ITEM_FREESOUND:
-                toggle();
                 ui.view = VIEW_FREESOUND;
                 ViewFreesound::get().render();
-                return false;
+                toggle();
+                return false; // no need to render parents
 #endif
             case MENU_ITEM_EXIT:
                 SDL_Log("EXIT\n");
@@ -169,7 +184,7 @@ public:
                 break;
             }
             toggle();
-            return true;
+            return true; // need to render parent
         }
         return false;
     }

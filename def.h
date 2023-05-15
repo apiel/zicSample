@@ -126,6 +126,22 @@
 #define APP_DEFAULT_FONT_COLOR COLOR_WHITE
 #endif
 
+#ifndef COLOR_BTN_X // #2a3696
+#define COLOR_BTN_X { 0x2a, 0x36, 0x96, 255 }
+#endif
+
+#ifndef COLOR_BTN_Y // #03a115
+#define COLOR_BTN_Y { 0x03, 0xa1, 0x15, 255 }
+#endif
+
+#ifndef COLOR_BTN_A // #ab0400
+#define COLOR_BTN_A { 0xab, 0x04, 0x00, 255 }
+#endif
+
+#ifndef COLOR_BTN_B // #edbf02
+#define COLOR_BTN_B { 0xed, 0xbf, 0x02, 255 }
+#endif
+
 // clang-format on
 
 #ifndef APP_MAX_VOLUME
@@ -216,23 +232,70 @@ enum {
 class UiKeys {
 public:
     bool update = false;
+    bool controllerDirectional = false;
 
     bool Up = false;
     bool Down = false;
     bool Right = false;
     bool Left = false;
-    bool Edit = false;
-    bool Edit2 = false;
-    bool Edit3 = false;
+    bool btnA = false;
+    bool btnY = false;
+    bool btnX = false;
     bool Mode = false;
     bool Menu = false;
-    bool Action = false;
+    bool btnB = false;
     bool R1 = false;
     bool R2 = false;
     bool L1 = false;
     bool L2 = false;
     bool joystickRight = false;
     bool joystickLeft = false;
+
+    bool isVertical()
+    {
+        return Up || Down;
+    }
+
+    bool isHorizontal()
+    {
+        return Left || Right;
+    }
+
+    float getVertical(float step = 1.0f)
+    {
+        return getVertical(step, step);
+    }
+
+    float getVertical(float step, float stepR1)
+    {
+        if (R1) {
+            step = stepR1;
+        }
+        if (Up) {
+            return step;
+        } else if (Down) {
+            return -step;
+        }
+        return 0.0f;
+    }
+
+    float getHorizontal(float step = 1.0f)
+    {
+        return getHorizontal(step, step);
+    }
+
+    float getHorizontal(float step, float stepR1)
+    {
+        if (R1) {
+            step = stepR1;
+        }
+        if (Left) {
+            return -step;
+        } else if (Right) {
+            return step;
+        }
+        return 0.0f;
+    }
 
     float getDirection(float stepA, float stepB)
     {
