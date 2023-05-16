@@ -8,12 +8,12 @@
 class PopupMessage {
 protected:
     bool shown = false;
-    SDL_Texture * snapshot;
+    SDL_Texture* snapshot;
 
     static PopupMessage* instance;
-    PopupMessage() { 
-        // SDL_PixelFormatEnum
-        // snapshot = SDL_CreateTexture(renderer, format, SDL_TEXTUREACCESS_STATIC, w, h);
+    PopupMessage()
+    {
+        snapshot = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
     }
 
 public:
@@ -33,7 +33,8 @@ public:
         return *instance;
     }
 
-    void render() {
+    void render()
+    {
         drawFilledRect({ x, y }, { w, h }, COLOR_FOREGROUND2);
         drawRect({ x, y }, { w, h }, COLOR_INFO);
         drawText({ x + 5, y + 4 }, message, COLOR_INFO);
@@ -52,9 +53,16 @@ public:
             if (shown == false) {
                 shownTime = SDL_GetTicks();
                 shown = true;
+
+                SDL_SetRenderTarget(renderer, snapshot);
+                SDL_Rect rect = { x, y, w, h };
+                SDL_RenderCopy(renderer, texture, &rect, NULL);
+                SDL_SetRenderTarget(renderer, texture);
+
                 render();
-            } else if (now - shownTime > 2000) {
-                // TODO restore state
+            } else if (now - shownTime > 1000) {
+                SDL_Rect rect = { x, y, w, h };
+                SDL_RenderCopy(renderer, snapshot, NULL, &rect);
                 message = NULL;
             }
         }

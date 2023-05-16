@@ -48,6 +48,9 @@ int main(int argc, char* args[])
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_W, SCREEN_H);
+    SDL_SetRenderTarget(renderer, texture);
+
     SDL_AudioDeviceID audioDevice = initAudio(audioCallBack);
     if (SDL_getenv("ZIC_SKIP_AUDIO") == NULL && !audioDevice) {
         return 1;
