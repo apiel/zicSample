@@ -156,6 +156,7 @@ public:
             case MENU_ITEM_SAVE_TRACK:
                 if (strcmp(track.name, "-") != 0) {
                     track.save();
+                    popupMessage.show("Saved.");
                     break;
                 }
             case MENU_ITEM_SAVE_TRACK_AS:
@@ -170,6 +171,7 @@ public:
                 break;
             case MENU_ITEM_RELOAD_TRACK:
                 track.load();
+                popupMessage.show("Reloaded.");
                 break;
 #ifdef FREESOUND_ENABLED
             case MENU_ITEM_FREESOUND:
