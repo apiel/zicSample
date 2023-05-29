@@ -60,10 +60,11 @@ public:
         printf("Audio file %s sampleCount %ld sampleRate %d\n", filename, (long)sfinfo.frames, sfinfo.samplerate);
         isOpen = true;
 
-        sf_seek(file, 0, seek); 
-
 #if LOAD_SAMPLE_IN_MEMORY
         sf_read_float(file, buffer, AUDIO_BUFFER_SIZE);
+        samplePos = sfinfo.frames;
+#else
+        sf_seek(file, 0, seek);
 #endif
 
         return *this;
