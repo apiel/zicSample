@@ -4,6 +4,10 @@ Simple sample sequencer for Anbernic handled console.
 
 <img src='https://github.com/apiel/zicSample/blob/main/screenshot/demo.png?raw=true' />
 
+Here is a demo video from a previous version:
+
+[![Demo video from a previous version](https://img.youtube.com/vi/Q-75PZpsoY8/0.jpg)](https://www.youtube.com/watch?v=Q-75PZpsoY8)
+
 ## Installation
 
 On rg351, install arkos.
