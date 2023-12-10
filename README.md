@@ -1,3 +1,9 @@
+# Zic Sample
+
+Simple sample sequencer for Anbernic handled console.
+
+<img src='https://github.com/apiel/zicBox/blob/main/screenshot/demo.png?raw=true' />
+
 ## Installation
 
 On rg351, install arkos.
@@ -9,6 +15,8 @@ Then install:
 
 > INFO: SDL video driver: KMSDRM_LEGACY
 > INFO: SDL audio driver: alsa
+
+> Font path might differ, have a look at `def.h`, base path is either `/usr/share/fonts/truetype/liberation` or `/usr/share/fonts/truetype/liberation2`
 
 ## Toolchain
 
