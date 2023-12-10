@@ -8,8 +8,6 @@ Here is a demo video from a previous version:
 
 [![Demo video from a previous version](https://img.youtube.com/vi/Q-75PZpsoY8/0.jpg)](https://www.youtube.com/watch?v=Q-75PZpsoY8)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Q-75PZpsoY8?si=dT8MYiEocM9hzsWp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ## Installation
 
 On rg351, install arkos.
