@@ -2,7 +2,7 @@
 
 Simple sample sequencer for Anbernic handled console.
 
-<img src='https://github.com/apiel/zicBox/blob/main/screenshot/demo.png?raw=true' />
+<img src='https://github.com/apiel/zicSample/blob/main/screenshot/demo.png?raw=true' />
 
 ## Installation
 
