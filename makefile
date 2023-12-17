@@ -21,6 +21,10 @@ BUILD=-Wall zicSample.cpp -fopenmp -Wno-narrowing $(SDL2) $(SDL2_TTF) $(LIDSND) 
 
 RG351_IP=192.168.1.105
 
+ifneq ($(shell uname -m),x86_64)
+RPI := -DIS_RPI=1
+endif
+
 linux: build run
 
 rg351:
@@ -41,10 +45,10 @@ rg351Chrooted:
 	make CC="g++ -o zicSampleRG351" build
 
 build:
-	$(CC) $(BUILD)
+	$(CC) $(BUILD) $(RPI)
 
 build-RG351P:
-	$(CC) $(BUILD) $(RG351P)
+	$(CC) $(BUILD) $(RG351P) $(RPI)
 
 # -fopenmp for soundTouch "warning: ignoring #pragma omp parallel"
 # -Wno-narrowing for font.h:62:56: warning: narrowing conversion of ‘(8 * ((int)size))’ from ‘int’ to ‘Uint16’ {aka ‘short unsigned int’} inside { } [-Wnarrowing]

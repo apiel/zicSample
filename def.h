@@ -26,15 +26,27 @@
 #endif
 
 #ifndef APP_FONT
+#ifdef IS_RPI
+#define APP_FONT "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf"
+#else
 #define APP_FONT "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
+#endif
 #endif
 
 #ifndef APP_FONT_BOLD
+#ifdef IS_RPI
+#define APP_FONT_BOLD "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf"
+#else
 #define APP_FONT_BOLD "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+#endif
 #endif
 
 #ifndef APP_FONT_ITALIC
+#ifdef IS_RPI
+#define APP_FONT_ITALIC "/usr/share/fonts/truetype/liberation2/LiberationSans-Italic.ttf"
+#else
 #define APP_FONT_ITALIC "/usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf"
+#endif
 #endif
 
 #ifndef SAMPLE_RATE

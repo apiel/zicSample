@@ -1,9 +1,9 @@
 #include "audioHandler.h"
 #include "data.h"
 #include "def.h"
+#include "popupMessage.h"
 #include "sdl2.h"
 #include "viewMain.h"
-#include "popupMessage.h"
 
 #ifdef FREESOUND_ENABLED
 #include "viewFreesound.h"
@@ -36,7 +36,11 @@ int main(int argc, char* args[])
         "Zic",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         SCREEN_W, SCREEN_H,
-        SDL_WINDOW_SHOWN);
+        SDL_WINDOW_SHOWN
+#ifdef IS_RPI
+            | SDL_WINDOW_FULLSCREEN_DESKTOP
+#endif
+    );
 
     if (window == NULL) {
         fprintf(stderr, "Could not create window: %s\n", SDL_GetError());
